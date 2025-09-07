@@ -50,6 +50,25 @@ export const wishlistItems = pgTable("wishlist_items", {
   uniqueUserProduct: index("unique_user_product_wishlist").on(table.userId, table.productId),
 }));
 
+export const orders = pgTable("orders", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  totalAmount: text("total_amount").notNull(),
+  status: varchar("status", { length: 50 }).notNull().default("completed"),
+  invoiceUrl: text("invoice_url"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const orderItems = pgTable("order_items", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  orderId: varchar("order_id").notNull().references(() => orders.id, { onDelete: "cascade" }),
+  productId: varchar("product_id").notNull().references(() => products.id),
+  productName: text("product_name").notNull(),
+  price: text("price").notNull(),
+  quantity: integer("quantity").notNull().default(1),
+  totalPrice: text("total_price").notNull(),
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   email: true,
   password: true,
@@ -65,6 +84,21 @@ export const insertCartItemSchema = createInsertSchema(cartItems).pick({
 
 export const insertWishlistItemSchema = createInsertSchema(wishlistItems).pick({
   productId: true,
+});
+
+export const insertOrderSchema = createInsertSchema(orders).pick({
+  totalAmount: true,
+  status: true,
+  invoiceUrl: true,
+});
+
+export const insertOrderItemSchema = createInsertSchema(orderItems).pick({
+  orderId: true,
+  productId: true,
+  productName: true,
+  price: true,
+  quantity: true,
+  totalPrice: true,
 });
 
 export const signInSchema = z.object({
@@ -88,3 +122,7 @@ export type Session = typeof sessions.$inferSelect;
 export type InsertCartItem = z.infer<typeof insertCartItemSchema>;
 export type WishlistItem = typeof wishlistItems.$inferSelect;
 export type InsertWishlistItem = z.infer<typeof insertWishlistItemSchema>;
+export type Order = typeof orders.$inferSelect;
+export type InsertOrder = z.infer<typeof insertOrderSchema>;
+export type OrderItem = typeof orderItems.$inferSelect;
+export type InsertOrderItem = z.infer<typeof insertOrderItemSchema>;

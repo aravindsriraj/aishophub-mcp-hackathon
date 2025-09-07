@@ -4,6 +4,8 @@ import {
   cartItems, 
   sessions,
   wishlistItems,
+  orders,
+  orderItems,
   type User, 
   type InsertUser, 
   type Product, 
@@ -11,7 +13,11 @@ import {
   type InsertCartItem,
   type Session,
   type WishlistItem,
-  type InsertWishlistItem
+  type InsertWishlistItem,
+  type Order,
+  type InsertOrder,
+  type OrderItem,
+  type InsertOrderItem
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, ilike, and, desc, asc, count, sql } from "drizzle-orm";
@@ -55,6 +61,12 @@ export interface IStorage {
   addToWishlist(userId: string, item: InsertWishlistItem): Promise<WishlistItem>;
   removeFromWishlist(userId: string, productId: string): Promise<void>;
   isInWishlist(userId: string, productId: string): Promise<boolean>;
+  
+  // Order methods
+  createOrder(userId: string, orderData: InsertOrder, items: InsertOrderItem[]): Promise<Order>;
+  getOrders(userId: string): Promise<(Order & { items: (OrderItem & { product: Product })[] })[]>;
+  getOrder(orderId: string): Promise<(Order & { items: (OrderItem & { product: Product })[] }) | undefined>;
+  updateOrderInvoiceUrl(orderId: string, invoiceUrl: string): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -317,6 +329,83 @@ export class DatabaseStorage implements IStorage {
       .where(and(eq(wishlistItems.userId, userId), eq(wishlistItems.productId, productId)));
     
     return !!item;
+  }
+
+  async createOrder(userId: string, orderData: InsertOrder, items: InsertOrderItem[]): Promise<Order> {
+    // Create the order
+    const [order] = await db
+      .insert(orders)
+      .values({ ...orderData, userId })
+      .returning();
+    
+    // Create order items
+    if (items.length > 0) {
+      await db
+        .insert(orderItems)
+        .values(items.map(item => ({ ...item, orderId: order.id })));
+    }
+    
+    return order;
+  }
+
+  async getOrders(userId: string): Promise<(Order & { items: (OrderItem & { product: Product })[] })[]> {
+    // Get all orders for the user
+    const userOrders = await db
+      .select()
+      .from(orders)
+      .where(eq(orders.userId, userId))
+      .orderBy(desc(orders.createdAt));
+    
+    // Get order items for each order
+    const ordersWithItems = await Promise.all(
+      userOrders.map(async (order) => {
+        const items = await db
+          .select()
+          .from(orderItems)
+          .innerJoin(products, eq(orderItems.productId, products.id))
+          .where(eq(orderItems.orderId, order.id));
+        
+        return {
+          ...order,
+          items: items.map(item => ({
+            ...item.order_items,
+            product: item.products
+          }))
+        };
+      })
+    );
+    
+    return ordersWithItems;
+  }
+
+  async getOrder(orderId: string): Promise<(Order & { items: (OrderItem & { product: Product })[] }) | undefined> {
+    const [order] = await db
+      .select()
+      .from(orders)
+      .where(eq(orders.id, orderId));
+    
+    if (!order) return undefined;
+    
+    const items = await db
+      .select()
+      .from(orderItems)
+      .innerJoin(products, eq(orderItems.productId, products.id))
+      .where(eq(orderItems.orderId, orderId));
+    
+    return {
+      ...order,
+      items: items.map(item => ({
+        ...item.order_items,
+        product: item.products
+      }))
+    };
+  }
+
+  async updateOrderInvoiceUrl(orderId: string, invoiceUrl: string): Promise<void> {
+    await db
+      .update(orders)
+      .set({ invoiceUrl })
+      .where(eq(orders.id, orderId));
   }
 }
 
