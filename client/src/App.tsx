@@ -10,6 +10,8 @@ import Home from "@/pages/home";
 import Login from "@/pages/login";
 import ProductDetail from "@/pages/product-detail";
 import Wishlist from "@/pages/wishlist";
+import Checkout from "@/pages/checkout";
+import Orders from "@/pages/orders";
 import { useAuth } from "@/hooks/use-auth";
 
 function Router() {
@@ -47,6 +49,16 @@ function Router() {
       <Route path="/wishlist">
         <ProtectedRoute>
           <Wishlist />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/checkout">
+        <ProtectedRoute>
+          <Checkout />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/orders">
+        <ProtectedRoute>
+          <Orders />
         </ProtectedRoute>
       </Route>
       <Route component={NotFound} />
