@@ -6,6 +6,7 @@ import { useCart } from "@/hooks/use-cart";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useLocation } from "wouter";
 
 interface CartSidebarProps {
   isOpen: boolean;
@@ -16,6 +17,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
   const { cartItems, updateQuantity, removeFromCart, clearCart, isLoading } = useCart();
   const { user } = useAuth();
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
 
   const handleUpdateQuantity = async (productId: string, newQuantity: number) => {
     try {
@@ -188,7 +190,15 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
               <span>Total:</span>
               <span data-testid="text-cart-total">{calculateTotal()}</span>
             </div>
-            <Button className="w-full" size="lg" data-testid="button-checkout">
+            <Button 
+              className="w-full" 
+              size="lg" 
+              data-testid="button-checkout"
+              onClick={() => {
+                onClose();
+                setLocation("/checkout");
+              }}
+            >
               Proceed to Checkout
             </Button>
             <Button 
