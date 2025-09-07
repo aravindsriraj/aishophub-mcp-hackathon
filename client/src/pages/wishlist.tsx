@@ -60,13 +60,14 @@ export default function Wishlist() {
   return (
     <div className="min-h-screen bg-background">
       <Header 
-        onCartClick={() => setShowCart(true)} 
-        onAuthClick={() => setShowAuth(true)}
+        onSearch={() => {}}
+        onCartToggle={() => setShowCart(true)} 
+        onAuthToggle={() => setShowAuth(true)}
       />
 
       <div className="container mx-auto px-4 py-8">
         {/* Back button */}
-        <Link href="/">
+        <Link href="/shop">
           <Button variant="ghost" className="mb-6">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to shopping
@@ -165,7 +166,7 @@ export default function Wishlist() {
               <p className="text-muted-foreground mb-6">
                 Start adding products you love to your wishlist!
               </p>
-              <Link href="/">
+              <Link href="/shop">
                 <Button>
                   <ShoppingCart className="h-4 w-4 mr-2" />
                   Start Shopping

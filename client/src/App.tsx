@@ -9,6 +9,7 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Login from "@/pages/login";
 import ProductDetail from "@/pages/product-detail";
+import Wishlist from "@/pages/wishlist";
 import { useAuth } from "@/hooks/use-auth";
 
 function Router() {
@@ -41,6 +42,11 @@ function Router() {
       <Route path="/product/:id">
         <ProtectedRoute>
           <ProductDetail />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/wishlist">
+        <ProtectedRoute>
+          <Wishlist />
         </ProtectedRoute>
       </Route>
       <Route component={NotFound} />
