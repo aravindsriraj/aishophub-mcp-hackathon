@@ -62,26 +62,30 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
 
           {/* Search Bar - Hidden on mobile, shown on md+ */}
           <div className="hidden md:flex flex-1 max-w-2xl mx-8">
-            <form onSubmit={handleSearch} className="relative w-full">
-              <Input
-                type="text"
-                placeholder="Search products with AI..."
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                className="w-full pl-10 pr-28 bg-background/95 border-input focus:border-purple-500 transition-colors"
-                data-testid="input-search-desktop"
-              />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Button
-                type="submit"
-                size="sm"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 ai-search-button px-4 py-1.5 rounded-md flex items-center justify-center min-w-[100px]"
-                data-testid="button-search-desktop"
-              >
-                <Sparkles className="h-4 w-4 mr-1.5 text-white sparkle-icon" />
-                <span className="text-white font-medium">AI Search</span>
-              </Button>
-            </form>
+            <div className="relative w-full">
+              <form onSubmit={handleSearch} className="flex items-center gap-2">
+                <div className="relative flex-1">
+                  <Input
+                    type="text"
+                    placeholder="Search products with AI..."
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    className="w-full pl-10 pr-4 h-10 bg-background border-input focus:border-purple-500 transition-colors"
+                    data-testid="input-search-desktop"
+                  />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                </div>
+                <Button
+                  type="submit"
+                  size="default"
+                  className="ai-search-button h-10 px-4 rounded-md flex items-center justify-center whitespace-nowrap"
+                  data-testid="button-search-desktop"
+                >
+                  <Sparkles className="h-4 w-4 mr-1.5 text-white sparkle-icon" />
+                  <span className="text-white font-medium">AI Search</span>
+                </Button>
+              </form>
+            </div>
           </div>
 
           {/* Navigation */}
@@ -160,24 +164,26 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
 
       {/* Mobile Search Bar */}
       <div className="md:hidden px-4 pb-4">
-        <form onSubmit={handleSearch} className="relative">
-          <Input
-            type="text"
-            placeholder="Search products with AI..."
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            className="w-full pl-10 pr-24"
-            data-testid="input-search-mobile"
-          />
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <form onSubmit={handleSearch} className="flex items-center gap-2">
+          <div className="relative flex-1">
+            <Input
+              type="text"
+              placeholder="Search products with AI..."
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              className="w-full pl-10 pr-4 h-10"
+              data-testid="input-search-mobile"
+            />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+          </div>
           <Button
             type="submit"
-            size="sm"
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 ai-search-button px-3 py-1 rounded-md flex items-center justify-center text-xs"
+            size="default"
+            className="ai-search-button h-10 px-3 rounded-md flex items-center justify-center text-xs whitespace-nowrap"
             data-testid="button-search-mobile"
           >
             <Sparkles className="h-3 w-3 mr-1 text-white sparkle-icon" />
-            <span className="text-white font-medium">AI Search</span>
+            <span className="text-white">AI Search</span>
           </Button>
         </form>
       </div>
