@@ -7,6 +7,7 @@ import { Star, Heart, Plus, ShoppingCart } from "lucide-react";
 import { Product } from "@shared/schema";
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
+import { useWishlist } from "@/hooks/use-wishlist";
 import { useToast } from "@/hooks/use-toast";
 
 interface ProductCardProps {
@@ -18,6 +19,7 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
   const [imageError, setImageError] = useState(false);
   const { user } = useAuth();
   const { addToCart, isLoading } = useCart();
+  const { toggleWishlist, isInWishlist, isToggling } = useWishlist();
   const { toast } = useToast();
 
   const renderStars = (rating: number) => {
@@ -64,6 +66,37 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
       toast({
         title: "Error",
         description: "Failed to add product to cart.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleWishlistToggle = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (!user) {
+      toast({
+        title: "Sign in required",
+        description: "Please sign in to add items to your wishlist.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      await toggleWishlist(product.id);
+      const isNowInWishlist = !isInWishlist(product.id);
+      toast({
+        title: isNowInWishlist ? "Added to wishlist" : "Removed from wishlist",
+        description: isNowInWishlist 
+          ? `${product.productName} has been added to your wishlist.`
+          : `${product.productName} has been removed from your wishlist.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update wishlist.",
         variant: "destructive",
       });
     }
@@ -116,8 +149,14 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
                       </>
                     )}
                   </div>
-                  <Button variant="ghost" size="sm" data-testid={`button-wishlist-${product.id}`}>
-                    <Heart className="h-4 w-4" />
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={handleWishlistToggle}
+                    disabled={isToggling}
+                    data-testid={`button-wishlist-${product.id}`}
+                  >
+                    <Heart className={`h-4 w-4 ${isInWishlist(product.id) ? 'fill-red-500 text-red-500' : ''}`} />
                   </Button>
                 </div>
                 
@@ -176,9 +215,11 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
             variant="ghost"
             size="sm"
             className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-background/80 hover:bg-background"
+            onClick={handleWishlistToggle}
+            disabled={isToggling}
             data-testid={`button-wishlist-${product.id}`}
           >
-            <Heart className="h-4 w-4" />
+            <Heart className={`h-4 w-4 ${isInWishlist(product.id) ? 'fill-red-500 text-red-500' : ''}`} />
           </Button>
         </div>
         
