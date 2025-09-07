@@ -154,7 +154,7 @@ export default function Checkout() {
             <div className="lg:col-span-2 space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <CardTitle className="flex items-center gap-2 text-lg font-semibold">
                     <ShoppingBag className="h-5 w-5" />
                     Order Summary
                   </CardTitle>
@@ -174,14 +174,14 @@ export default function Checkout() {
                             className="w-20 h-20 object-cover rounded-lg"
                           />
                           <div className="flex-1">
-                            <h3 className="font-semibold text-gray-900 dark:text-white line-clamp-2" data-testid={`text-product-name-${item.productId}`}>
+                            <h3 className="font-medium text-base text-gray-900 dark:text-white line-clamp-2" data-testid={`text-product-name-${item.productId}`}>
                               {item.product.productName}
                             </h3>
                             <div className="flex items-center gap-2 mt-2">
-                              <span className="text-sm text-gray-600 dark:text-gray-400">Qty:</span>
-                              <span className="font-medium" data-testid={`text-quantity-${item.productId}`}>{item.quantity}</span>
-                              <span className="text-sm text-gray-600 dark:text-gray-400">×</span>
-                              <span className="font-medium">₹{price.toFixed(2)}</span>
+                              <span className="text-sm text-gray-500 dark:text-gray-400">Qty:</span>
+                              <span className="font-medium text-sm" data-testid={`text-quantity-${item.productId}`}>{item.quantity}</span>
+                              <span className="text-sm text-gray-500 dark:text-gray-400">×</span>
+                              <span className="font-medium text-sm">₹{price.toFixed(2)}</span>
                             </div>
                           </div>
                           <div className="text-right">
@@ -202,7 +202,7 @@ export default function Checkout() {
             <div className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <CardTitle className="flex items-center gap-2 text-lg font-semibold">
                     <CreditCard className="h-5 w-5" />
                     Payment Summary
                   </CardTitle>
@@ -210,21 +210,21 @@ export default function Checkout() {
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600 dark:text-gray-400">Subtotal</span>
-                      <span className="font-medium">₹{calculateTotal()}</span>
+                      <span className="text-gray-500 dark:text-gray-400">Subtotal</span>
+                      <span className="font-medium text-gray-900 dark:text-white">₹{calculateTotal()}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600 dark:text-gray-400">Shipping</span>
-                      <span className="font-medium text-green-600">FREE</span>
+                      <span className="text-gray-500 dark:text-gray-400">Shipping</span>
+                      <span className="font-semibold text-green-600">FREE</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600 dark:text-gray-400">Tax</span>
-                      <span className="font-medium">₹0.00</span>
+                      <span className="text-gray-500 dark:text-gray-400">Tax</span>
+                      <span className="font-medium text-gray-900 dark:text-white">₹0.00</span>
                     </div>
                     <Separator />
-                    <div className="flex justify-between text-lg font-bold">
-                      <span>Total</span>
-                      <span className="text-2xl text-primary" data-testid="text-total-amount">₹{calculateTotal()}</span>
+                    <div className="flex justify-between items-center">
+                      <span className="text-base font-medium text-gray-700 dark:text-gray-300">Total</span>
+                      <span className="text-2xl font-bold text-gray-900 dark:text-white" data-testid="text-total-amount">₹{calculateTotal()}</span>
                     </div>
                   </div>
                   
@@ -270,8 +270,8 @@ export default function Checkout() {
                   <div className="flex items-start gap-3">
                     <Package className="h-5 w-5 text-green-600 mt-0.5" />
                     <div>
-                      <p className="font-medium text-sm">Free Delivery</p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                      <p className="font-semibold text-sm text-gray-900 dark:text-white">Free Delivery</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                         Estimated delivery in 3-5 business days
                       </p>
                     </div>
