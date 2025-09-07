@@ -1,10 +1,12 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { useLocation } from "wouter";
-import { ShoppingCart, Package, ArrowLeft } from "lucide-react";
+import { ShoppingCart, Package, ArrowLeft, CreditCard, ShoppingBag } from "lucide-react";
 import { Link } from "wouter";
+import { Separator } from "@/components/ui/separator";
 import jsPDF from "jspdf";
 import type { CartItem, Product } from "@shared/schema";
 
@@ -103,9 +105,10 @@ export default function Checkout() {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Loading checkout...</p>
         </div>
       </div>
     );
@@ -113,14 +116,18 @@ export default function Checkout() {
 
   if (cartItems.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto text-center">
-          <Package className="w-24 h-24 mx-auto text-gray-400 mb-4" />
-          <h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
-          <p className="text-gray-600 mb-8">Add some items to your cart to proceed with checkout</p>
-          <Link href="/">
-            <Button data-testid="button-continue-shopping">
-              <ShoppingCart className="w-4 h-4 mr-2" />
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="bg-white dark:bg-gray-800 rounded-full p-6 w-32 h-32 mx-auto mb-6 flex items-center justify-center">
+            <ShoppingCart className="w-16 h-16 text-gray-400" />
+          </div>
+          <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Your cart is empty</h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
+            Add some items to your cart to proceed with checkout
+          </p>
+          <Link href="/shop">
+            <Button size="lg" data-testid="button-continue-shopping">
+              <ShoppingBag className="w-5 h-5 mr-2" />
               Continue Shopping
             </Button>
           </Link>
@@ -130,76 +137,148 @@ export default function Checkout() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        <Link href="/cart">
-          <Button variant="ghost" className="mb-6" data-testid="button-back-to-cart">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Cart
-          </Button>
-        </Link>
-        
-        <h1 className="text-3xl font-bold mb-8">Checkout</h1>
-        
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto">
+          <Link href="/shop">
+            <Button variant="ghost" className="mb-6" data-testid="button-back-to-cart">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Shopping
+            </Button>
+          </Link>
           
-          <div className="space-y-4">
-            {cartItems.map((item) => {
-              const price = parseFloat(item.product.discountedPrice.replace(/[^\d.]/g, ''));
-              const total = price * item.quantity;
-              
-              return (
-                <div key={item.id} className="flex justify-between items-start py-4 border-b" data-testid={`checkout-item-${item.productId}`}>
-                  <div className="flex-1">
-                    <h3 className="font-medium" data-testid={`text-product-name-${item.productId}`}>{item.product.productName}</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      Quantity: <span data-testid={`text-quantity-${item.productId}`}>{item.quantity}</span> × ₹{price.toFixed(2)}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-semibold" data-testid={`text-item-total-${item.productId}`}>₹{total.toFixed(2)}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-white">Checkout</h1>
           
-          <div className="mt-6 pt-6 border-t">
-            <div className="flex justify-between items-center text-xl font-bold">
-              <span>Total Amount:</span>
-              <span data-testid="text-total-amount">₹{calculateTotal()}</span>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-          <h2 className="text-xl font-semibold mb-4">Payment</h2>
-          
-          <div className="space-y-4">
-            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-              <p className="text-sm text-blue-800 dark:text-blue-200">
-                This is a demo checkout. Clicking "Complete Order" will simulate a successful payment, 
-                generate an invoice PDF, and clear your cart.
-              </p>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Order Items */}
+            <div className="lg:col-span-2 space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <ShoppingBag className="h-5 w-5" />
+                    Order Summary
+                  </CardTitle>
+                  <CardDescription>Review your items before completing the purchase</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {cartItems.map((item) => {
+                    const price = parseFloat(item.product.discountedPrice.replace(/[^\d.]/g, ''));
+                    const total = price * item.quantity;
+                    
+                    return (
+                      <div key={item.id} data-testid={`checkout-item-${item.productId}`}>
+                        <div className="flex gap-4">
+                          <img
+                            src={item.product.imgLink || "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100"}
+                            alt={item.product.productName}
+                            className="w-20 h-20 object-cover rounded-lg"
+                          />
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-gray-900 dark:text-white line-clamp-2" data-testid={`text-product-name-${item.productId}`}>
+                              {item.product.productName}
+                            </h3>
+                            <div className="flex items-center gap-2 mt-2">
+                              <span className="text-sm text-gray-600 dark:text-gray-400">Qty:</span>
+                              <span className="font-medium" data-testid={`text-quantity-${item.productId}`}>{item.quantity}</span>
+                              <span className="text-sm text-gray-600 dark:text-gray-400">×</span>
+                              <span className="font-medium">₹{price.toFixed(2)}</span>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-lg font-bold text-gray-900 dark:text-white" data-testid={`text-item-total-${item.productId}`}>
+                              ₹{total.toFixed(2)}
+                            </p>
+                          </div>
+                        </div>
+                        {item !== cartItems[cartItems.length - 1] && <Separator className="mt-4" />}
+                      </div>
+                    );
+                  })}
+                </CardContent>
+              </Card>
             </div>
             
-            <Button 
-              className="w-full" 
-              size="lg"
-              onClick={() => checkoutMutation.mutate()}
-              disabled={checkoutMutation.isPending}
-              data-testid="button-complete-order"
-            >
-              {checkoutMutation.isPending ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Processing...
-                </>
-              ) : (
-                "Complete Order & Generate Invoice"
-              )}
-            </Button>
+            {/* Payment Summary */}
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <CreditCard className="h-5 w-5" />
+                    Payment Summary
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600 dark:text-gray-400">Subtotal</span>
+                      <span className="font-medium">₹{calculateTotal()}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600 dark:text-gray-400">Shipping</span>
+                      <span className="font-medium text-green-600">FREE</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600 dark:text-gray-400">Tax</span>
+                      <span className="font-medium">₹0.00</span>
+                    </div>
+                    <Separator />
+                    <div className="flex justify-between text-lg font-bold">
+                      <span>Total</span>
+                      <span className="text-2xl text-primary" data-testid="text-total-amount">₹{calculateTotal()}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 bg-blue-50 dark:bg-blue-950/50 rounded-lg border border-blue-200 dark:border-blue-800">
+                    <p className="text-sm text-blue-700 dark:text-blue-300">
+                      <strong>Demo Mode:</strong> This will simulate a successful payment and generate an invoice PDF.
+                    </p>
+                  </div>
+                  
+                  <Button 
+                    className="w-full" 
+                    size="lg"
+                    onClick={() => checkoutMutation.mutate()}
+                    disabled={checkoutMutation.isPending}
+                    data-testid="button-complete-order"
+                  >
+                    {checkoutMutation.isPending ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                        Processing Payment...
+                      </>
+                    ) : (
+                      <>
+                        <CreditCard className="w-4 h-4 mr-2" />
+                        Complete Order
+                      </>
+                    )}
+                  </Button>
+                  
+                  <div className="flex items-center justify-center gap-2 pt-2">
+                    <span className="text-xs text-gray-500">Secured by</span>
+                    <div className="flex gap-2">
+                      <div className="w-8 h-5 bg-gray-300 dark:bg-gray-600 rounded"></div>
+                      <div className="w-8 h-5 bg-gray-300 dark:bg-gray-600 rounded"></div>
+                      <div className="w-8 h-5 bg-gray-300 dark:bg-gray-600 rounded"></div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="flex items-start gap-3">
+                    <Package className="h-5 w-5 text-green-600 mt-0.5" />
+                    <div>
+                      <p className="font-medium text-sm">Free Delivery</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                        Estimated delivery in 3-5 business days
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </div>
