@@ -189,6 +189,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Semantic search proxy endpoint
+  app.post("/api/semantic-search", async (req, res) => {
+    try {
+      const { query, n_results = 20 } = req.body;
+      
+      if (!query) {
+        return res.status(400).json({ error: 'Query is required' });
+      }
+      
+      // Call the semantic search API from backend to avoid CORS
+      const response = await fetch('https://product-search.replit.app/search', {
+        method: 'POST',
+        headers: {
+          'accept': 'application/json',
+          'Authorization': 'Bearer *ULXrUUDkkjRheg3cjpQAcBbzGgffZBn!32ssr8JRW9VERcVmweQqGnYi!Y8jcPnG',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query,
+          n_results,
+        }),
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Semantic search API error:', errorText);
+        return res.status(response.status).json({ error: 'Semantic search failed' });
+      }
+      
+      const data = await response.json();
+      res.json(data);
+    } catch (error: any) {
+      console.error('Error in semantic search:', error);
+      res.status(500).json({ error: 'Failed to perform semantic search' });
+    }
+  });
+
   app.get("/api/products/by-ids", async (req, res) => {
     try {
       const { ids, category, sortBy, priceMin, priceMax, rating } = req.query;

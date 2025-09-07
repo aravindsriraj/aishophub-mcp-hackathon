@@ -11,8 +11,8 @@ interface ProductsResponse {
   };
 }
 
-const SEMANTIC_SEARCH_API = "https://product-search.replit.app/search";
-const API_TOKEN = "*ULXrUUDkkjRheg3cjpQAcBbzGgffZBn!32ssr8JRW9VERcVmweQqGnYi!Y8jcPnG";
+// Use backend proxy to avoid CORS issues
+const SEMANTIC_SEARCH_API = "/api/semantic-search";
 
 export function useProducts(
   page: number, 
@@ -30,12 +30,12 @@ export function useProducts(
       // Use semantic search if search query is provided
       if (search && search.trim()) {
         try {
-          // First, get product IDs from semantic search
+          console.log('Performing semantic search for:', search);
+          
+          // First, get product IDs from semantic search via backend proxy
           const semanticResponse = await fetch(SEMANTIC_SEARCH_API, {
             method: "POST",
             headers: {
-              "accept": "application/json",
-              "Authorization": `Bearer ${API_TOKEN}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
@@ -44,17 +44,26 @@ export function useProducts(
             }),
           });
 
+          console.log('Semantic search response status:', semanticResponse.status);
+          
           if (!semanticResponse.ok) {
+            const errorText = await semanticResponse.text();
+            console.error('Semantic search error response:', errorText);
             throw new Error("Semantic search failed");
           }
 
           const semanticData = await semanticResponse.json();
+          console.log('Semantic search data:', semanticData);
+          
           const semanticProducts = semanticData.products || [];
+          console.log('Found', semanticProducts.length, 'products from semantic search');
           
           // Extract product IDs from semantic search results
           const productIds = semanticProducts.map((p: any) => p.id);
+          console.log('Product IDs to fetch:', productIds);
           
           if (productIds.length === 0) {
+            console.log('No products found in semantic search');
             return {
               products: [],
               pagination: {
@@ -75,19 +84,29 @@ export function useProducts(
           if (priceMax) params.append('priceMax', priceMax);
           if (rating) params.append('rating', rating);
           
+          console.log('Fetching products with params:', params.toString());
           const productsResponse = await fetch(`/api/products/by-ids?${params}`);
+          
+          console.log('Products fetch response status:', productsResponse.status);
           if (!productsResponse.ok) {
+            const errorText = await productsResponse.text();
+            console.error('Failed to fetch products:', errorText);
             throw new Error('Failed to fetch products by IDs');
           }
           
           const productsData = await productsResponse.json();
+          console.log('Fetched products data:', productsData);
+          
           let products = productsData.products || productsData || [];
+          console.log('Products from database:', products.length);
           
           // Maintain the order from semantic search results
           const productMap = new Map(products.map((p: Product) => [p.id, p]));
           const orderedProducts = productIds
             .map((id: string) => productMap.get(id))
             .filter((p: Product | undefined): p is Product => p !== undefined);
+          
+          console.log('Ordered products count:', orderedProducts.length);
           
           // Apply additional filters if provided
           let filteredProducts = orderedProducts;
