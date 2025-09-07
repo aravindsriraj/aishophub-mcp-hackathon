@@ -68,18 +68,18 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
                 placeholder="Search products with AI..."
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
-                className="w-full pl-10 pr-20"
+                className="w-full pl-10 pr-28 bg-background/95 border-input focus:border-purple-500 transition-colors"
                 data-testid="input-search-desktop"
               />
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Button
                 type="submit"
                 size="sm"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group ai-search-shimmer"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 ai-search-button px-4 py-1.5 rounded-md flex items-center justify-center min-w-[100px]"
                 data-testid="button-search-desktop"
               >
-                <Sparkles className="h-3 w-3 mr-1 sparkle-animation" />
-                AI Search
+                <Sparkles className="h-4 w-4 mr-1.5 text-white sparkle-icon" />
+                <span className="text-white font-medium">AI Search</span>
               </Button>
             </form>
           </div>
@@ -173,11 +173,11 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
           <Button
             type="submit"
             size="sm"
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300 group px-2 py-1 text-xs ai-search-shimmer"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 ai-search-button px-3 py-1 rounded-md flex items-center justify-center text-xs"
             data-testid="button-search-mobile"
           >
-            <Sparkles className="h-3 w-3 mr-1 sparkle-animation" />
-            AI Search
+            <Sparkles className="h-3 w-3 mr-1 text-white sparkle-icon" />
+            <span className="text-white font-medium">AI Search</span>
           </Button>
         </form>
       </div>
