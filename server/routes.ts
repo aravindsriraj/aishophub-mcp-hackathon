@@ -275,8 +275,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Clear cart after successful order
       await storage.clearCart(req.user.id);
       
+      // Return order with items
+      const orderWithItems = {
+        ...order,
+        items: orderItemsData
+      };
+      
       res.json({ 
-        order,
+        order: orderWithItems,
         message: 'Order placed successfully'
       });
     } catch (error: any) {

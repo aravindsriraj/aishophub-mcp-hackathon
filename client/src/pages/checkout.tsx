@@ -20,9 +20,24 @@ export default function Checkout() {
 
   const checkoutMutation = useMutation({
     mutationFn: async () => {
-      return apiRequest("POST", "/api/checkout");
+      const response = await apiRequest("POST", "/api/checkout");
+      return response.json();
     },
     onSuccess: async (data) => {
+      if (!data || !data.order) {
+        toast({
+          title: "Order Placed",
+          description: "Your order has been placed successfully!",
+        });
+        
+        // Clear cart and redirect
+        await queryClient.invalidateQueries({ queryKey: ["/api/cart"] });
+        setTimeout(() => {
+          setLocation("/orders");
+        }, 2000);
+        return;
+      }
+      
       // Generate PDF invoice
       const pdf = new jsPDF();
       
@@ -44,28 +59,54 @@ export default function Checkout() {
       
       // Items
       let yPosition = 90;
-      cartItems.forEach((item) => {
-        const price = parseFloat(item.product.discountedPrice.replace(/[^\d.]/g, ''));
-        const total = price * item.quantity;
-        
-        // Truncate long product names
-        const productName = item.product.productName.length > 50 
-          ? item.product.productName.substring(0, 50) + "..." 
-          : item.product.productName;
-        
-        pdf.text(productName, 20, yPosition);
-        pdf.text(item.quantity.toString(), 120, yPosition);
-        pdf.text(`₹${price.toFixed(2)}`, 150, yPosition);
-        pdf.text(`₹${total.toFixed(2)}`, 180, yPosition);
-        
-        yPosition += 10;
-        
-        // Add new page if needed
-        if (yPosition > 270) {
-          pdf.addPage();
-          yPosition = 20;
-        }
-      });
+      if (data.order.items && data.order.items.length > 0) {
+        data.order.items.forEach((item: any) => {
+          const price = parseFloat(item.price.replace(/[^\d.]/g, ''));
+          const total = parseFloat(item.totalPrice.replace(/[^\d.]/g, ''));
+          
+          // Truncate long product names
+          const productName = item.productName.length > 50 
+            ? item.productName.substring(0, 50) + "..." 
+            : item.productName;
+          
+          pdf.text(productName, 20, yPosition);
+          pdf.text(item.quantity.toString(), 120, yPosition);
+          pdf.text(`₹${price.toFixed(2)}`, 150, yPosition);
+          pdf.text(`₹${total.toFixed(2)}`, 180, yPosition);
+          
+          yPosition += 10;
+          
+          // Add new page if needed
+          if (yPosition > 270) {
+            pdf.addPage();
+            yPosition = 20;
+          }
+        });
+      } else if (cartItems.length > 0) {
+        // Fallback to cart items if order items not available
+        cartItems.forEach((item) => {
+          const price = parseFloat(item.product.discountedPrice.replace(/[^\d.]/g, ''));
+          const total = price * item.quantity;
+          
+          // Truncate long product names
+          const productName = item.product.productName.length > 50 
+            ? item.product.productName.substring(0, 50) + "..." 
+            : item.product.productName;
+          
+          pdf.text(productName, 20, yPosition);
+          pdf.text(item.quantity.toString(), 120, yPosition);
+          pdf.text(`₹${price.toFixed(2)}`, 150, yPosition);
+          pdf.text(`₹${total.toFixed(2)}`, 180, yPosition);
+          
+          yPosition += 10;
+          
+          // Add new page if needed
+          if (yPosition > 270) {
+            pdf.addPage();
+            yPosition = 20;
+          }
+        });
+      }
       
       // Total
       pdf.setFontSize(12);
