@@ -253,15 +253,6 @@ export default function Checkout() {
                       </>
                     )}
                   </Button>
-                  
-                  <div className="flex items-center justify-center gap-2 pt-2">
-                    <span className="text-xs text-gray-600 dark:text-gray-400">Secured by</span>
-                    <div className="flex gap-2">
-                      <div className="w-8 h-5 bg-gray-300 dark:bg-gray-600 rounded"></div>
-                      <div className="w-8 h-5 bg-gray-300 dark:bg-gray-600 rounded"></div>
-                      <div className="w-8 h-5 bg-gray-300 dark:bg-gray-600 rounded"></div>
-                    </div>
-                  </div>
                 </CardContent>
               </Card>
               
