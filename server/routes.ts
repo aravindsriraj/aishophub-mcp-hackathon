@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { signInSchema, signUpSchema, insertCartItemSchema } from "@shared/schema";
+import { signInSchema, signUpSchema, insertCartItemSchema, insertWishlistItemSchema } from "@shared/schema";
 import bcrypt from "bcrypt";
 
 // Middleware to check authentication
@@ -199,6 +199,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ success: true });
     } catch (error: any) {
       res.status(500).json({ error: 'Failed to clear cart' });
+    }
+  });
+
+  // Wishlist routes
+  app.get("/api/wishlist", requireAuth, async (req: any, res) => {
+    try {
+      const wishlistItems = await storage.getWishlistItems(req.user.id);
+      res.json(wishlistItems);
+    } catch (error: any) {
+      res.status(500).json({ error: 'Failed to fetch wishlist' });
+    }
+  });
+
+  app.post("/api/wishlist", requireAuth, async (req: any, res) => {
+    try {
+      const data = insertWishlistItemSchema.parse(req.body);
+      const wishlistItem = await storage.addToWishlist(req.user.id, data);
+      res.json(wishlistItem);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message || 'Failed to add to wishlist' });
+    }
+  });
+
+  app.delete("/api/wishlist/:productId", requireAuth, async (req: any, res) => {
+    try {
+      await storage.removeFromWishlist(req.user.id, req.params.productId);
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: 'Failed to remove from wishlist' });
+    }
+  });
+
+  app.get("/api/wishlist/check/:productId", requireAuth, async (req: any, res) => {
+    try {
+      const isInWishlist = await storage.isInWishlist(req.user.id, req.params.productId);
+      res.json({ isInWishlist });
+    } catch (error: any) {
+      res.status(500).json({ error: 'Failed to check wishlist status' });
     }
   });
 
