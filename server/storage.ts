@@ -124,8 +124,10 @@ export class DatabaseStorage implements IStorage {
       productsQuery = productsQuery.orderBy(asc(sql`CAST(REPLACE(REPLACE(${products.discountedPrice}, '₹', ''), ',', '') AS NUMERIC)`));
     } else if (sortBy === 'price-high') {
       productsQuery = productsQuery.orderBy(desc(sql`CAST(REPLACE(REPLACE(${products.discountedPrice}, '₹', ''), ',', '') AS NUMERIC)`));
-    } else if (sortBy === 'rating') {
+    } else if (sortBy === 'rating' || sortBy === 'rating-high') {
       productsQuery = productsQuery.orderBy(desc(products.rating));
+    } else if (sortBy === 'rating-low') {
+      productsQuery = productsQuery.orderBy(asc(products.rating));
     } else {
       productsQuery = productsQuery.orderBy(desc(products.id));
     }

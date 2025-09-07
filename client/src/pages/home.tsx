@@ -117,7 +117,8 @@ export default function Home() {
                   <SelectItem value="relevance">Sort by Relevance</SelectItem>
                   <SelectItem value="price-low">Price: Low to High</SelectItem>
                   <SelectItem value="price-high">Price: High to Low</SelectItem>
-                  <SelectItem value="rating">Rating: High to Low</SelectItem>
+                  <SelectItem value="rating-high">Rating: High to Low</SelectItem>
+                  <SelectItem value="rating-low">Rating: Low to High</SelectItem>
                   <SelectItem value="newest">Newest Arrivals</SelectItem>
                 </SelectContent>
               </Select>
