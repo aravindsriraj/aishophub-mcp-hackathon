@@ -73,6 +73,11 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
     if (imageError || !product.imgLink) {
       return "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300";
     }
+    // Handle both external URLs and local generated images
+    if (product.imgLink.startsWith('http://') || product.imgLink.startsWith('https://')) {
+      return product.imgLink;
+    }
+    // For local generated images
     return product.imgLink;
   };
 

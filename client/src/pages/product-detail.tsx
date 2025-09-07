@@ -17,6 +17,7 @@ export default function ProductDetail() {
   const { id } = useParams();
   const [showCart, setShowCart] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const { addToCart, isLoading: cartLoading } = useCart();
   const { user } = useAuth();
   const { toast } = useToast();
@@ -131,9 +132,10 @@ export default function ProductDetail() {
               <Card>
                 <CardContent className="p-6">
                   <img
-                    src={product.imgLink || "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=400"}
+                    src={(imageError || !product.imgLink) ? "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=400" : product.imgLink}
                     alt={product.productName}
                     className="w-full h-96 object-cover rounded-lg"
+                    onError={() => setImageError(true)}
                     data-testid="img-product"
                   />
                 </CardContent>
