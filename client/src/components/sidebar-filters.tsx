@@ -77,8 +77,8 @@ export function SidebarFilters({
       {/* Categories */}
       <div>
         <h3 className="text-sm font-medium mb-3 text-muted-foreground">Categories</h3>
-        <div className="space-y-2 max-h-48 overflow-y-auto">
-          {categories?.slice(0, 10).map((category: string) => (
+        <div className="space-y-2 max-h-64 overflow-y-auto">
+          {categories?.map((category: string) => (
             <div key={category} className="flex items-center space-x-2">
               <Checkbox
                 id={`category-${category}`}
@@ -87,7 +87,7 @@ export function SidebarFilters({
                 data-testid={`checkbox-category-${category}`}
               />
               <Label htmlFor={`category-${category}`} className="text-sm cursor-pointer truncate" title={category}>
-                {category.split('|').pop()?.replace(/([A-Z])/g, ' $1').trim() || category}
+                {category.replace(/&/g, ' & ').replace(/([A-Z])/g, ' $1').trim().replace(/\s+/g, ' ')}
               </Label>
             </div>
           ))}
