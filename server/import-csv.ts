@@ -26,9 +26,45 @@ interface CSVRow {
   product_link: string;
 }
 
+function parseCSVLine(line: string): string[] {
+  const result: string[] = [];
+  let current = '';
+  let inQuotes = false;
+  let i = 0;
+  
+  while (i < line.length) {
+    const char = line[i];
+    
+    if (char === '"') {
+      if (inQuotes && i + 1 < line.length && line[i + 1] === '"') {
+        // Double quote inside quoted field
+        current += '"';
+        i += 2;
+      } else {
+        // Toggle quote state
+        inQuotes = !inQuotes;
+        i++;
+      }
+    } else if (char === ',' && !inQuotes) {
+      // Field separator
+      result.push(current);
+      current = '';
+      i++;
+    } else {
+      current += char;
+      i++;
+    }
+  }
+  
+  // Add the last field
+  result.push(current);
+  
+  return result;
+}
+
 function parseCSV(csvContent: string): CSVRow[] {
   const lines = csvContent.split('\n');
-  const headers = lines[0].split(',');
+  const headers = parseCSVLine(lines[0]);
   
   const rows: CSVRow[] = [];
   const processedProducts = new Set<string>();
@@ -37,25 +73,9 @@ function parseCSV(csvContent: string): CSVRow[] {
     const line = lines[i].trim();
     if (!line) continue;
     
-    // Parse CSV line handling quotes and commas
-    const values: string[] = [];
-    let current = '';
-    let inQuotes = false;
+    const values = parseCSVLine(line);
     
-    for (let j = 0; j < line.length; j++) {
-      const char = line[j];
-      if (char === '"') {
-        inQuotes = !inQuotes;
-      } else if (char === ',' && !inQuotes) {
-        values.push(current.trim());
-        current = '';
-      } else {
-        current += char;
-      }
-    }
-    values.push(current.trim());
-    
-    if (values.length >= headers.length) {
+    if (values.length >= 16) {
       const productId = values[0];
       
       // Only process each product once (CSV has duplicate products with different reviews)
