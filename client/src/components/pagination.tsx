@@ -61,10 +61,10 @@ export function Pagination({ currentPage, totalPages, total, limit, onPageChange
         <div className="flex items-center space-x-1">
           {getVisiblePages().map((page, index) => (
             page === '...' ? (
-              <span key={index} className="px-2 text-muted-foreground">...</span>
+              <span key={`ellipsis-${index}`} className="px-2 text-muted-foreground">...</span>
             ) : (
               <Button
-                key={page}
+                key={`page-${page}`}
                 variant={currentPage === page ? "default" : "outline"}
                 size="sm"
                 onClick={() => onPageChange(page as number)}

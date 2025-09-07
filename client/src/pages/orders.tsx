@@ -21,7 +21,7 @@ export default function Orders() {
     
     pdf.setFontSize(12);
     pdf.text(`Order ID: ${order.id}`, 20, 40);
-    pdf.text(`Date: ${new Date(order.createdAt).toLocaleDateString()}`, 20, 50);
+    pdf.text(`Date: ${order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'N/A'}`, 20, 50);
     pdf.text(`Status: ${order.status}`, 20, 60);
     
     // Items table header
@@ -111,11 +111,11 @@ export default function Orders() {
                   <div>
                     <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Order #{order.id.slice(0, 8)}</h2>
                     <p className="text-sm text-gray-600 dark:text-gray-300" data-testid={`text-order-date-${order.id}`}>
-                    Placed on {new Date(order.createdAt).toLocaleDateString('en-US', { 
+                    Placed on {order.createdAt ? new Date(order.createdAt).toLocaleDateString('en-US', { 
                       year: 'numeric', 
                       month: 'long', 
                       day: 'numeric' 
-                    })}
+                    }) : 'N/A'}
                     </p>
                     <p className="text-sm mt-1">
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300">
@@ -161,6 +161,7 @@ export default function Orders() {
           ))}
         </div>
       </div>
+    </div>
     </div>
   );
 }
