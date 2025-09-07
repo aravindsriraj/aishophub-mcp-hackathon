@@ -405,7 +405,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           id: item.productId,
           name: item.product.productName,
           price: item.product.discountedPrice,
-          originalPrice: item.product.price,
+          originalPrice: item.product.actualPrice,
           category: item.product.category,
           addedAt: item.createdAt
         }))
@@ -445,7 +445,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         cartItem: {
           productId: cartItem.productId,
           quantity: cartItem.quantity,
-          product: cartItem.product
+          product: product
         }
       });
     } catch (error: any) {
