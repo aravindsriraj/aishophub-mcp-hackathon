@@ -20,7 +20,7 @@ import {
   type InsertOrderItem
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, ilike, and, desc, asc, count, sql } from "drizzle-orm";
+import { eq, ilike, and, desc, asc, count, sql, inArray } from "drizzle-orm";
 import bcrypt from "bcrypt";
 import { randomUUID } from "crypto";
 
@@ -42,6 +42,7 @@ export interface IStorage {
     rating?: string
   ): Promise<{ products: Product[], total: number }>;
   getProduct(id: string): Promise<Product | undefined>;
+  getProductsByIds(ids: string[]): Promise<Product[]>;
   getCategories(): Promise<string[]>;
   
   // Cart methods
@@ -168,6 +169,14 @@ export class DatabaseStorage implements IStorage {
   async getProduct(id: string): Promise<Product | undefined> {
     const [product] = await db.select().from(products).where(eq(products.id, id));
     return product || undefined;
+  }
+
+  async getProductsByIds(ids: string[]): Promise<Product[]> {
+    if (ids.length === 0) {
+      return [];
+    }
+    const result = await db.select().from(products).where(inArray(products.id, ids));
+    return result;
   }
 
   async getCategories(): Promise<string[]> {

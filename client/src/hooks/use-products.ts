@@ -30,7 +30,8 @@ export function useProducts(
       // Use semantic search if search query is provided
       if (search && search.trim()) {
         try {
-          const response = await fetch(SEMANTIC_SEARCH_API, {
+          // First, get product IDs from semantic search
+          const semanticResponse = await fetch(SEMANTIC_SEARCH_API, {
             method: "POST",
             headers: {
               "accept": "application/json",
@@ -39,21 +40,57 @@ export function useProducts(
             },
             body: JSON.stringify({
               query: search,
-              n_results: limit,
+              n_results: 100, // Get more results to apply filters
             }),
           });
 
-          if (!response.ok) {
+          if (!semanticResponse.ok) {
             throw new Error("Semantic search failed");
           }
 
-          const data = await response.json();
+          const semanticData = await semanticResponse.json();
+          const semanticProducts = semanticData.products || [];
           
-          // Format response to match our interface
-          const products = data.results || data.products || data;
+          // Extract product IDs from semantic search results
+          const productIds = semanticProducts.map((p: any) => p.id);
+          
+          if (productIds.length === 0) {
+            return {
+              products: [],
+              pagination: {
+                page,
+                limit,
+                total: 0,
+                totalPages: 0,
+              },
+            };
+          }
+          
+          // Fetch actual products from our database using the IDs
+          const params = new URLSearchParams();
+          params.append('ids', productIds.join(','));
+          if (category) params.append('category', category);
+          if (sortBy) params.append('sortBy', sortBy);
+          if (priceMin) params.append('priceMin', priceMin);
+          if (priceMax) params.append('priceMax', priceMax);
+          if (rating) params.append('rating', rating);
+          
+          const productsResponse = await fetch(`/api/products/by-ids?${params}`);
+          if (!productsResponse.ok) {
+            throw new Error('Failed to fetch products by IDs');
+          }
+          
+          const productsData = await productsResponse.json();
+          let products = productsData.products || productsData || [];
+          
+          // Maintain the order from semantic search results
+          const productMap = new Map(products.map((p: Product) => [p.id, p]));
+          const orderedProducts = productIds
+            .map((id: string) => productMap.get(id))
+            .filter((p: Product | undefined): p is Product => p !== undefined);
           
           // Apply additional filters if provided
-          let filteredProducts = Array.isArray(products) ? products : [];
+          let filteredProducts = orderedProducts;
           
           if (category) {
             filteredProducts = filteredProducts.filter((p: Product) => p.category === category);
@@ -75,7 +112,7 @@ export function useProducts(
             });
           }
           
-          // Apply sorting
+          // Apply sorting if specified (overrides semantic search order)
           if (sortBy) {
             filteredProducts.sort((a: Product, b: Product) => {
               switch (sortBy) {

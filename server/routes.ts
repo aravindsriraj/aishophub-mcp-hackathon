@@ -189,6 +189,81 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/products/by-ids", async (req, res) => {
+    try {
+      const { ids, category, sortBy, priceMin, priceMax, rating } = req.query;
+      
+      if (!ids || typeof ids !== 'string') {
+        return res.status(400).json({ error: 'Product IDs are required' });
+      }
+      
+      const productIds = ids.split(',').filter(id => id.trim());
+      
+      if (productIds.length === 0) {
+        return res.json({ products: [] });
+      }
+      
+      // Fetch products by IDs
+      const products = await storage.getProductsByIds(productIds);
+      
+      // Apply filters
+      let filteredProducts = products;
+      
+      if (category && typeof category === 'string') {
+        filteredProducts = filteredProducts.filter(p => p.category === category);
+      }
+      
+      if ((priceMin || priceMax) && (typeof priceMin === 'string' || typeof priceMax === 'string')) {
+        const min = priceMin ? parseInt(priceMin) : 0;
+        const max = priceMax ? parseInt(priceMax) : Number.MAX_SAFE_INTEGER;
+        filteredProducts = filteredProducts.filter(p => {
+          const price = parseInt(p.discountedPrice?.replace(/[^0-9]/g, '') || '0');
+          return price >= min && price <= max;
+        });
+      }
+      
+      if (rating && typeof rating === 'string') {
+        const minRating = parseFloat(rating);
+        filteredProducts = filteredProducts.filter(p => {
+          const productRating = parseFloat(p.rating || '0');
+          return productRating >= minRating;
+        });
+      }
+      
+      // Apply sorting
+      if (sortBy && typeof sortBy === 'string') {
+        filteredProducts.sort((a, b) => {
+          switch (sortBy) {
+            case 'price_asc':
+              return parseInt(a.discountedPrice?.replace(/[^0-9]/g, '') || '0') - 
+                     parseInt(b.discountedPrice?.replace(/[^0-9]/g, '') || '0');
+            case 'price_desc':
+              return parseInt(b.discountedPrice?.replace(/[^0-9]/g, '') || '0') - 
+                     parseInt(a.discountedPrice?.replace(/[^0-9]/g, '') || '0');
+            case 'rating':
+              return parseFloat(b.rating || '0') - parseFloat(a.rating || '0');
+            default:
+              // Maintain original order from IDs
+              return 0;
+          }
+        });
+      } else {
+        // Maintain the order of the input IDs
+        const idOrder = new Map(productIds.map((id, index) => [id, index]));
+        filteredProducts.sort((a, b) => {
+          const aOrder = idOrder.get(a.id) ?? Number.MAX_SAFE_INTEGER;
+          const bOrder = idOrder.get(b.id) ?? Number.MAX_SAFE_INTEGER;
+          return aOrder - bOrder;
+        });
+      }
+      
+      res.json({ products: filteredProducts });
+    } catch (error: any) {
+      console.error('Error fetching products by IDs:', error);
+      res.status(500).json({ error: 'Failed to fetch products' });
+    }
+  });
+
   app.get("/api/products/:id", async (req, res) => {
     try {
       const product = await storage.getProduct(req.params.id);
