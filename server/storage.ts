@@ -86,6 +86,7 @@ export class DatabaseStorage implements IStorage {
     }
     
     if (category) {
+      // Match the category segment anywhere in the hierarchical category string
       const categoryCondition = ilike(products.category, `%${category}%`);
       conditions.push(categoryCondition);
     }
@@ -151,10 +152,26 @@ export class DatabaseStorage implements IStorage {
   async getCategories(): Promise<string[]> {
     const result = await db
       .selectDistinct({ category: products.category })
-      .from(products)
-      .orderBy(asc(products.category));
+      .from(products);
     
-    return result.map(row => row.category);
+    // Extract all unique category segments from hierarchical categories
+    const uniqueCategories = new Set<string>();
+    
+    result.forEach(row => {
+      if (row.category) {
+        // Split by '|' to get individual category segments
+        const segments = row.category.split('|');
+        segments.forEach(segment => {
+          const trimmed = segment.trim();
+          if (trimmed) {
+            uniqueCategories.add(trimmed);
+          }
+        });
+      }
+    });
+    
+    // Convert to array and sort
+    return Array.from(uniqueCategories).sort();
   }
 
   async getCartItems(userId: string): Promise<(CartItem & { product: Product })[]> {
