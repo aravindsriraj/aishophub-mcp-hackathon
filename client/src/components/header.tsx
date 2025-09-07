@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ShoppingBag, Search, ShoppingCart, User, Moon, Sun, LogOut, Heart, UserCircle, Package, Settings } from "lucide-react";
+import { ShoppingBag, Search, ShoppingCart, User, Moon, Sun, LogOut, Heart, UserCircle, Package, Settings, Sparkles } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
 import { useTheme } from "@/components/theme-provider";
@@ -65,7 +65,7 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
             <form onSubmit={handleSearch} className="relative w-full">
               <Input
                 type="text"
-                placeholder="Search products..."
+                placeholder="Search products with AI..."
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 className="w-full pl-10 pr-20"
@@ -75,10 +75,11 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
               <Button
                 type="submit"
                 size="sm"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 group"
                 data-testid="button-search-desktop"
               >
-                Search
+                <Sparkles className="h-3 w-3 mr-1 group-hover:animate-pulse" />
+                AI Search
               </Button>
             </form>
           </div>
@@ -162,13 +163,22 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
         <form onSubmit={handleSearch} className="relative">
           <Input
             type="text"
-            placeholder="Search products..."
+            placeholder="Search products with AI..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            className="w-full pl-10"
+            className="w-full pl-10 pr-24"
             data-testid="input-search-mobile"
           />
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Button
+            type="submit"
+            size="sm"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200 group px-2 py-1 text-xs"
+            data-testid="button-search-mobile"
+          >
+            <Sparkles className="h-3 w-3 mr-1 group-hover:animate-pulse" />
+            AI Search
+          </Button>
         </form>
       </div>
     </header>
