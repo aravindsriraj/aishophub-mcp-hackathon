@@ -131,9 +131,11 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
                       Wishlist
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem data-testid="menu-orders">
-                    <Package className="h-4 w-4 mr-2" />
-                    Orders
+                  <DropdownMenuItem asChild data-testid="menu-orders">
+                    <Link href="/orders">
+                      <Package className="h-4 w-4 mr-2" />
+                      Orders
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem data-testid="menu-settings">
                     <Settings className="h-4 w-4 mr-2" />
