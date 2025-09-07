@@ -240,6 +240,96 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Order routes
+  app.post("/api/checkout", requireAuth, async (req: any, res) => {
+    try {
+      // Get user's cart items
+      const cartItems = await storage.getCartItems(req.user.id);
+      
+      if (cartItems.length === 0) {
+        return res.status(400).json({ error: 'Cart is empty' });
+      }
+      
+      // Calculate total amount
+      const totalAmount = cartItems.reduce((total, item) => {
+        const price = parseFloat(item.product.discountedPrice.replace(/[^\d.]/g, ''));
+        return total + (price * item.quantity);
+      }, 0).toFixed(2);
+      
+      // Create order items
+      const orderItemsData = cartItems.map(item => ({
+        productId: item.productId,
+        productName: item.product.productName,
+        price: item.product.discountedPrice,
+        quantity: item.quantity,
+        totalPrice: (parseFloat(item.product.discountedPrice.replace(/[^\d.]/g, '')) * item.quantity).toFixed(2)
+      }));
+      
+      // Create order
+      const order = await storage.createOrder(
+        req.user.id,
+        { totalAmount, status: 'completed' },
+        orderItemsData
+      );
+      
+      // Clear cart after successful order
+      await storage.clearCart(req.user.id);
+      
+      res.json({ 
+        order,
+        message: 'Order placed successfully'
+      });
+    } catch (error: any) {
+      console.error('Checkout error:', error);
+      res.status(500).json({ error: 'Failed to process checkout' });
+    }
+  });
+
+  app.get("/api/orders", requireAuth, async (req: any, res) => {
+    try {
+      const orders = await storage.getOrders(req.user.id);
+      res.json(orders);
+    } catch (error: any) {
+      res.status(500).json({ error: 'Failed to fetch orders' });
+    }
+  });
+
+  app.get("/api/orders/:orderId", requireAuth, async (req: any, res) => {
+    try {
+      const order = await storage.getOrder(req.params.orderId);
+      
+      if (!order) {
+        return res.status(404).json({ error: 'Order not found' });
+      }
+      
+      // Check if order belongs to user
+      if (order.userId !== req.user.id) {
+        return res.status(403).json({ error: 'Unauthorized' });
+      }
+      
+      res.json(order);
+    } catch (error: any) {
+      res.status(500).json({ error: 'Failed to fetch order' });
+    }
+  });
+
+  app.post("/api/orders/:orderId/invoice", requireAuth, async (req: any, res) => {
+    try {
+      const { invoiceUrl } = req.body;
+      
+      if (!invoiceUrl) {
+        return res.status(400).json({ error: 'Invoice URL is required' });
+      }
+      
+      // Update order with invoice URL
+      await storage.updateOrderInvoiceUrl(req.params.orderId, invoiceUrl);
+      
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: 'Failed to update invoice URL' });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
