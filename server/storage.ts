@@ -3,12 +3,15 @@ import {
   products, 
   cartItems, 
   sessions,
+  wishlistItems,
   type User, 
   type InsertUser, 
   type Product, 
   type CartItem, 
   type InsertCartItem,
-  type Session 
+  type Session,
+  type WishlistItem,
+  type InsertWishlistItem
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, ilike, and, desc, asc, count, sql } from "drizzle-orm";
@@ -46,6 +49,12 @@ export interface IStorage {
   createSession(userId: string): Promise<Session>;
   getSession(token: string): Promise<Session | undefined>;
   deleteSession(token: string): Promise<void>;
+  
+  // Wishlist methods
+  getWishlistItems(userId: string): Promise<(WishlistItem & { product: Product })[]>;
+  addToWishlist(userId: string, item: InsertWishlistItem): Promise<WishlistItem>;
+  removeFromWishlist(userId: string, productId: string): Promise<void>;
+  isInWishlist(userId: string, productId: string): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -260,6 +269,54 @@ export class DatabaseStorage implements IStorage {
 
   async deleteSession(token: string): Promise<void> {
     await db.delete(sessions).where(eq(sessions.token, token));
+  }
+
+  async getWishlistItems(userId: string): Promise<(WishlistItem & { product: Product })[]> {
+    const result = await db
+      .select()
+      .from(wishlistItems)
+      .innerJoin(products, eq(wishlistItems.productId, products.id))
+      .where(eq(wishlistItems.userId, userId))
+      .orderBy(desc(wishlistItems.createdAt));
+    
+    return result.map(row => ({
+      ...row.wishlist_items,
+      product: row.products
+    }));
+  }
+
+  async addToWishlist(userId: string, item: InsertWishlistItem): Promise<WishlistItem> {
+    // Check if item already exists in wishlist
+    const [existingItem] = await db
+      .select()
+      .from(wishlistItems)
+      .where(and(eq(wishlistItems.userId, userId), eq(wishlistItems.productId, item.productId)));
+    
+    if (existingItem) {
+      return existingItem;
+    }
+    
+    const [newItem] = await db
+      .insert(wishlistItems)
+      .values({ ...item, userId })
+      .returning();
+    
+    return newItem;
+  }
+
+  async removeFromWishlist(userId: string, productId: string): Promise<void> {
+    await db
+      .delete(wishlistItems)
+      .where(and(eq(wishlistItems.userId, userId), eq(wishlistItems.productId, productId)));
+  }
+
+  async isInWishlist(userId: string, productId: string): Promise<boolean> {
+    const [item] = await db
+      .select()
+      .from(wishlistItems)
+      .where(and(eq(wishlistItems.userId, userId), eq(wishlistItems.productId, productId)));
+    
+    return !!item;
   }
 }
 
