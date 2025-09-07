@@ -108,8 +108,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const search = req.query.search as string;
       const category = req.query.category as string;
       const sortBy = req.query.sortBy as string;
+      const priceMin = req.query.priceMin as string;
+      const priceMax = req.query.priceMax as string;
+      const rating = req.query.rating as string;
       
-      const result = await storage.getProducts(page, limit, search, category, sortBy);
+      const result = await storage.getProducts(page, limit, search, category, sortBy, priceMin, priceMax, rating);
       
       res.json({
         products: result.products,

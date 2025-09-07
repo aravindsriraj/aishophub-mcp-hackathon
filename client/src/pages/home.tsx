@@ -21,8 +21,10 @@ export default function Home() {
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
+  const [priceRange, setPriceRange] = useState({ min: "", max: "" });
+  const [rating, setRating] = useState("");
 
-  const { data: productsData, isLoading } = useProducts(page, 20, search, category, sortBy);
+  const { data: productsData, isLoading } = useProducts(page, 20, search, category, sortBy, priceRange.min, priceRange.max, rating);
   const { user } = useAuth();
 
   const handleSearch = (value: string) => {
@@ -40,10 +42,22 @@ export default function Home() {
     setPage(1);
   };
 
+  const handlePriceFilter = (min: string, max: string) => {
+    setPriceRange({ min, max });
+    setPage(1);
+  };
+
+  const handleRatingFilter = (value: string) => {
+    setRating(value);
+    setPage(1);
+  };
+
   const clearFilters = () => {
     setSearch("");
     setCategory("");
     setSortBy("relevance");
+    setPriceRange({ min: "", max: "" });
+    setRating("");
     setPage(1);
   };
 
@@ -59,8 +73,12 @@ export default function Home() {
       <div className="flex min-h-screen">
         <SidebarFilters
           onCategoryChange={handleCategoryFilter}
+          onPriceChange={handlePriceFilter}
+          onRatingChange={handleRatingFilter}
           onClearFilters={clearFilters}
           selectedCategory={category}
+          selectedRating={rating}
+          priceRange={priceRange}
           isOpen={showMobileFilters}
           onClose={() => setShowMobileFilters(false)}
         />

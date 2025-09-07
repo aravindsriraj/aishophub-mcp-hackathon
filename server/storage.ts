@@ -22,7 +22,16 @@ export interface IStorage {
   createUser(user: InsertUser): Promise<User>;
   
   // Product methods
-  getProducts(page: number, limit: number, search?: string, category?: string, sortBy?: string): Promise<{ products: Product[], total: number }>;
+  getProducts(
+    page: number, 
+    limit: number, 
+    search?: string, 
+    category?: string, 
+    sortBy?: string,
+    priceMin?: string,
+    priceMax?: string,
+    rating?: string
+  ): Promise<{ products: Product[], total: number }>;
   getProduct(id: string): Promise<Product | undefined>;
   getCategories(): Promise<string[]>;
   
@@ -59,7 +68,16 @@ export class DatabaseStorage implements IStorage {
     return user;
   }
 
-  async getProducts(page: number, limit: number, search?: string, category?: string, sortBy?: string): Promise<{ products: Product[], total: number }> {
+  async getProducts(
+    page: number, 
+    limit: number, 
+    search?: string, 
+    category?: string, 
+    sortBy?: string,
+    priceMin?: string,
+    priceMax?: string,
+    rating?: string
+  ): Promise<{ products: Product[], total: number }> {
     const conditions = [];
     
     if (search) {
@@ -70,6 +88,22 @@ export class DatabaseStorage implements IStorage {
     if (category) {
       const categoryCondition = ilike(products.category, `%${category}%`);
       conditions.push(categoryCondition);
+    }
+    
+    // Price filter
+    if (priceMin || priceMax) {
+      if (priceMin) {
+        conditions.push(sql`CAST(REPLACE(REPLACE(${products.discountedPrice}, '₹', ''), ',', '') AS INTEGER) >= ${parseInt(priceMin)}`);
+      }
+      if (priceMax) {
+        conditions.push(sql`CAST(REPLACE(REPLACE(${products.discountedPrice}, '₹', ''), ',', '') AS INTEGER) <= ${parseInt(priceMax)}`);
+      }
+    }
+    
+    // Rating filter
+    if (rating) {
+      const minRating = parseFloat(rating);
+      conditions.push(sql`${products.rating} >= ${minRating}`);
     }
     
     const whereCondition = conditions.length > 0 

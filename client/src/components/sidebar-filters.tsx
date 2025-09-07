@@ -5,26 +5,35 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Star, X } from "lucide-react";
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 interface SidebarFiltersProps {
   onCategoryChange: (category: string) => void;
+  onPriceChange: (min: string, max: string) => void;
+  onRatingChange: (rating: string) => void;
   onClearFilters: () => void;
   selectedCategory: string;
+  selectedRating: string;
+  priceRange: { min: string; max: string };
   isOpen: boolean;
   onClose: () => void;
 }
 
 export function SidebarFilters({ 
   onCategoryChange, 
+  onPriceChange,
+  onRatingChange,
   onClearFilters, 
   selectedCategory,
+  selectedRating,
+  priceRange,
   isOpen,
   onClose 
 }: SidebarFiltersProps) {
-  const [priceMin, setPriceMin] = useState("");
-  const [priceMax, setPriceMax] = useState("");
+  const [priceMin, setPriceMin] = useState(priceRange?.min || "");
+  const [priceMax, setPriceMax] = useState(priceRange?.max || "");
   
   const { data: categories } = useQuery({
     queryKey: ['/api/categories'],
@@ -50,9 +59,18 @@ export function SidebarFilters({
   };
 
   const applyPriceFilter = () => {
-    // This would typically trigger a price filter update
-    console.log("Price filter:", { min: priceMin, max: priceMax });
+    onPriceChange(priceMin, priceMax);
   };
+
+  const handleRatingChange = (value: string) => {
+    onRatingChange(value);
+  };
+
+  // Update local state when props change
+  React.useEffect(() => {
+    setPriceMin(priceRange.min);
+    setPriceMax(priceRange.max);
+  }, [priceRange]);
 
   const FilterContent = () => (
     <div className="space-y-6">
@@ -68,8 +86,8 @@ export function SidebarFilters({
                 onCheckedChange={(checked) => handleCategoryChange(category, checked as boolean)}
                 data-testid={`checkbox-category-${category}`}
               />
-              <Label htmlFor={`category-${category}`} className="text-sm cursor-pointer">
-                {category.split('|')[0] || category}
+              <Label htmlFor={`category-${category}`} className="text-sm cursor-pointer truncate" title={category}>
+                {category.split('|').pop()?.replace(/([A-Z])/g, ' $1').trim() || category}
               </Label>
             </div>
           ))}
@@ -112,7 +130,11 @@ export function SidebarFilters({
       {/* Rating */}
       <div>
         <h3 className="text-sm font-medium mb-3 text-muted-foreground">Rating</h3>
-        <RadioGroup className="space-y-2">
+        <RadioGroup 
+          className="space-y-2" 
+          value={selectedRating} 
+          onValueChange={handleRatingChange}
+        >
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="5" id="rating-5" />
             <Label htmlFor="rating-5" className="flex items-center cursor-pointer">
