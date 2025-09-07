@@ -27,6 +27,47 @@ async function requireAuth(req: any, res: any, next: any) {
   next();
 }
 
+// Basic Authentication middleware for API endpoints
+async function basicAuth(req: any, res: any, next: any) {
+  const authHeader = req.headers.authorization;
+  
+  if (!authHeader) {
+    return res.status(401).json({ error: 'Authorization header required' });
+  }
+  
+  // Parse email:password from Authorization header
+  const credentials = authHeader.split(' ')[0]; // Get the credentials directly, not after "Basic"
+  
+  if (!credentials || !credentials.includes(':')) {
+    return res.status(401).json({ error: 'Invalid authorization format. Use email:password' });
+  }
+  
+  const [email, password] = credentials.split(':');
+  
+  if (!email || !password) {
+    return res.status(401).json({ error: 'Email and password required' });
+  }
+  
+  try {
+    // Authenticate user
+    const user = await storage.getUserByEmail(email);
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    
+    req.user = user;
+    next();
+  } catch (error) {
+    console.error('Basic auth error:', error);
+    return res.status(500).json({ error: 'Authentication failed' });
+  }
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth routes
   app.post("/api/auth/signup", async (req, res) => {
@@ -333,6 +374,191 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ success: true });
     } catch (error: any) {
       res.status(500).json({ error: 'Failed to update invoice URL' });
+    }
+  });
+
+  // ===== NEW API ENDPOINTS WITH BASIC AUTH =====
+  
+  // List all available categories
+  app.get("/filters/listCategories", basicAuth, async (req: any, res) => {
+    try {
+      const categories = await storage.getCategories();
+      res.json({
+        success: true,
+        categories: categories
+      });
+    } catch (error: any) {
+      res.status(500).json({ 
+        success: false,
+        error: 'Failed to fetch categories' 
+      });
+    }
+  });
+
+  // List all products in wishlist
+  app.get("/wishlist/listProducts", basicAuth, async (req: any, res) => {
+    try {
+      const wishlistItems = await storage.getWishlistItems(req.user.id);
+      res.json({
+        success: true,
+        products: wishlistItems.map(item => ({
+          id: item.productId,
+          name: item.product.productName,
+          price: item.product.discountedPrice,
+          originalPrice: item.product.price,
+          category: item.product.category,
+          addedAt: item.createdAt
+        }))
+      });
+    } catch (error: any) {
+      res.status(500).json({ 
+        success: false,
+        error: 'Failed to fetch wishlist products' 
+      });
+    }
+  });
+
+  // Add product to cart
+  app.post("/cart/add/:productId", basicAuth, async (req: any, res) => {
+    try {
+      const productId = req.params.productId;
+      const quantity = req.body.quantity || 1;
+      
+      // Check if product exists
+      const product = await storage.getProduct(productId);
+      if (!product) {
+        return res.status(404).json({ 
+          success: false,
+          error: 'Product not found' 
+        });
+      }
+      
+      // Add to cart
+      const cartItem = await storage.addToCart(req.user.id, {
+        productId: productId,
+        quantity: quantity
+      });
+      
+      res.json({
+        success: true,
+        message: 'Product added to cart',
+        cartItem: {
+          productId: cartItem.productId,
+          quantity: cartItem.quantity,
+          product: cartItem.product
+        }
+      });
+    } catch (error: any) {
+      res.status(400).json({ 
+        success: false,
+        error: error.message || 'Failed to add product to cart' 
+      });
+    }
+  });
+
+  // Remove product from cart
+  app.delete("/cart/remove/:productId", basicAuth, async (req: any, res) => {
+    try {
+      const productId = req.params.productId;
+      
+      await storage.removeFromCart(req.user.id, productId);
+      
+      res.json({
+        success: true,
+        message: 'Product removed from cart'
+      });
+    } catch (error: any) {
+      res.status(500).json({ 
+        success: false,
+        error: 'Failed to remove product from cart' 
+      });
+    }
+  });
+
+  // List all orders for the user
+  app.get("/orders/myorders", basicAuth, async (req: any, res) => {
+    try {
+      const orders = await storage.getOrders(req.user.id);
+      
+      res.json({
+        success: true,
+        orders: orders.map(order => ({
+          orderId: order.id,
+          totalAmount: order.totalAmount,
+          status: order.status,
+          createdAt: order.createdAt,
+          items: order.items.map(item => ({
+            productId: item.productId,
+            productName: item.productName,
+            price: item.price,
+            quantity: item.quantity,
+            totalPrice: item.totalPrice
+          }))
+        }))
+      });
+    } catch (error: any) {
+      res.status(500).json({ 
+        success: false,
+        error: 'Failed to fetch orders' 
+      });
+    }
+  });
+
+  // Complete order (checkout)
+  app.post("/orders/completeOrder", basicAuth, async (req: any, res) => {
+    try {
+      // Get user's cart items
+      const cartItems = await storage.getCartItems(req.user.id);
+      
+      if (cartItems.length === 0) {
+        return res.status(400).json({ 
+          success: false,
+          error: 'Cart is empty' 
+        });
+      }
+      
+      // Calculate total amount
+      const totalAmount = cartItems.reduce((total, item) => {
+        const price = parseFloat(item.product.discountedPrice.replace(/[^\d.]/g, ''));
+        return total + (price * item.quantity);
+      }, 0).toFixed(2);
+      
+      // Create order items
+      const orderItemsData = cartItems.map(item => ({
+        productId: item.productId,
+        productName: item.product.productName,
+        price: item.product.discountedPrice,
+        quantity: item.quantity,
+        totalPrice: (parseFloat(item.product.discountedPrice.replace(/[^\d.]/g, '')) * item.quantity).toFixed(2)
+      }));
+      
+      // Create order
+      const order = await storage.createOrder(
+        req.user.id,
+        { totalAmount, status: 'completed' },
+        orderItemsData
+      );
+      
+      // Clear cart after successful order
+      await storage.clearCart(req.user.id);
+      
+      res.json({ 
+        success: true,
+        message: 'Order completed successfully',
+        order: {
+          orderId: order.id,
+          totalAmount: order.totalAmount,
+          status: order.status,
+          createdAt: order.createdAt,
+          items: orderItemsData
+        }
+      });
+    } catch (error: any) {
+      console.error('Complete order error:', error);
+      res.status(500).json({ 
+        success: false,
+        error: 'Failed to complete order' 
+      });
     }
   });
 
