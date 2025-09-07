@@ -3,6 +3,8 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { signInSchema, signUpSchema, insertCartItemSchema, insertWishlistItemSchema } from "@shared/schema";
 import bcrypt from "bcrypt";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./swagger";
 
 // Middleware to check authentication
 async function requireAuth(req: any, res: any, next: any) {
@@ -69,6 +71,23 @@ async function basicAuth(req: any, res: any, next: any) {
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Swagger API Documentation
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: 'E-Commerce API Documentation',
+    swaggerOptions: {
+      persistAuthorization: true,
+      displayRequestDuration: true,
+      filter: true,
+      tryItOutEnabled: true
+    }
+  }));
+
+  // Redirect root to API docs
+  app.get('/', (req, res) => {
+    res.redirect('/api-docs');
+  });
+
   // Auth routes
   app.post("/api/auth/signup", async (req, res) => {
     try {
