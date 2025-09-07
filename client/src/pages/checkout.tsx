@@ -147,18 +147,18 @@ export default function Checkout() {
             </Button>
           </Link>
           
-          <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-white">Checkout</h1>
+          <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-gray-100">Checkout</h1>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Order Items */}
             <div className="lg:col-span-2 space-y-6">
-              <Card>
+              <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-lg font-semibold">
-                    <ShoppingBag className="h-5 w-5" />
+                  <CardTitle className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    <ShoppingBag className="h-5 w-5 text-gray-700 dark:text-gray-300" />
                     Order Summary
                   </CardTitle>
-                  <CardDescription>Review your items before completing the purchase</CardDescription>
+                  <CardDescription className="text-gray-600 dark:text-gray-300">Review your items before completing the purchase</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {cartItems.map((item) => {
@@ -174,18 +174,18 @@ export default function Checkout() {
                             className="w-20 h-20 object-cover rounded-lg"
                           />
                           <div className="flex-1">
-                            <h3 className="font-medium text-base text-gray-900 dark:text-white line-clamp-2" data-testid={`text-product-name-${item.productId}`}>
+                            <h3 className="font-semibold text-base text-gray-900 dark:text-gray-100 line-clamp-2" data-testid={`text-product-name-${item.productId}`}>
                               {item.product.productName}
                             </h3>
                             <div className="flex items-center gap-2 mt-2">
-                              <span className="text-sm text-gray-500 dark:text-gray-400">Qty:</span>
-                              <span className="font-medium text-sm" data-testid={`text-quantity-${item.productId}`}>{item.quantity}</span>
-                              <span className="text-sm text-gray-500 dark:text-gray-400">×</span>
-                              <span className="font-medium text-sm">₹{price.toFixed(2)}</span>
+                              <span className="text-sm text-gray-600 dark:text-gray-300">Qty:</span>
+                              <span className="font-semibold text-sm text-gray-900 dark:text-gray-100" data-testid={`text-quantity-${item.productId}`}>{item.quantity}</span>
+                              <span className="text-sm text-gray-600 dark:text-gray-300">×</span>
+                              <span className="font-semibold text-sm text-gray-900 dark:text-gray-100">₹{price.toFixed(2)}</span>
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className="text-lg font-bold text-gray-900 dark:text-white" data-testid={`text-item-total-${item.productId}`}>
+                            <p className="text-lg font-bold text-gray-900 dark:text-gray-100" data-testid={`text-item-total-${item.productId}`}>
                               ₹{total.toFixed(2)}
                             </p>
                           </div>
@@ -200,36 +200,36 @@ export default function Checkout() {
             
             {/* Payment Summary */}
             <div className="space-y-6">
-              <Card>
+              <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-lg font-semibold">
-                    <CreditCard className="h-5 w-5" />
+                  <CardTitle className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    <CreditCard className="h-5 w-5 text-gray-700 dark:text-gray-300" />
                     Payment Summary
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-500 dark:text-gray-400">Subtotal</span>
-                      <span className="font-medium text-gray-900 dark:text-white">₹{calculateTotal()}</span>
+                      <span className="text-gray-600 dark:text-gray-300">Subtotal</span>
+                      <span className="font-semibold text-gray-900 dark:text-gray-100">₹{calculateTotal()}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-500 dark:text-gray-400">Shipping</span>
-                      <span className="font-semibold text-green-600">FREE</span>
+                      <span className="text-gray-600 dark:text-gray-300">Shipping</span>
+                      <span className="font-semibold text-green-600 dark:text-green-400">FREE</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-500 dark:text-gray-400">Tax</span>
-                      <span className="font-medium text-gray-900 dark:text-white">₹0.00</span>
+                      <span className="text-gray-600 dark:text-gray-300">Tax</span>
+                      <span className="font-semibold text-gray-900 dark:text-gray-100">₹0.00</span>
                     </div>
                     <Separator />
                     <div className="flex justify-between items-center">
-                      <span className="text-base font-medium text-gray-700 dark:text-gray-300">Total</span>
-                      <span className="text-2xl font-bold text-gray-900 dark:text-white" data-testid="text-total-amount">₹{calculateTotal()}</span>
+                      <span className="text-base font-semibold text-gray-700 dark:text-gray-200">Total</span>
+                      <span className="text-2xl font-bold text-gray-900 dark:text-gray-100" data-testid="text-total-amount">₹{calculateTotal()}</span>
                     </div>
                   </div>
                   
-                  <div className="p-4 bg-blue-50 dark:bg-blue-950/50 rounded-lg border border-blue-200 dark:border-blue-800">
-                    <p className="text-sm text-blue-700 dark:text-blue-300">
+                  <div className="p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-700">
+                    <p className="text-sm text-blue-700 dark:text-blue-200 font-medium">
                       <strong>Demo Mode:</strong> This will simulate a successful payment and generate an invoice PDF.
                     </p>
                   </div>
@@ -255,7 +255,7 @@ export default function Checkout() {
                   </Button>
                   
                   <div className="flex items-center justify-center gap-2 pt-2">
-                    <span className="text-xs text-gray-500">Secured by</span>
+                    <span className="text-xs text-gray-600 dark:text-gray-400">Secured by</span>
                     <div className="flex gap-2">
                       <div className="w-8 h-5 bg-gray-300 dark:bg-gray-600 rounded"></div>
                       <div className="w-8 h-5 bg-gray-300 dark:bg-gray-600 rounded"></div>
@@ -265,13 +265,13 @@ export default function Checkout() {
                 </CardContent>
               </Card>
               
-              <Card>
+              <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                 <CardContent className="pt-6">
                   <div className="flex items-start gap-3">
-                    <Package className="h-5 w-5 text-green-600 mt-0.5" />
+                    <Package className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5" />
                     <div>
-                      <p className="font-semibold text-sm text-gray-900 dark:text-white">Free Delivery</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      <p className="font-semibold text-sm text-gray-900 dark:text-gray-100">Free Delivery</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-300 mt-1">
                         Estimated delivery in 3-5 business days
                       </p>
                     </div>
