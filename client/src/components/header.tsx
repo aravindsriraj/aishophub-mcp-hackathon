@@ -75,10 +75,10 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
               <Button
                 type="submit"
                 size="sm"
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 group"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group ai-search-shimmer"
                 data-testid="button-search-desktop"
               >
-                <Sparkles className="h-3 w-3 mr-1 group-hover:animate-pulse" />
+                <Sparkles className="h-3 w-3 mr-1 sparkle-animation" />
                 AI Search
               </Button>
             </form>
@@ -173,10 +173,10 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
           <Button
             type="submit"
             size="sm"
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-200 group px-2 py-1 text-xs"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300 group px-2 py-1 text-xs ai-search-shimmer"
             data-testid="button-search-mobile"
           >
-            <Sparkles className="h-3 w-3 mr-1 group-hover:animate-pulse" />
+            <Sparkles className="h-3 w-3 mr-1 sparkle-animation" />
             AI Search
           </Button>
         </form>
