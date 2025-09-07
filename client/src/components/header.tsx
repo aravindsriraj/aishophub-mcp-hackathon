@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ShoppingBag, Search, ShoppingCart, User, Moon, Sun, LogOut, Heart } from "lucide-react";
+import { ShoppingBag, Search, ShoppingCart, User, Moon, Sun, LogOut, Heart, UserCircle, Package, Settings } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/hooks/use-cart";
 import { useTheme } from "@/components/theme-provider";
@@ -122,6 +122,7 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem data-testid="menu-profile">
+                    <UserCircle className="h-4 w-4 mr-2" />
                     Profile
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild data-testid="menu-wishlist">
@@ -131,9 +132,11 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem data-testid="menu-orders">
+                    <Package className="h-4 w-4 mr-2" />
                     Orders
                   </DropdownMenuItem>
                   <DropdownMenuItem data-testid="menu-settings">
+                    <Settings className="h-4 w-4 mr-2" />
                     Settings
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
