@@ -10,6 +10,7 @@ import { AuthModal } from "@/components/auth-modal";
 import { useState } from "react";
 import { useCart } from "@/hooks/use-cart";
 import { useAuth } from "@/hooks/use-auth";
+import { useWishlist } from "@/hooks/use-wishlist";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -19,6 +20,7 @@ export default function ProductDetail() {
   const [showAuth, setShowAuth] = useState(false);
   const [imageError, setImageError] = useState(false);
   const { addToCart, isLoading: cartLoading } = useCart();
+  const { toggleWishlist, isInWishlist, isToggling } = useWishlist();
   const { user } = useAuth();
   const { toast } = useToast();
 
@@ -44,6 +46,32 @@ export default function ProductDetail() {
       toast({
         title: "Error",
         description: "Failed to add product to cart.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleWishlistToggle = async () => {
+    if (!user) {
+      setShowAuth(true);
+      return;
+    }
+
+    if (!product) return;
+
+    try {
+      await toggleWishlist(product.id);
+      const isNowInWishlist = !isInWishlist(product.id);
+      toast({
+        title: isNowInWishlist ? "Added to wishlist" : "Removed from wishlist",
+        description: isNowInWishlist 
+          ? `${product.productName} has been added to your wishlist.`
+          : `${product.productName} has been removed from your wishlist.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update wishlist.",
         variant: "destructive",
       });
     }
@@ -201,8 +229,14 @@ export default function ProductDetail() {
                   <ShoppingCart className="h-5 w-5 mr-2" />
                   {cartLoading ? "Adding..." : "Add to Cart"}
                 </Button>
-                <Button variant="outline" size="lg" data-testid="button-wishlist">
-                  <Heart className="h-5 w-5" />
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  onClick={handleWishlistToggle}
+                  disabled={isToggling}
+                  data-testid="button-wishlist"
+                >
+                  <Heart className={`h-5 w-5 ${product && isInWishlist(product.id) ? 'fill-red-500 text-red-500' : ''}`} />
                 </Button>
               </div>
 
