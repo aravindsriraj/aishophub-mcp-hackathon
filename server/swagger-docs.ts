@@ -225,6 +225,132 @@
 
 /**
  * @swagger
+ * /api/semantic-search:
+ *   post:
+ *     summary: AI-powered semantic product search
+ *     tags: [Products]
+ *     description: Uses AI to understand natural language queries and find relevant products
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - query
+ *             properties:
+ *               query:
+ *                 type: string
+ *                 description: Natural language search query
+ *                 example: "black shirt with white pant"
+ *               n_results:
+ *                 type: integer
+ *                 default: 20
+ *                 description: Number of results to return
+ *                 example: 20
+ *     responses:
+ *       200:
+ *         description: Semantic search results
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 products:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         description: Product ID
+ *                       text:
+ *                         type: string
+ *                         description: Product description text
+ *                       metadata:
+ *                         type: object
+ *                         properties:
+ *                           rating:
+ *                             type: number
+ *                           discounted_price:
+ *                             type: number
+ *                           rating_count:
+ *                             type: number
+ *                           discount_percentage:
+ *                             type: number
+ *                           img_link:
+ *                             type: string
+ *                           product_link:
+ *                             type: string
+ *                           actual_price:
+ *                             type: number
+ *                       distance:
+ *                         type: number
+ *                         description: Semantic distance/relevance score
+ *       400:
+ *         description: Query is required
+ *       500:
+ *         description: Failed to perform semantic search
+ */
+
+/**
+ * @swagger
+ * /api/products/by-ids:
+ *   get:
+ *     summary: Get multiple products by their IDs
+ *     tags: [Products]
+ *     parameters:
+ *       - in: query
+ *         name: ids
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Comma-separated list of product IDs
+ *         example: "B0C6Q5NCMM,B0CB2CRT3R,B08PFSZ7FH"
+ *       - in: query
+ *         name: category
+ *         schema:
+ *           type: string
+ *         description: Filter by category
+ *       - in: query
+ *         name: sortBy
+ *         schema:
+ *           type: string
+ *           enum: [price_asc, price_desc, rating]
+ *         description: Sort order
+ *       - in: query
+ *         name: priceMin
+ *         schema:
+ *           type: string
+ *         description: Minimum price filter
+ *       - in: query
+ *         name: priceMax
+ *         schema:
+ *           type: string
+ *         description: Maximum price filter
+ *       - in: query
+ *         name: rating
+ *         schema:
+ *           type: string
+ *         description: Minimum rating filter
+ *     responses:
+ *       200:
+ *         description: Products retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 products:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Product'
+ *       400:
+ *         description: Product IDs are required
+ */
+
+/**
+ * @swagger
  * /api/categories:
  *   get:
  *     summary: Get all product categories
