@@ -13,10 +13,8 @@ export function useWishlist() {
 
   const addToWishlistMutation = useMutation({
     mutationFn: async (item: z.infer<typeof insertWishlistItemSchema>) => {
-      return await apiRequest("/api/wishlist", {
-        method: "POST",
-        body: JSON.stringify(item),
-      });
+      const response = await apiRequest("POST", "/api/wishlist", item);
+      return await response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/wishlist"] });
@@ -25,9 +23,7 @@ export function useWishlist() {
 
   const removeFromWishlistMutation = useMutation({
     mutationFn: async (productId: string) => {
-      return await apiRequest(`/api/wishlist/${productId}`, {
-        method: "DELETE",
-      });
+      return await apiRequest("DELETE", `/api/wishlist/${productId}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/wishlist"] });
