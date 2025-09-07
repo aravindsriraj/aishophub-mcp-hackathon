@@ -83,9 +83,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   }));
 
-  // Redirect root to API docs
-  app.get('/', (req, res) => {
-    res.redirect('/api-docs');
+  // Redirect root to login if not authenticated, otherwise to shop
+  app.get('/', async (req, res) => {
+    const token = req.headers.authorization?.replace('Bearer ', '');
+    
+    if (!token) {
+      return res.redirect('/login');
+    }
+    
+    try {
+      const session = await storage.getSession(token);
+      if (!session) {
+        return res.redirect('/login');
+      }
+      
+      const user = await storage.getUser(session.userId);
+      if (!user) {
+        return res.redirect('/login');
+      }
+      
+      res.redirect('/shop');
+    } catch (error) {
+      res.redirect('/login');
+    }
   });
 
   // Auth routes
