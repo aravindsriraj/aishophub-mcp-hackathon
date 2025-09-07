@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "wouter";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -46,7 +46,7 @@ export default function Login() {
         title: "Welcome back!",
         description: "You have been signed in successfully.",
       });
-      setLocation("/");
+      setLocation("/shop");
     } catch (error: any) {
       toast({
         title: "Error",
@@ -63,7 +63,7 @@ export default function Login() {
         title: "Account created!",
         description: "Welcome to ShopHub!",
       });
-      setLocation("/");
+      setLocation("/shop");
     } catch (error: any) {
       toast({
         title: "Error",
@@ -213,14 +213,6 @@ export default function Login() {
                 {mode === "signin" ? "Sign up" : "Sign in"}
               </Button>
             </p>
-          </div>
-          
-          <div className="mt-4">
-            <Link href="/">
-              <Button variant="outline" className="w-full" data-testid="link-home">
-                Continue as Guest
-              </Button>
-            </Link>
           </div>
         </CardContent>
       </Card>

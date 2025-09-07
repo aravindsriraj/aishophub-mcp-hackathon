@@ -51,7 +51,7 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/">
+          <Link href="/shop">
             <div className="flex items-center space-x-2 cursor-pointer" data-testid="logo-link">
               <div className="bg-primary text-primary-foreground rounded-lg p-2">
                 <ShoppingBag className="h-5 w-5" />

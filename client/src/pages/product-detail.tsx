@@ -85,7 +85,7 @@ export default function ProductDetail() {
             <p className="text-muted-foreground mb-4">
               The product you're looking for doesn't exist.
             </p>
-            <Link href="/">
+            <Link href="/shop">
               <Button data-testid="link-back-home">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Products
@@ -106,7 +106,7 @@ export default function ProductDetail() {
       />
       
       <div className="container mx-auto px-4 py-8">
-        <Link href="/">
+        <Link href="/shop">
           <Button variant="ghost" className="mb-6" data-testid="button-back">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Products

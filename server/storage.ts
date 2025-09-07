@@ -60,9 +60,6 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getProducts(page: number, limit: number, search?: string, category?: string, sortBy?: string): Promise<{ products: Product[], total: number }> {
-    let query = db.select().from(products);
-    let countQuery = db.select({ count: count() }).from(products);
-    
     const conditions = [];
     
     if (search) {
@@ -75,25 +72,32 @@ export class DatabaseStorage implements IStorage {
       conditions.push(categoryCondition);
     }
     
-    if (conditions.length > 0) {
-      const whereCondition = conditions.length === 1 ? conditions[0] : and(...conditions);
-      query = query.where(whereCondition);
+    const whereCondition = conditions.length > 0 
+      ? (conditions.length === 1 ? conditions[0] : and(...conditions))
+      : undefined;
+    
+    // Build queries directly
+    let productsQuery = db.select().from(products);
+    let countQuery = db.select({ count: count() }).from(products);
+    
+    if (whereCondition) {
+      productsQuery = productsQuery.where(whereCondition);
       countQuery = countQuery.where(whereCondition);
     }
     
     // Apply sorting
     if (sortBy === 'price-low') {
-      query = query.orderBy(asc(sql`CAST(REPLACE(REPLACE(${products.discountedPrice}, '₹', ''), ',', '') AS INTEGER)`));
+      productsQuery = productsQuery.orderBy(asc(sql`CAST(REPLACE(REPLACE(${products.discountedPrice}, '₹', ''), ',', '') AS INTEGER)`));
     } else if (sortBy === 'price-high') {
-      query = query.orderBy(desc(sql`CAST(REPLACE(REPLACE(${products.discountedPrice}, '₹', ''), ',', '') AS INTEGER)`));
+      productsQuery = productsQuery.orderBy(desc(sql`CAST(REPLACE(REPLACE(${products.discountedPrice}, '₹', ''), ',', '') AS INTEGER)`));
     } else if (sortBy === 'rating') {
-      query = query.orderBy(desc(products.rating));
+      productsQuery = productsQuery.orderBy(desc(products.rating));
     } else {
-      query = query.orderBy(desc(products.id));
+      productsQuery = productsQuery.orderBy(desc(products.id));
     }
     
     const [productsResult, totalResult] = await Promise.all([
-      query.limit(limit).offset((page - 1) * limit),
+      productsQuery.limit(limit).offset((page - 1) * limit),
       countQuery
     ]);
     
