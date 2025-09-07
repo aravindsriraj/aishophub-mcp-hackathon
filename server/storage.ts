@@ -93,10 +93,10 @@ export class DatabaseStorage implements IStorage {
     // Price filter
     if (priceMin || priceMax) {
       if (priceMin) {
-        conditions.push(sql`CAST(REPLACE(REPLACE(${products.discountedPrice}, '₹', ''), ',', '') AS INTEGER) >= ${parseInt(priceMin)}`);
+        conditions.push(sql`CAST(REPLACE(REPLACE(${products.discountedPrice}, '₹', ''), ',', '') AS NUMERIC) >= ${parseInt(priceMin)}`);
       }
       if (priceMax) {
-        conditions.push(sql`CAST(REPLACE(REPLACE(${products.discountedPrice}, '₹', ''), ',', '') AS INTEGER) <= ${parseInt(priceMax)}`);
+        conditions.push(sql`CAST(REPLACE(REPLACE(${products.discountedPrice}, '₹', ''), ',', '') AS NUMERIC) <= ${parseInt(priceMax)}`);
       }
     }
     
@@ -121,9 +121,9 @@ export class DatabaseStorage implements IStorage {
     
     // Apply sorting
     if (sortBy === 'price-low') {
-      productsQuery = productsQuery.orderBy(asc(sql`CAST(REPLACE(REPLACE(${products.discountedPrice}, '₹', ''), ',', '') AS INTEGER)`));
+      productsQuery = productsQuery.orderBy(asc(sql`CAST(REPLACE(REPLACE(${products.discountedPrice}, '₹', ''), ',', '') AS NUMERIC)`));
     } else if (sortBy === 'price-high') {
-      productsQuery = productsQuery.orderBy(desc(sql`CAST(REPLACE(REPLACE(${products.discountedPrice}, '₹', ''), ',', '') AS INTEGER)`));
+      productsQuery = productsQuery.orderBy(desc(sql`CAST(REPLACE(REPLACE(${products.discountedPrice}, '₹', ''), ',', '') AS NUMERIC)`));
     } else if (sortBy === 'rating') {
       productsQuery = productsQuery.orderBy(desc(products.rating));
     } else {

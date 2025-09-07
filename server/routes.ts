@@ -124,7 +124,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       });
     } catch (error: any) {
-      res.status(500).json({ error: 'Failed to fetch products' });
+      console.error('Error fetching products:', error);
+      res.status(500).json({ error: error.message || 'Failed to fetch products' });
     }
   });
 
