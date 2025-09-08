@@ -74,7 +74,7 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
                     className="w-full pl-10 pr-4 h-10 glass border-input focus:border-purple-500 transition-all duration-300 focus:scale-[1.02] focus:shadow-lg"
                     data-testid="input-search-desktop"
                   />
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none animate-pulse" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                 </div>
                 <Button
                   type="submit"
@@ -178,7 +178,7 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
               className="w-full pl-10 pr-4 h-10"
               data-testid="input-search-mobile"
             />
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
           </div>
           <Button
             type="submit"
