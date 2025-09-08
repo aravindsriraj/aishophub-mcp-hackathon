@@ -36,7 +36,7 @@ export default function Settings() {
 
   const fetchTokens = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('auth_token');
       if (!token) {
         toast({
           title: "Session Expired",
@@ -91,7 +91,7 @@ export default function Settings() {
 
     setCreating(true);
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('auth_token');
       if (!token) {
         toast({
           title: "Session Expired",
@@ -152,7 +152,7 @@ export default function Settings() {
   const handleDeleteToken = async (tokenId: string) => {
     setDeleting(tokenId);
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('auth_token');
       const response = await fetch(`/api/tokens/${tokenId}`, {
         method: 'DELETE',
         headers: {
