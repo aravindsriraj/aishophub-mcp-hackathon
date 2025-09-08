@@ -1,6 +1,6 @@
-# AI Shop Hub
+# AI Shopping Hub
 
-An intelligent e-commerce platform that leverages AI to automatically generate product images when none are available, creating a seamless shopping experience with rich visual content for every product.
+An AI-powered shopping hub that can search products using semantic search. Operations like adding to cart, adding to wishlist, checkout, list previous orders and various other operations can be performed using the APIs (read openapi.yaml to know more). All these APIs have been deployed as MCP server using Cequence AI gateway.
 
 ## Team Information
 
@@ -9,163 +9,147 @@ An intelligent e-commerce platform that leverages AI to automatically generate p
 
 ## Hackathon Challenge
 
-**Theme 2:** Building AI-powered applications that enhance user experience through intelligent automation and content generation.
+**Theme 2:** Build a Secure MCP Server for Agents (w/ Cequence)
 
 ## What We Built
 
-AI Shop Hub is a full-stack e-commerce platform that intelligently generates product images using AI when original product images are missing or unavailable. The platform includes:
+AI Shopping Hub is a comprehensive e-commerce platform with all API endpoints exposed as an MCP (Model Context Protocol) server. Users can shop through the website performing AI-powered semantic search, adding to cart, adding to wishlist, checkout, completing orders - all operations detailed in the OpenAPI specification. Users can access these capabilities through any MCP client like Claude Desktop, Cursor, etc.
 
-- **Smart Image Generation**: Automatically creates contextual product images based on product names and categories
-- **Complete E-commerce Experience**: User authentication, product browsing, cart management, wishlist, and order processing
-- **Intelligent Product Management**: CSV data import with automatic image enhancement
-- **Modern User Interface**: Responsive design with dark/light theme support
-- **RESTful API**: Well-documented backend with Swagger integration
+**🌐 Live Demo**: The website has been deployed on Replit and is accessible at [https://aishophub.replit.app](https://aishophub.replit.app)
 
-## How to Run
+**🔍 Semantic Search Service**: The AI-powered semantic search is implemented as a separate Python FastAPI application, deployed on Replit at [https://product-search.replit.app/docs](https://product-search.replit.app/docs). The semantic search codebase is available at [https://github.com/aravindsriraj/aishophub-semantic-search-fastapi](https://github.com/aravindsriraj/aishophub-semantic-search-fastapi)
 
-### Prerequisites
-- Node.js 18+ 
-- PostgreSQL database
-- AI image generation service API key
+### Key Features:
+- **AI-Powered Semantic Search**: Natural language product search capabilities powered by dedicated FastAPI service
+- **MCP Server Integration**: All APIs accessible through Model Context Protocol
+- **Secure API Gateway**: Deployed using Cequence AI gateway for enhanced security
+- **Cloud Deployment**: Fully deployed and accessible on Replit platform
+- **Microservices Architecture**: Separate semantic search service for enhanced performance
 
-### Setup Instructions
+## How to Use with Claude Desktop
 
-1. **Clone the repository:**
-```bash
-git clone https://github.com/aravindsriraj/aishophub-mcp-hackathon.git
-cd aishophub-mcp-hackathon
+1. **Login to the platform**: Visit [aishophub.replit.app](https://aishophub.replit.app)
+2. **Navigate to Settings**: Go to the settings page in your account
+3. **Generate API Token**: Create a new API token for MCP access
+4. **Configure Claude Desktop**: Add the MCP server configuration to your `claude_desktop_config.json`
+5. **Add MCP Server Configuration**:
+
+```json
+"mcp-server-bearer": {
+  "command": "npx",
+  "args": [
+    "mcp-remote",
+    "https://ztaip-cuk221kt-4xp4r634bq-uc.a.run.app/mcp",
+    "--header",
+    "Authorization: Bearer <YOUR_API_TOKEN>",
+    "--transport",
+    "http-only"
+  ]
+}
 ```
 
-2. **Install dependencies:**
-```bash
-npm install
-```
-
-3. **Environment Setup:**
-```bash
-cp .env.example .env
-# Configure your database URL and AI service credentials in .env
-```
-
-4. **Database Setup:**
-```bash
-npm run db:push
-```
-
-5. **Import Sample Data (Optional):**
-```bash
-npm run import-products
-```
-
-6. **Start Development Server:**
-```bash
-npm run dev
-```
-
-The application will be available at `http://localhost:5000`
-
-### Production Deployment
-```bash
-npm run build
-npm start
-```
+6. **Restart Claude Desktop**: Restart the application to load the new MCP server
 
 ## Tech Stack
 
 ### Required Technologies
-- **Frontend:** React, TypeScript, TailwindCSS
-- **Backend:** Node.js, Express
-- **Database:** PostgreSQL with Drizzle ORM
-- **AI Integration:** Image generation APIs
+- **MCP (Model Context Protocol)**: Server implementation for agent interactions
+- **Cequence AI Gateway**: Secure API gateway for MCP server deployment
 
-### Additional Technologies
-- **Build Tools:** Vite, ESBuild
-- **UI Components:** Radix UI
-- **State Management:** React Query
-- **Routing:** Wouter
-- **Documentation:** Swagger/OpenAPI
-- **Authentication:** bcrypt for password hashing
+### Frontend Technologies
+- **React**: Modern UI library with hooks and concurrent features
+- **TypeScript**: Type-safe JavaScript development
+- **Vite**: Fast build tool and development server
+- **TailwindCSS**: Utility-first CSS framework
+- **Radix UI**: Accessible component primitives
+- **Framer Motion**: Animation library for smooth interactions
+
+### Backend Technologies
+- **Node.js**: JavaScript runtime environment
+- **Express.js**: Web application framework
+- **TypeScript**: Type-safe server development
+- **PostgreSQL**: Relational database
+- **Drizzle ORM**: TypeScript ORM for database operations
+- **bcrypt**: Password hashing and authentication
+- **express-session**: Session management middleware
+- **Swagger/OpenAPI**: API documentation and specification
+
+### AI & Search Technologies
+- **FastAPI Semantic Search Service**: Dedicated Python-based microservice for AI-powered product search
+- **OpenAI API**: AI-powered semantic search capabilities
+- **Python FastAPI**: High-performance API framework for semantic search service
+
+### Development & Build Tools
+- **ESBuild**: Fast JavaScript bundler
+- **tsx**: TypeScript execution engine
+- **drizzle-kit**: Database migration and schema management
+- **Swagger UI Express**: Interactive API documentation
+
+### Additional Libraries
+- **Stripe**: Payment processing integration
+- **csv-parse**: CSV data import functionality
+- **zod**: Schema validation
+- **date-fns**: Date manipulation utilities
+- **jsPDF**: PDF generation for invoices
 
 ## Demo Video
 
 🎥 **[Demo Video Link - Coming Soon]**  
-*A comprehensive walkthrough of AI Shop Hub's features and AI image generation capabilities*
+*A comprehensive walkthrough of AI Shopping Hub's MCP server capabilities and semantic search features*
 
 ## What We'd Do With More Time
 
-Given additional development time, we would enhance AI Shop Hub with:
+Given additional development time, we would enhance AI Shopping Hub with:
 
-### Advanced AI Features
-- **Multi-style Image Generation**: Allow users to choose different artistic styles for product images
-- **Image Customization**: Enable real-time editing and refinement of generated images
-- **Smart Product Descriptions**: AI-generated product descriptions based on images and specifications
-- **Visual Search**: Allow users to search products using uploaded images
+### Advanced MCP Server Features
+- **Multi-Agent Collaboration**: Support for multiple AI agents working together on shopping tasks
+- **Persistent Shopping Sessions**: Long-term memory for AI agents across multiple interactions
+- **Advanced Tool Capabilities**: More sophisticated MCP tools for complex shopping workflows
 
-### Enhanced E-commerce Features
-- **Advanced Recommendation Engine**: AI-powered product recommendations based on user behavior
-- **Dynamic Pricing**: Intelligent pricing suggestions based on market analysis
-- **Inventory Management**: Automated stock level monitoring and reorder suggestions
-- **Multi-vendor Support**: Platform for multiple sellers with AI-assisted store management
 
-### Technical Improvements
-- **Performance Optimization**: Image caching, CDN integration, and database optimization
-- **Mobile App**: React Native application for iOS and Android
-- **Real-time Features**: Live chat support, real-time inventory updates
-- **Analytics Dashboard**: Comprehensive business intelligence and user behavior analytics
-- **Internationalization**: Multi-language and multi-currency support
+### Enhanced AI Capabilities
+- **Conversational Shopping Assistant**: Natural language shopping conversations with context awareness
+- **Visual Product Search**: AI-powered image-based product discovery
+- **Personalized Recommendations**: Machine learning-based product suggestions
 
-### AI Integration Expansion
-- **Computer Vision**: Automatic product categorization from uploaded images
-- **Sentiment Analysis**: AI-powered review analysis and quality insights
-- **Chatbot Integration**: Intelligent customer support with product recommendations
-- **Fraud Detection**: AI-powered transaction monitoring and security
 
-## Project Architecture
+### E-commerce Platform Enhancements
+- **Advanced Search Filters**: More granular product filtering and sorting
 
-### Frontend Structure
-```
-client/
-├── src/
-│   ├── components/     # Reusable UI components
-│   ├── pages/         # Route components
-│   ├── hooks/         # Custom React hooks
-│   ├── lib/           # Utility libraries
-│   └── styles/        # Global styles
-```
 
-### Backend Structure
-```
-server/
-├── routes.ts          # API endpoint definitions
-├── db.ts             # Database configuration
-├── image-generator.ts # AI image generation logic
-├── import-products.ts # CSV data import utilities
-└── swagger.ts        # API documentation
-```
+## MCP Server Architecture
 
-## API Endpoints
+The AI Shopping Hub is deployed as a secure MCP (Model Context Protocol) server, enabling AI agents and clients to interact with e-commerce functionality through standardized protocols.
 
-- `GET /api/products` - Retrieve products with AI-generated images
-- `POST /api/products/:id/generate-image` - Generate image for specific product
-- `POST /api/auth/login` - User authentication
-- `GET /api/cart` - Cart management
-- `POST /api/orders` - Order processing
-- `GET /api-docs` - Interactive API documentation
+### System Architecture
+- **Main Application**: Node.js/Express e-commerce platform (deployed on Replit)
+- **Semantic Search Service**: Python FastAPI microservice for AI-powered search
+  - **API Documentation**: [https://product-search.replit.app/docs](https://product-search.replit.app/docs)
+  - **Source Code**: [https://github.com/aravindsriraj/aishophub-semantic-search-fastapi](https://github.com/aravindsriraj/aishophub-semantic-search-fastapi)
+- **MCP Gateway**: Cequence AI gateway for secure API access
 
-## Contributing
+### MCP Integration Features
+- **Standardized Tool Interface**: All shopping operations exposed as MCP tools
+- **Secure Authentication**: Bearer token-based access control
+- **Real-time Responses**: Immediate feedback for all shopping operations
+- **Error Handling**: Comprehensive error responses for better agent experience
 
-This project was built for the MCP Hackathon. Future contributions welcome!
+### Available MCP Tools
+- **Product Search**: Semantic and traditional product discovery
+- **Cart Management**: Add, remove, and update cart items
+- **Wishlist Operations**: Manage user wishlists
+- **Order Processing**: Complete checkout and order management
+- **User Authentication**: Secure login and token management
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+## API Documentation
 
-## License
+Full API documentation is available in the [OpenAPI specification](./openapi.yaml) which includes:
 
-MIT License - see LICENSE file for details
-
----
+- **Authentication Endpoints**: User login, registration, and token management
+- **Product Catalog**: Search, filtering, and product details
+- **Shopping Cart**: Cart operations and management
+- **Wishlist**: Wishlist functionality
+- **Order Management**: Checkout and order history
+- **Semantic Search**: AI-powered natural language product search
 
 **Built with ❤️ by Team AI-Samurai for the MCP Hackathon**
