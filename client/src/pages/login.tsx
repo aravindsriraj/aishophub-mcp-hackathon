@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,6 +39,23 @@ export default function Login() {
       name: "",
     },
   });
+
+  // Add keyboard navigation support
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Press Escape to clear form
+      if (e.key === 'Escape') {
+        if (mode === 'signin') {
+          signInForm.reset();
+        } else {
+          signUpForm.reset();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [mode, signInForm, signUpForm]);
 
   const handleSignIn = async (data: SignInData) => {
     try {
@@ -125,10 +142,15 @@ export default function Login() {
                     placeholder="Enter your email"
                     {...signInForm.register("email")}
                     className="glass focus:scale-[1.02] transition-transform"
+                    autoComplete="email"
+                    autoFocus
+                    aria-required="true"
+                    aria-invalid={!!signInForm.formState.errors.email}
+                    aria-describedby={signInForm.formState.errors.email ? "email-error" : undefined}
                     data-testid="input-email"
                   />
                 {signInForm.formState.errors.email && (
-                  <p className="text-sm text-destructive mt-1">
+                  <p id="email-error" role="alert" className="text-sm text-destructive mt-1">
                     {signInForm.formState.errors.email.message}
                   </p>
                 )}
@@ -144,10 +166,14 @@ export default function Login() {
                     placeholder="Enter your password"
                     {...signInForm.register("password")}
                     className="glass focus:scale-[1.02] transition-transform"
+                    autoComplete="current-password"
+                    aria-required="true"
+                    aria-invalid={!!signInForm.formState.errors.password}
+                    aria-describedby={signInForm.formState.errors.password ? "password-error" : undefined}
                     data-testid="input-password"
                   />
                 {signInForm.formState.errors.password && (
-                  <p className="text-sm text-destructive mt-1">
+                  <p id="password-error" role="alert" className="text-sm text-destructive mt-1">
                     {signInForm.formState.errors.password.message}
                   </p>
                 )}
@@ -181,10 +207,15 @@ export default function Login() {
                     placeholder="Enter your full name"
                     {...signUpForm.register("name")}
                     className="glass focus:scale-[1.02] transition-transform"
+                    autoComplete="name"
+                    autoFocus
+                    aria-required="true"
+                    aria-invalid={!!signUpForm.formState.errors.name}
+                    aria-describedby={signUpForm.formState.errors.name ? "name-error" : undefined}
                     data-testid="input-name"
                   />
                 {signUpForm.formState.errors.name && (
-                  <p className="text-sm text-destructive mt-1">
+                  <p id="name-error" role="alert" className="text-sm text-destructive mt-1">
                     {signUpForm.formState.errors.name.message}
                   </p>
                 )}
