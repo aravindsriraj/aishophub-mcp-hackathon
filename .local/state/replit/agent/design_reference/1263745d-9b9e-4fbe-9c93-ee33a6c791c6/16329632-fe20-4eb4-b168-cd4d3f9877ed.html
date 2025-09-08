@@ -1,0 +1,1310 @@
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopHub - Your Ultimate Shopping Destination</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    borderRadius: {
+                        lg: "var(--radius)",
+                        md: "calc(var(--radius) - 2px)",
+                        sm: "calc(var(--radius) - 4px)",
+                    },
+                    colors: {
+                        background: "var(--background)",
+                        foreground: "var(--foreground)",
+                        card: {
+                            DEFAULT: "var(--card)",
+                            foreground: "var(--card-foreground)",
+                        },
+                        popover: {
+                            DEFAULT: "var(--popover)",
+                            foreground: "var(--popover-foreground)",
+                        },
+                        primary: {
+                            DEFAULT: "var(--primary)",
+                            foreground: "var(--primary-foreground)",
+                        },
+                        secondary: {
+                            DEFAULT: "var(--secondary)",
+                            foreground: "var(--secondary-foreground)",
+                        },
+                        muted: {
+                            DEFAULT: "var(--muted)",
+                            foreground: "var(--muted-foreground)",
+                        },
+                        accent: {
+                            DEFAULT: "var(--accent)",
+                            foreground: "var(--accent-foreground)",
+                        },
+                        destructive: {
+                            DEFAULT: "var(--destructive)",
+                            foreground: "var(--destructive-foreground)",
+                        },
+                        border: "var(--border)",
+                        input: "var(--input)",
+                        ring: "var(--ring)",
+                        chart: {
+                            "1": "var(--chart-1)",
+                            "2": "var(--chart-2)",
+                            "3": "var(--chart-3)",
+                            "4": "var(--chart-4)",
+                            "5": "var(--chart-5)",
+                        }
+                    },
+                    fontFamily: {
+                        sans: ["var(--font-sans)"],
+                        serif: ["var(--font-serif)"],
+                        mono: ["var(--font-mono)"],
+                    }
+                },
+            }
+        };
+    </script>
+    <style>
+        :root {
+            --card: hsl(180 6.6667% 97.0588%);
+            --ring: hsl(166.76, 29.82%, 44.71%);
+            --input: hsl(35.29, 11.41%, 70.78%);
+            --muted: hsl(72, 12.82%, 84.71%);
+            --accent: hsl(292.13, 48.03%, 75.1%);
+            --border: hsl(35, 10.53%, 77.65%);
+            --radius: 0.875rem;
+            --shadow: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+            --chart-1: hsl(203.8863 88.2845% 53.1373%);
+            --chart-2: hsl(159.7826 100% 36.0784%);
+            --chart-3: hsl(42.0290 92.8251% 56.2745%);
+            --chart-4: hsl(147.1429 78.5047% 41.9608%);
+            --chart-5: hsl(341.4894 75.2000% 50.9804%);
+            --popover: hsl(0 0% 100%);
+            --primary: hsl(165.65, 26.44%, 65.88%);
+            --sidebar: hsl(180 6.6667% 97.0588%);
+            --spacing: 0.25rem;
+            --font-mono: 'IBM Plex Mono', monospace;
+            --font-sans: 'Inter', sans-serif;
+            --secondary: hsl(0, 0%, 8.24%);
+            --shadow-lg: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 4px 6px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+            --shadow-md: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 2px 4px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+            --shadow-sm: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+            --shadow-xl: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 8px 10px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+            --shadow-xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);
+            --background: hsl(70.91, 21.57%, 90%);
+            --font-serif: 'Source Serif Pro', serif;
+            --foreground: hsl(0, 0%, 8.24%);
+            --shadow-2xl: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);
+            --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);
+            --destructive: hsl(0.49, 54.19%, 55.49%);
+            --sidebar-ring: hsl(202.8169 89.1213% 53.1373%);
+            --sidebar-accent: hsl(211.5789 51.3514% 92.7451%);
+            --sidebar-border: hsl(205.0000 25.0000% 90.5882%);
+            --card-foreground: hsl(210 25% 7.8431%);
+            --sidebar-primary: hsl(203.8863 88.2845% 53.1373%);
+            --tracking-normal: 0em;
+            --muted-foreground: hsl(72, 2.39%, 40.98%);
+            --accent-foreground: hsl(0, 0%, 8.24%);
+            --popover-foreground: hsl(210 25% 7.8431%);
+            --primary-foreground: hsl(0, 0%, 8.24%);
+            --sidebar-foreground: hsl(210 25% 7.8431%);
+            --secondary-foreground: hsl(70.91, 21.57%, 90%);
+            --destructive-foreground: hsl(0 0% 100%);
+            --sidebar-accent-foreground: hsl(203.8863 88.2845% 53.1373%);
+            --sidebar-primary-foreground: hsl(0 0% 100%);
+        }
+
+        .dark {
+            --card: hsl(228 9.8039% 10%);
+            --ring: hsl(202.8169 89.1213% 53.1373%);
+            --input: hsl(207.6923 27.6596% 18.4314%);
+            --muted: hsl(0 0% 9.4118%);
+            --accent: hsl(205.7143 70% 7.8431%);
+            --border: hsl(210 5.2632% 14.9020%);
+            --radius: 1.3rem;
+            --shadow: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+            --chart-1: hsl(203.8863 88.2845% 53.1373%);
+            --chart-2: hsl(159.7826 100% 36.0784%);
+            --chart-3: hsl(42.0290 92.8251% 56.2745%);
+            --chart-4: hsl(147.1429 78.5047% 41.9608%);
+            --chart-5: hsl(341.4894 75.2000% 50.9804%);
+            --popover: hsl(0 0% 0%);
+            --primary: hsl(203.7736 87.6033% 52.5490%);
+            --sidebar: hsl(228 9.8039% 10%);
+            --spacing: 0.25rem;
+            --font-mono: Menlo, monospace;
+            --font-sans: Open Sans, sans-serif;
+            --secondary: hsl(195.0000 15.3846% 94.9020%);
+            --shadow-lg: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 4px 6px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+            --shadow-md: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 2px 4px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+            --shadow-sm: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 1px 2px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+            --shadow-xl: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00), 0px 8px 10px -1px hsl(202.8169 89.1213% 53.1373% / 0.00);
+            --shadow-xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);
+            --background: hsl(0 0% 0%);
+            --font-serif: Georgia, serif;
+            --foreground: hsl(200 6.6667% 91.1765%);
+            --shadow-2xl: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);
+            --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);
+            --destructive: hsl(356.3033 90.5579% 54.3137%);
+            --sidebar-ring: hsl(202.8169 89.1213% 53.1373%);
+            --sidebar-accent: hsl(205.7143 70% 7.8431%);
+            --sidebar-border: hsl(205.7143 15.7895% 26.0784%);
+            --card-foreground: hsl(0 0% 85.0980%);
+            --sidebar-primary: hsl(202.8169 89.1213% 53.1373%);
+            --tracking-normal: 0em;
+            --muted-foreground: hsl(210 3.3898% 46.2745%);
+            --accent-foreground: hsl(203.7736 87.6033% 52.5490%);
+            --popover-foreground: hsl(200 6.6667% 91.1765%);
+            --primary-foreground: hsl(0 0% 100%);
+            --sidebar-foreground: hsl(0 0% 85.0980%);
+            --secondary-foreground: hsl(210 25% 7.8431%);
+            --destructive-foreground: hsl(0 0% 100%);
+            --sidebar-accent-foreground: hsl(203.7736 87.6033% 52.5490%);
+            --sidebar-primary-foreground: hsl(0 0% 100%);
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+Pro:wght@400;600&display=swap');
+        
+        .animate-pulse-slow {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        .transition-all-smooth {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+        
+        .product-image {
+            transition: transform 0.3s ease;
+        }
+        
+        .blur-backdrop {
+            backdrop-filter: blur(10px);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-background text-foreground font-sans antialiased min-h-screen">
+    <!-- @COMPONENT: Header -->
+    <header class="sticky top-0 z-50 w-full border-b border-border bg-background/95 blur-backdrop">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex h-16 items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="bg-primary text-primary-foreground rounded-lg p-2">
+                        <i class="fas fa-shopping-bag text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-foreground">ShopHub</span>
+                </div>
+
+                <!-- Search Bar - Hidden on mobile, shown on md+ -->
+                <div class="hidden md:flex flex-1 max-w-2xl mx-8">
+                    <div class="relative w-full">
+                        <input 
+                            type="text" 
+                            placeholder="Search products..." 
+                            class="w-full px-4 py-2 pl-10 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            data-bind="searchQuery"
+                            data-event="input:handleSearch"
+                        >
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"></i>
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-primary text-primary-foreground px-3 py-1 rounded-md text-sm hover:bg-primary/90 transition-colors">
+                            Search
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="flex items-center space-x-4">
+                    <!-- Theme Toggle -->
+                    <button class="p-2 rounded-lg hover:bg-accent transition-colors" data-event="click:toggleTheme">
+                        <i class="fas fa-moon text-muted-foreground"></i>
+                    </button>
+
+                    <!-- Cart -->
+                    <button class="relative p-2 rounded-lg hover:bg-accent transition-colors" data-event="click:openCart">
+                        <i class="fas fa-shopping-cart text-muted-foreground"></i>
+                        <span class="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center" data-bind="cartCount">3</span>
+                    </button>
+
+                    <!-- User Menu -->
+                    <div class="relative">
+                        <button class="flex items-center space-x-2 p-2 rounded-lg hover:bg-accent transition-colors" data-event="click:toggleUserMenu">
+                            <i class="fas fa-user text-muted-foreground"></i>
+                            <span class="hidden md:inline text-sm font-medium" data-bind="user.name">John Doe</span>
+                            <i class="fas fa-chevron-down text-xs text-muted-foreground"></i>
+                        </button>
+                        
+                        <!-- User Dropdown -->
+                        <div class="absolute right-0 mt-2 w-48 bg-popover border border-border rounded-lg shadow-lg hidden" id="user-menu">
+                            <div class="py-1">
+                                <a href="#" class="block px-4 py-2 text-sm hover:bg-accent transition-colors">Profile</a>
+                                <a href="#" class="block px-4 py-2 text-sm hover:bg-accent transition-colors">Orders</a>
+                                <a href="#" class="block px-4 py-2 text-sm hover:bg-accent transition-colors">Settings</a>
+                                <hr class="my-1 border-border">
+                                <a href="#" class="block px-4 py-2 text-sm text-destructive hover:bg-accent transition-colors" data-event="click:logout">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Mobile Search Bar -->
+        <div class="md:hidden px-4 pb-4">
+            <div class="relative">
+                <input 
+                    type="text" 
+                    placeholder="Search products..." 
+                    class="w-full px-4 py-2 pl-10 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                >
+                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"></i>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: Header -->
+
+    <div class="flex min-h-screen">
+        <!-- @COMPONENT: Sidebar Filters -->
+        <aside class="hidden lg:block w-64 bg-card border-r border-border">
+            <div class="p-6">
+                <h2 class="text-lg font-semibold mb-4">Filters</h2>
+                
+                <!-- Categories -->
+                <div class="mb-6">
+                    <h3 class="text-sm font-medium mb-3 text-muted-foreground">Categories</h3>
+                    <div class="space-y-2">
+                        <!-- @MAP: categories.map(category => ( -->
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" class="rounded border-border text-primary focus:ring-primary" data-mock="true">
+                            <span class="text-sm">Computers & Accessories</span>
+                            <span class="text-xs text-muted-foreground ml-auto">425</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" class="rounded border-border text-primary focus:ring-primary" data-mock="true">
+                            <span class="text-sm">Electronics</span>
+                            <span class="text-xs text-muted-foreground ml-auto">312</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" class="rounded border-border text-primary focus:ring-primary" data-mock="true">
+                            <span class="text-sm">Home & Garden</span>
+                            <span class="text-xs text-muted-foreground ml-auto">189</span>
+                        </label>
+                        <!-- @END_MAP )) -->
+                    </div>
+                </div>
+
+                <!-- Price Range -->
+                <div class="mb-6">
+                    <h3 class="text-sm font-medium mb-3 text-muted-foreground">Price Range</h3>
+                    <div class="space-y-3">
+                        <div class="flex space-x-2">
+                            <input 
+                                type="number" 
+                                placeholder="Min" 
+                                class="w-full px-3 py-2 bg-background border border-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                                data-bind="filters.priceMin"
+                            >
+                            <input 
+                                type="number" 
+                                placeholder="Max" 
+                                class="w-full px-3 py-2 bg-background border border-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                                data-bind="filters.priceMax"
+                            >
+                        </div>
+                        <button class="w-full bg-primary text-primary-foreground py-2 rounded-md text-sm hover:bg-primary/90 transition-colors" data-event="click:applyPriceFilter">
+                            Apply
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Rating -->
+                <div class="mb-6">
+                    <h3 class="text-sm font-medium mb-3 text-muted-foreground">Rating</h3>
+                    <div class="space-y-2">
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="rating" class="text-primary focus:ring-primary" data-mock="true">
+                            <div class="flex items-center">
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                </div>
+                                <span class="text-sm ml-2">5 stars</span>
+                            </div>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="rating" class="text-primary focus:ring-primary" data-mock="true">
+                            <div class="flex items-center">
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="far fa-star text-xs"></i>
+                                </div>
+                                <span class="text-sm ml-2">4+ stars</span>
+                            </div>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="radio" name="rating" class="text-primary focus:ring-primary" data-mock="true">
+                            <div class="flex items-center">
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="far fa-star text-xs"></i>
+                                    <i class="far fa-star text-xs"></i>
+                                </div>
+                                <span class="text-sm ml-2">3+ stars</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Clear Filters -->
+                <button class="w-full bg-secondary text-secondary-foreground py-2 rounded-md text-sm hover:bg-secondary/90 transition-colors" data-event="click:clearFilters">
+                    Clear All Filters
+                </button>
+            </div>
+        </aside>
+        <!-- @END_COMPONENT: Sidebar Filters -->
+
+        <!-- @COMPONENT: Main Content -->
+        <main class="flex-1 p-4 lg:p-6">
+            <!-- Toolbar -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <div>
+                    <h1 class="text-2xl font-bold">All Products</h1>
+                    <p class="text-muted-foreground" data-bind="productsCount">Showing 1-20 of 1,467 products</p>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <!-- Mobile Filter Toggle -->
+                    <button class="lg:hidden flex items-center space-x-2 px-4 py-2 bg-card border border-border rounded-lg hover:bg-accent transition-colors" data-event="click:toggleMobileFilters">
+                        <i class="fas fa-filter"></i>
+                        <span>Filters</span>
+                    </button>
+                    
+                    <!-- Sort Dropdown -->
+                    <select class="px-4 py-2 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" data-bind="sortBy">
+                        <option value="relevance">Sort by Relevance</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="rating">Customer Rating</option>
+                        <option value="newest">Newest Arrivals</option>
+                    </select>
+                    
+                    <!-- View Toggle -->
+                    <div class="flex rounded-lg border border-border overflow-hidden">
+                        <button class="p-2 bg-primary text-primary-foreground" data-event="click:setGridView">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button class="p-2 bg-card hover:bg-accent transition-colors" data-event="click:setListView">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+                <!-- @MAP: products.map(product => ( -->
+                
+                <!-- Product Card 1 -->
+                <div class="product-card bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all-smooth group" data-mock="true">
+                    <div class="relative overflow-hidden">
+                        <!-- Modern USB-C cable product -->
+                        <img 
+                            src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300" 
+                            alt="USB-C charging cable with braided design" 
+                            class="product-image w-full h-48 object-cover"
+                        >
+                        <div class="absolute top-2 left-2">
+                            <span class="bg-destructive text-destructive-foreground text-xs px-2 py-1 rounded-full font-medium">64% OFF</span>
+                        </div>
+                        <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button class="bg-background/80 text-foreground p-2 rounded-full hover:bg-background transition-colors" data-event="click:addToWishlist">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button class="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors" data-event="click:quickView">
+                                Quick View
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-1">
+                                <div class="flex text-yellow-400 text-sm">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <span class="text-sm text-muted-foreground">(24,269)</span>
+                            </div>
+                        </div>
+                        
+                        <h3 class="font-medium text-sm mb-2 line-clamp-2 group-hover:text-primary transition-colors" data-bind="product.name">
+                            Wayona Nylon Braided USB to Lightning Fast Charging Cable
+                        </h3>
+                        
+                        <p class="text-xs text-muted-foreground mb-3 line-clamp-2" data-bind="product.category">
+                            Computers & Accessories | USB Cables
+                        </p>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-lg font-bold text-primary" data-bind="product.discountedPrice">₹399</span>
+                                <span class="text-sm text-muted-foreground line-through" data-bind="product.actualPrice">₹1,099</span>
+                            </div>
+                            <button class="bg-primary text-primary-foreground p-2 rounded-lg hover:bg-primary/90 transition-colors" data-event="click:addToCart">
+                                <i class="fas fa-plus text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 2 -->
+                <div class="product-card bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all-smooth group" data-mock="true">
+                    <div class="relative overflow-hidden">
+                        <!-- Smart TV product -->
+                        <img 
+                            src="https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300" 
+                            alt="32-inch smart LED TV with sleek black frame" 
+                            class="product-image w-full h-48 object-cover"
+                        >
+                        <div class="absolute top-2 left-2">
+                            <span class="bg-destructive text-destructive-foreground text-xs px-2 py-1 rounded-full font-medium">44% OFF</span>
+                        </div>
+                        <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button class="bg-background/80 text-foreground p-2 rounded-full hover:bg-background transition-colors">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button class="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                                Quick View
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-1">
+                                <div class="flex text-yellow-400 text-sm">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <span class="text-sm text-muted-foreground">(32,840)</span>
+                            </div>
+                        </div>
+                        
+                        <h3 class="font-medium text-sm mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                            MI 80 cm (32 inches) 5A Series HD Ready Smart Android LED TV
+                        </h3>
+                        
+                        <p class="text-xs text-muted-foreground mb-3 line-clamp-2">
+                            Electronics | Home Theater, TV & Video
+                        </p>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-lg font-bold text-primary">₹13,999</span>
+                                <span class="text-sm text-muted-foreground line-through">₹24,999</span>
+                            </div>
+                            <button class="bg-primary text-primary-foreground p-2 rounded-lg hover:bg-primary/90 transition-colors">
+                                <i class="fas fa-plus text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 3 -->
+                <div class="product-card bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all-smooth group" data-mock="true">
+                    <div class="relative overflow-hidden">
+                        <!-- WiFi adapter product -->
+                        <img 
+                            src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300" 
+                            alt="Compact USB WiFi adapter for desktop computers" 
+                            class="product-image w-full h-48 object-cover"
+                        >
+                        <div class="absolute top-2 left-2">
+                            <span class="bg-destructive text-destructive-foreground text-xs px-2 py-1 rounded-full font-medium">50% OFF</span>
+                        </div>
+                        <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button class="bg-background/80 text-foreground p-2 rounded-full hover:bg-background transition-colors">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button class="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                                Quick View
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-1">
+                                <div class="flex text-yellow-400 text-sm">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <span class="text-sm text-muted-foreground">(1,79,691)</span>
+                            </div>
+                        </div>
+                        
+                        <h3 class="font-medium text-sm mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                            TP-Link USB WiFi Adapter for PC N150 Wireless Network Adapter
+                        </h3>
+                        
+                        <p class="text-xs text-muted-foreground mb-3 line-clamp-2">
+                            Computers & Accessories | Network Adapters
+                        </p>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-lg font-bold text-primary">₹499</span>
+                                <span class="text-sm text-muted-foreground line-through">₹999</span>
+                            </div>
+                            <button class="bg-primary text-primary-foreground p-2 rounded-lg hover:bg-primary/90 transition-colors">
+                                <i class="fas fa-plus text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 4 -->
+                <div class="product-card bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all-smooth group" data-mock="true">
+                    <div class="relative overflow-hidden">
+                        <!-- HDMI cable product -->
+                        <img 
+                            src="https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300" 
+                            alt="Premium HDMI cable with gold-plated connectors" 
+                            class="product-image w-full h-48 object-cover"
+                        >
+                        <div class="absolute top-2 left-2">
+                            <span class="bg-destructive text-destructive-foreground text-xs px-2 py-1 rounded-full font-medium">69% OFF</span>
+                        </div>
+                        <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button class="bg-background/80 text-foreground p-2 rounded-full hover:bg-background transition-colors">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button class="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                                Quick View
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-1">
+                                <div class="flex text-yellow-400 text-sm">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-sm text-muted-foreground">(4,26,973)</span>
+                            </div>
+                        </div>
+                        
+                        <h3 class="font-medium text-sm mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                            AmazonBasics Flexible Premium HDMI Cable (Black, 4K@60Hz)
+                        </h3>
+                        
+                        <p class="text-xs text-muted-foreground mb-3 line-clamp-2">
+                            Electronics | Home Theater, TV & Video | HDMI Cables
+                        </p>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-lg font-bold text-primary">₹219</span>
+                                <span class="text-sm text-muted-foreground line-through">₹700</span>
+                            </div>
+                            <button class="bg-primary text-primary-foreground p-2 rounded-lg hover:bg-primary/90 transition-colors">
+                                <i class="fas fa-plus text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Repeat pattern for more products -->
+                <div class="product-card bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all-smooth group" data-mock="true">
+                    <div class="relative overflow-hidden">
+                        <!-- Smartphone charging cable -->
+                        <img 
+                            src="https://pixabay.com/get/gdbbdb6483916b8ba878492b45dce891aa2e8c02bf8863dd9300ae3abb4fc1302472e62878a0f9ab17091b9ede5e0f1833e4ac811efa3f736b073ae7602ccb6b9_1280.jpg" 
+                            alt="Braided smartphone charging cable with multiple connectors" 
+                            class="product-image w-full h-48 object-cover"
+                        >
+                        <div class="absolute top-2 left-2">
+                            <span class="bg-destructive text-destructive-foreground text-xs px-2 py-1 rounded-full font-medium">53% OFF</span>
+                        </div>
+                        <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button class="bg-background/80 text-foreground p-2 rounded-full hover:bg-background transition-colors">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button class="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                                Quick View
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-1">
+                                <div class="flex text-yellow-400 text-sm">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <span class="text-sm text-muted-foreground">(94,363)</span>
+                            </div>
+                        </div>
+                        
+                        <h3 class="font-medium text-sm mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                            boAt Deuce USB 300 2 in 1 Type-C & Micro USB Cable
+                        </h3>
+                        
+                        <p class="text-xs text-muted-foreground mb-3 line-clamp-2">
+                            Computers & Accessories | USB Cables
+                        </p>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-lg font-bold text-primary">₹329</span>
+                                <span class="text-sm text-muted-foreground line-through">₹699</span>
+                            </div>
+                            <button class="bg-primary text-primary-foreground p-2 rounded-lg hover:bg-primary/90 transition-colors">
+                                <i class="fas fa-plus text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all-smooth group" data-mock="true">
+                    <div class="relative overflow-hidden">
+                        <!-- LED Smart TV -->
+                        <img 
+                            src="https://images.unsplash.com/photo-1593784991095-a205069470b6?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300" 
+                            alt="Large flat screen LED smart TV displaying vibrant colors" 
+                            class="product-image w-full h-48 object-cover"
+                        >
+                        <div class="absolute top-2 left-2">
+                            <span class="bg-destructive text-destructive-foreground text-xs px-2 py-1 rounded-full font-medium">39% OFF</span>
+                        </div>
+                        <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button class="bg-background/80 text-foreground p-2 rounded-full hover:bg-background transition-colors">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button class="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                                Quick View
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-1">
+                                <div class="flex text-yellow-400 text-sm">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <span class="text-sm text-muted-foreground">(11,976)</span>
+                            </div>
+                        </div>
+                        
+                        <h3 class="font-medium text-sm mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                            LG 80 cm (32 inches) HD Ready Smart LED TV 32LM563BPTC
+                        </h3>
+                        
+                        <p class="text-xs text-muted-foreground mb-3 line-clamp-2">
+                            Electronics | Home Theater, TV & Video
+                        </p>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-lg font-bold text-primary">₹13,490</span>
+                                <span class="text-sm text-muted-foreground line-through">₹21,990</span>
+                            </div>
+                            <button class="bg-primary text-primary-foreground p-2 rounded-lg hover:bg-primary/90 transition-colors">
+                                <i class="fas fa-plus text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all-smooth group" data-mock="true">
+                    <div class="relative overflow-hidden">
+                        <!-- Computer accessories -->
+                        <img 
+                            src="https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300" 
+                            alt="Modern computer peripherals and accessories on desk" 
+                            class="product-image w-full h-48 object-cover"
+                        >
+                        <div class="absolute top-2 left-2">
+                            <span class="bg-destructive text-destructive-foreground text-xs px-2 py-1 rounded-full font-medium">85% OFF</span>
+                        </div>
+                        <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button class="bg-background/80 text-foreground p-2 rounded-full hover:bg-background transition-colors">
+                                <i class="far fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button class="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                                Quick View
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-1">
+                                <div class="flex text-yellow-400 text-sm">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <span class="text-sm text-muted-foreground">(24,871)</span>
+                            </div>
+                        </div>
+                        
+                        <h3 class="font-medium text-sm mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                            pTron Solero TB301 3A Type-C Data and Fast Charging Cable
+                        </h3>
+                        
+                        <p class="text-xs text-muted-foreground mb-3 line-clamp-2">
+                            Computers & Accessories | USB Cables
+                        </p>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-lg font-bold text-primary">₹149</span>
+                                <span class="text-sm text-muted-foreground line-through">₹1,000</span>
+                            </div>
+                            <button class="bg-primary text-primary-foreground p-2 rounded-lg hover:bg-primary/90 transition-colors">
+                                <i class="fas fa-plus text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- @END_MAP )) -->
+            </div>
+
+            <!-- Pagination -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p class="text-sm text-muted-foreground">
+                    Showing <span class="font-medium">1</span> to <span class="font-medium">20</span> of <span class="font-medium">1,467</span> results
+                </p>
+                
+                <nav class="flex items-center space-x-2">
+                    <button class="px-3 py-2 text-sm border border-border rounded-lg hover:bg-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled data-event="click:previousPage">
+                        <i class="fas fa-chevron-left mr-1"></i>
+                        Previous
+                    </button>
+                    
+                    <div class="flex items-center space-x-1">
+                        <button class="px-3 py-2 text-sm bg-primary text-primary-foreground rounded-lg">1</button>
+                        <button class="px-3 py-2 text-sm border border-border rounded-lg hover:bg-accent transition-colors">2</button>
+                        <button class="px-3 py-2 text-sm border border-border rounded-lg hover:bg-accent transition-colors">3</button>
+                        <span class="px-2 text-muted-foreground">...</span>
+                        <button class="px-3 py-2 text-sm border border-border rounded-lg hover:bg-accent transition-colors">74</button>
+                    </div>
+                    
+                    <button class="px-3 py-2 text-sm border border-border rounded-lg hover:bg-accent transition-colors" data-event="click:nextPage">
+                        Next
+                        <i class="fas fa-chevron-right ml-1"></i>
+                    </button>
+                </nav>
+            </div>
+        </main>
+        <!-- @END_COMPONENT: Main Content -->
+    </div>
+
+    <!-- @COMPONENT: Shopping Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed inset-y-0 right-0 z-50 w-80 bg-card border-l border-border transform translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="flex flex-col h-full">
+            <div class="flex items-center justify-between p-4 border-b border-border">
+                <h2 class="text-lg font-semibold">Shopping Cart</h2>
+                <button class="p-2 hover:bg-accent rounded-lg transition-colors" data-event="click:closeCart">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-4">
+                <!-- Cart Items -->
+                <div class="space-y-4" data-mock="true">
+                    <!-- @MAP: cartItems.map(item => ( -->
+                    <div class="flex items-center space-x-3 p-3 bg-background rounded-lg">
+                        <img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?ixlib=rb-4.0.3&auto=format&fit=crop&w=60&h=60" alt="Product image" class="w-12 h-12 object-cover rounded">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-medium line-clamp-2">Wayona Nylon Braided USB Cable</h4>
+                            <p class="text-xs text-muted-foreground">₹399</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs" data-event="click:decreaseQuantity">-</button>
+                            <span class="text-sm w-8 text-center">1</span>
+                            <button class="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs" data-event="click:increaseQuantity">+</button>
+                        </div>
+                        <button class="text-destructive hover:bg-destructive/10 p-1 rounded" data-event="click:removeFromCart">
+                            <i class="fas fa-trash text-xs"></i>
+                        </button>
+                    </div>
+                    <!-- @END_MAP )) -->
+                </div>
+            </div>
+            
+            <div class="border-t border-border p-4 space-y-4">
+                <div class="flex items-center justify-between text-lg font-semibold">
+                    <span>Total:</span>
+                    <span data-bind="cart.total">₹1,267</span>
+                </div>
+                <button class="w-full bg-primary text-primary-foreground py-3 rounded-lg hover:bg-primary/90 transition-colors" data-event="click:checkout">
+                    Proceed to Checkout
+                </button>
+                <button class="w-full bg-secondary text-secondary-foreground py-2 rounded-lg hover:bg-secondary/90 transition-colors" data-event="click:continueShopping">
+                    Continue Shopping
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: Shopping Cart Sidebar -->
+
+    <!-- @COMPONENT: Quick View Modal -->
+    <div id="quick-view-modal" class="fixed inset-0 z-50 hidden">
+        <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" data-event="click:closeQuickView"></div>
+        <div class="fixed inset-0 flex items-center justify-center p-4">
+            <div class="bg-card rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="sticky top-0 bg-card border-b border-border p-4 flex items-center justify-between">
+                    <h2 class="text-xl font-semibold">Quick View</h2>
+                    <button class="p-2 hover:bg-accent rounded-lg transition-colors" data-event="click:closeQuickView">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="p-6">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=400" alt="Product image" class="w-full rounded-lg">
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-center space-x-2 mb-3">
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <span class="text-muted-foreground">(24,269 reviews)</span>
+                            </div>
+                            
+                            <h1 class="text-2xl font-bold mb-4" data-bind="quickViewProduct.name">Wayona Nylon Braided USB to Lightning Fast Charging Cable</h1>
+                            
+                            <div class="flex items-center space-x-4 mb-6">
+                                <span class="text-3xl font-bold text-primary" data-bind="quickViewProduct.discountedPrice">₹399</span>
+                                <span class="text-xl text-muted-foreground line-through" data-bind="quickViewProduct.actualPrice">₹1,099</span>
+                                <span class="bg-destructive text-destructive-foreground px-2 py-1 rounded-full text-sm font-medium">64% OFF</span>
+                            </div>
+                            
+                            <div class="space-y-4 mb-6">
+                                <div>
+                                    <h3 class="font-medium mb-2">Description</h3>
+                                    <p class="text-muted-foreground text-sm" data-bind="quickViewProduct.description">High Compatibility: Compatible With iPhone 12, 11, X/XsMax/Xr, iPhone 8/8 Plus, iPhone 7/7 Plus, iPhone 6s/6s Plus, iPhone 6/6 Plus, iPhone 5/5s/5c/se, iPad Pro, iPad Air 1/2, iPad mini 1/2/3, iPod...</p>
+                                </div>
+                                
+                                <div>
+                                    <h3 class="font-medium mb-2">Category</h3>
+                                    <p class="text-muted-foreground text-sm">Computers & Accessories | USB Cables</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex space-x-4">
+                                <button class="flex-1 bg-primary text-primary-foreground py-3 rounded-lg hover:bg-primary/90 transition-colors" data-event="click:addToCartFromQuickView">
+                                    <i class="fas fa-shopping-cart mr-2"></i>
+                                    Add to Cart
+                                </button>
+                                <button class="px-6 py-3 border border-border rounded-lg hover:bg-accent transition-colors" data-event="click:addToWishlistFromQuickView">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: Quick View Modal -->
+
+    <!-- @COMPONENT: Authentication Modal -->
+    <div id="auth-modal" class="fixed inset-0 z-50 hidden">
+        <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" data-event="click:closeAuthModal"></div>
+        <div class="fixed inset-0 flex items-center justify-center p-4">
+            <div class="bg-card rounded-lg max-w-md w-full p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold" id="auth-modal-title">Sign In</h2>
+                    <button class="p-2 hover:bg-accent rounded-lg transition-colors" data-event="click:closeAuthModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <!-- Sign In Form -->
+                <form id="signin-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Email</label>
+                        <input 
+                            type="email" 
+                            required
+                            class="w-full px-3 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="Enter your email"
+                            data-bind="signin.email"
+                        >
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Password</label>
+                        <input 
+                            type="password" 
+                            required
+                            class="w-full px-3 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="Enter your password"
+                            data-bind="signin.password"
+                        >
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="rounded border-border text-primary focus:ring-primary">
+                            <span class="ml-2 text-sm">Remember me</span>
+                        </label>
+                        <a href="#" class="text-sm text-primary hover:underline">Forgot password?</a>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-primary text-primary-foreground py-2 rounded-lg hover:bg-primary/90 transition-colors" data-event="submit:handleSignIn">
+                        Sign In
+                    </button>
+                </form>
+                
+                <!-- Sign Up Form -->
+                <form id="signup-form" class="space-y-4 hidden">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Full Name</label>
+                        <input 
+                            type="text" 
+                            required
+                            class="w-full px-3 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="Enter your full name"
+                            data-bind="signup.name"
+                        >
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Email</label>
+                        <input 
+                            type="email" 
+                            required
+                            class="w-full px-3 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="Enter your email"
+                            data-bind="signup.email"
+                        >
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Password</label>
+                        <input 
+                            type="password" 
+                            required
+                            class="w-full px-3 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="Create a password"
+                            data-bind="signup.password"
+                        >
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Confirm Password</label>
+                        <input 
+                            type="password" 
+                            required
+                            class="w-full px-3 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="Confirm your password"
+                            data-bind="signup.confirmPassword"
+                        >
+                    </div>
+                    
+                    <div>
+                        <label class="flex items-center">
+                            <input type="checkbox" required class="rounded border-border text-primary focus:ring-primary">
+                            <span class="ml-2 text-sm">I agree to the <a href="#" class="text-primary hover:underline">Terms & Conditions</a></span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-primary text-primary-foreground py-2 rounded-lg hover:bg-primary/90 transition-colors" data-event="submit:handleSignUp">
+                        Create Account
+                    </button>
+                </form>
+                
+                <div class="mt-6 text-center">
+                    <p class="text-sm text-muted-foreground">
+                        <span id="auth-toggle-text">Don't have an account?</span>
+                        <button class="text-primary hover:underline ml-1" id="auth-toggle-btn" data-event="click:toggleAuthMode">Sign up</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: Authentication Modal -->
+
+    <!-- @COMPONENT: Mobile Filter Sidebar -->
+    <div id="mobile-filters" class="fixed inset-y-0 left-0 z-40 w-64 bg-card border-r border-border transform -translate-x-full transition-transform duration-300 ease-in-out lg:hidden">
+        <div class="flex flex-col h-full">
+            <div class="flex items-center justify-between p-4 border-b border-border">
+                <h2 class="text-lg font-semibold">Filters</h2>
+                <button class="p-2 hover:bg-accent rounded-lg transition-colors" data-event="click:closeMobileFilters">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-4">
+                <!-- Same filter content as sidebar -->
+                <div class="space-y-6">
+                    <!-- Categories -->
+                    <div>
+                        <h3 class="text-sm font-medium mb-3 text-muted-foreground">Categories</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" class="rounded border-border text-primary focus:ring-primary">
+                                <span class="text-sm">Computers & Accessories</span>
+                                <span class="text-xs text-muted-foreground ml-auto">425</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" class="rounded border-border text-primary focus:ring-primary">
+                                <span class="text-sm">Electronics</span>
+                                <span class="text-xs text-muted-foreground ml-auto">312</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" class="rounded border-border text-primary focus:ring-primary">
+                                <span class="text-sm">Home & Garden</span>
+                                <span class="text-xs text-muted-foreground ml-auto">189</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Price Range -->
+                    <div>
+                        <h3 class="text-sm font-medium mb-3 text-muted-foreground">Price Range</h3>
+                        <div class="space-y-3">
+                            <div class="flex space-x-2">
+                                <input type="number" placeholder="Min" class="w-full px-3 py-2 bg-background border border-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                                <input type="number" placeholder="Max" class="w-full px-3 py-2 bg-background border border-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                            </div>
+                            <button class="w-full bg-primary text-primary-foreground py-2 rounded-md text-sm hover:bg-primary/90 transition-colors">
+                                Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Rating -->
+                    <div>
+                        <h3 class="text-sm font-medium mb-3 text-muted-foreground">Rating</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="radio" name="mobile-rating" class="text-primary focus:ring-primary">
+                                <div class="flex items-center">
+                                    <div class="flex text-yellow-400">
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                    </div>
+                                    <span class="text-sm ml-2">5 stars</span>
+                                </div>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="radio" name="mobile-rating" class="text-primary focus:ring-primary">
+                                <div class="flex items-center">
+                                    <div class="flex text-yellow-400">
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="far fa-star text-xs"></i>
+                                    </div>
+                                    <span class="text-sm ml-2">4+ stars</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-border p-4">
+                <button class="w-full bg-secondary text-secondary-foreground py-2 rounded-md text-sm hover:bg-secondary/90 transition-colors">
+                    Clear All Filters
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: Mobile Filter Sidebar -->
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+        <div class="flex items-center justify-center h-full">
+            <div class="bg-card rounded-lg p-8 flex items-center space-x-4">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                <span class="text-lg font-medium">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // TODO: Implement full-stack functionality including:
+        // - NeonDB PostgreSQL integration for product data
+        // - User authentication with bcrypt password hashing
+        // - Product search and filtering APIs
+        // - Shopping cart state management
+        // - Pagination logic
+        // - Real-time updates and session management
+
+        // Basic interaction functionality for the mockup
+        (function() {
+            // Theme toggle
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('[data-event*="toggleTheme"]')) {
+                    document.documentElement.classList.toggle('dark');
+                }
+
+                // Cart sidebar toggle
+                if (e.target.closest('[data-event*="openCart"]')) {
+                    document.getElementById('cart-sidebar').classList.remove('translate-x-full');
+                }
+                if (e.target.closest('[data-event*="closeCart"]') || e.target.closest('[data-event*="continueShopping"]')) {
+                    document.getElementById('cart-sidebar').classList.add('translate-x-full');
+                }
+
+                // Quick view modal
+                if (e.target.closest('[data-event*="quickView"]')) {
+                    document.getElementById('quick-view-modal').classList.remove('hidden');
+                }
+                if (e.target.closest('[data-event*="closeQuickView"]')) {
+                    document.getElementById('quick-view-modal').classList.add('hidden');
+                }
+
+                // User menu dropdown
+                if (e.target.closest('[data-event*="toggleUserMenu"]')) {
+                    const menu = document.getElementById('user-menu');
+                    menu.classList.toggle('hidden');
+                }
+
+                // Mobile filters
+                if (e.target.closest('[data-event*="toggleMobileFilters"]')) {
+                    document.getElementById('mobile-filters').classList.remove('-translate-x-full');
+                }
+                if (e.target.closest('[data-event*="closeMobileFilters"]')) {
+                    document.getElementById('mobile-filters').classList.add('-translate-x-full');
+                }
+
+                // Auth modal
+                if (e.target.closest('[data-event*="login"]') || e.target.closest('[data-event*="signup"]')) {
+                    document.getElementById('auth-modal').classList.remove('hidden');
+                }
+                if (e.target.closest('[data-event*="closeAuthModal"]')) {
+                    document.getElementById('auth-modal').classList.add('hidden');
+                }
+
+                // Auth form toggle
+                if (e.target.closest('[data-event*="toggleAuthMode"]')) {
+                    const signinForm = document.getElementById('signin-form');
+                    const signupForm = document.getElementById('signup-form');
+                    const title = document.getElementById('auth-modal-title');
+                    const toggleText = document.getElementById('auth-toggle-text');
+                    const toggleBtn = document.getElementById('auth-toggle-btn');
+
+                    if (signinForm.classList.contains('hidden')) {
+                        signinForm.classList.remove('hidden');
+                        signupForm.classList.add('hidden');
+                        title.textContent = 'Sign In';
+                        toggleText.textContent = "Don't have an account?";
+                        toggleBtn.textContent = 'Sign up';
+                    } else {
+                        signinForm.classList.add('hidden');
+                        signupForm.classList.remove('hidden');
+                        title.textContent = 'Create Account';
+                        toggleText.textContent = 'Already have an account?';
+                        toggleBtn.textContent = 'Sign in';
+                    }
+                }
+            });
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('[data-event*="toggleUserMenu"]')) {
+                    document.getElementById('user-menu').classList.add('hidden');
+                }
+            });
+
+            // Simulate loading states
+            function showLoading() {
+                document.getElementById('loading-overlay').classList.remove('hidden');
+                setTimeout(() => {
+                    document.getElementById('loading-overlay').classList.add('hidden');
+                }, 1500);
+            }
+
+            // Add loading to form submissions and major actions
+            document.addEventListener('submit', function(e) {
+                e.preventDefault();
+                showLoading();
+            });
+
+            // Add some interactive feedback
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('[data-event*="addToCart"]')) {
+                    // Visual feedback for add to cart
+                    const button = e.target.closest('button');
+                    const original = button.innerHTML;
+                    button.innerHTML = '<i class="fas fa-check text-sm"></i>';
+                    button.classList.add('bg-green-500');
+                    setTimeout(() => {
+                        button.innerHTML = original;
+                        button.classList.remove('bg-green-500');
+                    }, 1000);
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
