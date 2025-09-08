@@ -94,7 +94,7 @@ AI Shopping Hub is a comprehensive e-commerce platform with all API endpoints ex
 
 ## Demo Video
 
-🎥 **[Demo Video Link - Coming Soon]**  
+🎥 [Demo Video Link](https://www.youtube.com/watch?v=Hx_OS-mpkPU) ✅
 *A comprehensive walkthrough of AI Shopping Hub's MCP server capabilities and semantic search features*
 
 ## What We'd Do With More Time
