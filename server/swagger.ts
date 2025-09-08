@@ -16,6 +16,14 @@ const options = {
       {
         url: 'https://aishophub.replit.app',
         description: 'AI Shop Hub Production Server'
+      },
+      {
+        url: 'https://0c266820-54a5-4fae-91bf-588b13fb49c7-00-2xj80jb8edwel.worf.replit.dev',
+        description: 'Development Server (Replit)'
+      },
+      {
+        url: 'http://localhost:5000',
+        description: 'Local Development Server'
       }
     ],
     components: {
