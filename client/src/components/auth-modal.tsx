@@ -94,15 +94,15 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md glass-dark">
         <DialogHeader className="text-center">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="bg-primary text-primary-foreground rounded-lg p-2">
-              <ShoppingBag className="h-6 w-6" />
+          <div className="flex items-center justify-center space-x-2 mb-4 animate-fadeIn">
+            <div className="btn-gradient text-white rounded-lg p-2 shadow-lg transform hover:scale-110 transition-transform">
+              <ShoppingBag className="h-6 w-6 animate-pulse" />
             </div>
-            <span className="text-2xl font-bold">ShopHub</span>
+            <span className="text-2xl font-bold text-gradient">ShopHub</span>
           </div>
-          <DialogTitle data-testid="auth-modal-title">
+          <DialogTitle data-testid="auth-modal-title" className="text-gradient text-center">
             {mode === "signin" ? "Sign In" : "Create Account"}
           </DialogTitle>
           <DialogDescription>
@@ -122,6 +122,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   id="signin-email"
                   type="email"
                   {...signInForm.register("email")}
+                  className="glass focus:scale-[1.02] transition-transform"
                   data-testid="input-signin-email"
                 />
                 {signInForm.formState.errors.email && (
@@ -136,6 +137,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   id="signin-password"
                   type="password"
                   {...signInForm.register("password")}
+                  className="glass focus:scale-[1.02] transition-transform"
                   data-testid="input-signin-password"
                 />
                 {signInForm.formState.errors.password && (
@@ -146,7 +148,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               </div>
               <Button 
                 type="submit" 
-                className="w-full" 
+                className="w-full btn-gradient text-white hover:scale-[1.02] transition-transform" 
                 disabled={isLoading}
                 data-testid="button-signin-submit"
               >
@@ -160,6 +162,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 <Input
                   id="signup-name"
                   {...signUpForm.register("name")}
+                  className="glass focus:scale-[1.02] transition-transform"
                   data-testid="input-signup-name"
                 />
                 {signUpForm.formState.errors.name && (
@@ -174,6 +177,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   id="signup-email"
                   type="email"
                   {...signUpForm.register("email")}
+                  className="glass focus:scale-[1.02] transition-transform"
                   data-testid="input-signup-email"
                 />
                 {signUpForm.formState.errors.email && (
@@ -188,6 +192,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   id="signup-password"
                   type="password"
                   {...signUpForm.register("password")}
+                  className="glass focus:scale-[1.02] transition-transform"
                   data-testid="input-signup-password"
                 />
                 {signUpForm.formState.errors.password && (
@@ -202,6 +207,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   id="signup-confirm-password"
                   type="password"
                   {...signUpForm.register("confirmPassword")}
+                  className="glass focus:scale-[1.02] transition-transform"
                   data-testid="input-signup-confirm-password"
                 />
                 {signUpForm.formState.errors.confirmPassword && (
@@ -212,7 +218,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               </div>
               <Button 
                 type="submit" 
-                className="w-full" 
+                className="w-full btn-gradient text-white hover:scale-[1.02] transition-transform" 
                 disabled={isLoading}
                 data-testid="button-signup-submit"
               >
