@@ -116,7 +116,7 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
 
   if (viewMode === "list") {
     return (
-      <Card className="group hover:shadow-lg transition-all duration-300" data-testid={`card-product-${product.id}`}>
+      <Card className="group glass-dark card-hover transition-all duration-300 hover:shadow-xl" data-testid={`card-product-${product.id}`}>
         <Link href={`/product/${product.id}`}>
           <CardContent className="p-4">
             <div className="flex gap-4">
@@ -196,30 +196,31 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
   }
 
   return (
-    <Card className="group hover:shadow-lg transition-all duration-300 overflow-hidden" data-testid={`card-product-${product.id}`}>
+    <Card className="group glass-dark card-hover transition-all duration-300 overflow-hidden" data-testid={`card-product-${product.id}`}>
       <Link href={`/product/${product.id}`}>
         <div className="relative overflow-hidden">
           <img
             src={getImageSrc()}
             alt={product.productName}
-            className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
             onError={() => setImageError(true)}
             data-testid={`img-product-${product.id}`}
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           {product.discountPercentage && (
-            <Badge variant="destructive" className="absolute top-2 left-2">
+            <Badge variant="destructive" className="absolute top-2 left-2 z-10 badge-animate">
               {product.discountPercentage} OFF
             </Badge>
           )}
           <Button
             variant="ghost"
             size="sm"
-            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-background/80 hover:bg-background"
+            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-110 glass z-10"
             onClick={handleWishlistToggle}
             disabled={isToggling}
             data-testid={`button-wishlist-${product.id}`}
           >
-            <Heart className={`h-4 w-4 ${isInWishlist(product.id) ? 'fill-red-500 text-red-500' : ''}`} />
+            <Heart className={`h-4 w-4 ${isInWishlist(product.id) ? 'fill-red-500 text-red-500 animate-pulse' : ''}`} />
           </Button>
         </div>
         
@@ -239,7 +240,7 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
             </div>
           </div>
           
-          <h3 className="font-medium text-sm mb-2 line-clamp-2 group-hover:text-primary transition-colors" data-testid={`text-name-${product.id}`}>
+          <h3 className="font-medium text-sm mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-300" data-testid={`text-name-${product.id}`}>
             {product.productName}
           </h3>
           
@@ -249,7 +250,7 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
           
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <span className="text-lg font-bold text-primary" data-testid={`text-price-${product.id}`}>
+              <span className="text-lg font-bold text-gradient" data-testid={`text-price-${product.id}`}>
                 {product.discountedPrice}
               </span>
               <span className="text-sm text-muted-foreground line-through">
@@ -260,6 +261,7 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
               size="sm"
               onClick={handleAddToCart}
               disabled={isLoading}
+              className="btn-gradient text-white hover:scale-105 transform transition-all duration-300"
               data-testid={`button-add-cart-${product.id}`}
             >
               <Plus className="h-4 w-4" />

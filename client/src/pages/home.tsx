@@ -62,13 +62,46 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground page-transition">
       <Header 
         onSearch={handleSearch}
         onCartToggle={() => setShowCart(true)}
         onAuthToggle={() => setShowAuth(true)}
         searchValue={search}
       />
+      
+      {/* Hero Section */}
+      {!search && !category && page === 1 && (
+        <section className="relative overflow-hidden px-4 py-12 mb-8">
+          <div className="animated-gradient absolute inset-0 opacity-10"></div>
+          <div className="relative max-w-7xl mx-auto text-center">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 animate-fadeIn" 
+                style={{animation: "fadeIn 0.8s ease-out"}}>
+              Discover Amazing Products
+            </h1>
+            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto" 
+               style={{animation: "fadeIn 0.8s ease-out 0.2s both"}}>
+              Shop the latest trends with AI-powered search and personalized recommendations
+            </p>
+            <div className="flex gap-4 justify-center" 
+                 style={{animation: "fadeIn 0.8s ease-out 0.4s both"}}>
+              <Button 
+                className="btn-gradient text-white px-8 py-6 text-lg"
+                onClick={() => document.getElementById('search-input')?.focus()}
+              >
+                Start Shopping
+              </Button>
+              <Button 
+                variant="outline" 
+                className="px-8 py-6 text-lg glass-dark hover:scale-105 transition-transform"
+                onClick={() => setShowMobileFilters(true)}
+              >
+                Browse Categories
+              </Button>
+            </div>
+          </div>
+        </section>
+      )}
       
       <div className="flex min-h-screen">
         <SidebarFilters
@@ -83,11 +116,15 @@ export default function Home() {
           onClose={() => setShowMobileFilters(false)}
         />
         
-        <main className="flex-1 p-4 lg:p-6">
+        <main className="flex-1 p-4 lg:p-6 page-transition">
           {/* Toolbar */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-            <div>
-              <h1 className="text-2xl font-bold" data-testid="page-title">All Products</h1>
+            <div className="page-transition">
+              <h1 className="text-3xl font-bold mb-2" data-testid="page-title">
+                {search ? `Search Results for "${search}"` : 
+                 category ? category : 
+                 'All Products'}
+              </h1>
               <p className="text-muted-foreground" data-testid="products-count">
                 {productsData ? 
                   `Showing ${((page - 1) * 20) + 1}-${Math.min(page * 20, productsData.pagination.total)} of ${productsData.pagination.total} products` :
@@ -149,8 +186,8 @@ export default function Home() {
           {isLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
               {Array.from({ length: 20 }).map((_, i) => (
-                <div key={i} className="space-y-4">
-                  <Skeleton className="h-48 w-full" />
+                <div key={i} className="space-y-4 glass-dark rounded-lg p-4 skeleton">
+                  <Skeleton className="h-48 w-full rounded-lg" />
                   <Skeleton className="h-4 w-3/4" />
                   <Skeleton className="h-4 w-1/2" />
                   <Skeleton className="h-6 w-1/4" />
@@ -170,12 +207,18 @@ export default function Home() {
                 ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" 
                 : "grid-cols-1"
             }`}>
-              {productsData?.products.map((product) => (
-                <ProductCard
+              {productsData?.products.map((product, index) => (
+                <div
                   key={product.id}
-                  product={product}
-                  viewMode={viewMode}
-                />
+                  style={{
+                    animation: `fadeIn 0.5s ease-out ${index * 0.05}s both`
+                  }}
+                >
+                  <ProductCard
+                    product={product}
+                    viewMode={viewMode}
+                  />
+                </div>
               ))}
             </div>
           )}
