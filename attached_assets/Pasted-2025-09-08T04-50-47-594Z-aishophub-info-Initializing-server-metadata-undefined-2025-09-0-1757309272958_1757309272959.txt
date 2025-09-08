@@ -1,0 +1,174 @@
+2025-09-08T04:50:47.594Z [aishophub] [info] Initializing server... { metadata: undefined }
+2025-09-08T04:50:47.599Z [aishophub] [info] Initializing server... { metadata: undefined }
+2025-09-08T04:50:47.653Z [aishophub] [info] Using MCP server command: /Users/aravindan.tr/.nvm/versions/node/v20.15.0/bin/npx with args and path: {
+  metadata: {
+    args: [
+      '-y',
+      '@cequenceai/mcp-remote',
+      'https://ztaip-66mcc6n9-4xp4r634bq-uc.a.run.app/mcp',
+      '--timeout',
+      '120000',
+      '--retries',
+      '3',
+      [length]: 7
+    ],
+    paths: [
+      '/Users/aravindan.tr/.nvm/versions/node/v20.15.0/bin',
+      '/usr/local/bin',
+      '/opt/homebrew/bin',
+      '/usr/bin',
+      '/usr/bin',
+      '/bin',
+      '/usr/sbin',
+      '/sbin',
+      [length]: 8
+    ]
+  }
+} %o
+2025-09-08T04:50:47.660Z [aishophub] [info] Using MCP server command: /Users/aravindan.tr/.nvm/versions/node/v20.15.0/bin/npx with args and path: {
+  metadata: {
+    args: [
+      '-y',
+      '@cequenceai/mcp-remote',
+      'https://ztaip-66mcc6n9-4xp4r634bq-uc.a.run.app/mcp',
+      '--timeout',
+      '120000',
+      '--retries',
+      '3',
+      [length]: 7
+    ],
+    paths: [
+      '/Users/aravindan.tr/.nvm/versions/node/v20.15.0/bin',
+      '/usr/local/bin',
+      '/opt/homebrew/bin',
+      '/usr/bin',
+      '/usr/bin',
+      '/bin',
+      '/usr/sbin',
+      '/sbin',
+      [length]: 8
+    ]
+  }
+} %o
+2025-09-08T04:50:47.654Z [aishophub] [info] Server started and connected successfully { metadata: undefined }
+2025-09-08T04:50:47.661Z [aishophub] [info] Server started and connected successfully { metadata: undefined }
+2025-09-08T04:50:47.673Z [aishophub] [info] Message from client: {"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"claude-ai","version":"0.1.0"}},"jsonrpc":"2.0","id":0} { metadata: undefined }
+2025-09-08T04:50:47.675Z [aishophub] [info] Message from client: {"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"claude-ai","version":"0.1.0"}},"jsonrpc":"2.0","id":0} { metadata: undefined }
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/math-intrinsics/test/index.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/side-channel-list/test/index.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/side-channel-weakmap/test/index.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/side-channel/test/index.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/object-inspect/test/bigint.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/side-channel-map/test/index.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/object-inspect/test/circular.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/object-inspect/test/deep.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, lstat '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/object-inspect/test/browser'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/object-inspect/test/element.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/object-inspect/test/err.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/object-inspect/test/fakes.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/object-inspect/test/fn.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/object-inspect/test/global.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/object-inspect/test/has.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/object-inspect/test/holes.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/object-inspect/test/indent-option.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/object-inspect/test/inspect.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/object-inspect/test/lowbyte.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/object-inspect/test/number.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/object-inspect/test/quoteStyle.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/object-inspect/test/toStringTag.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/object-inspect/test/undef.js'
+npm warn tar TAR_ENTRY_ERROR ENOENT: no such file or directory, open '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/object-inspect/test/values.js'
+npm error code ENOTEMPTY
+npm error syscall rmdir
+npm error path /Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/dunder-proto/test
+npm error errno -66
+npm error ENOTEMPTY: directory not empty, rmdir '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/dunder-proto/test'
+npm error A complete log of this run can be found in: /Users/aravindan.tr/.npm/_logs/2025-09-08T04_50_48_075Z-debug-0.log
+2025-09-08T04:51:02.017Z [aishophub] [info] Server transport closed { metadata: undefined }
+2025-09-08T04:51:02.017Z [aishophub] [info] Client transport closed { metadata: undefined }
+2025-09-08T04:51:02.017Z [aishophub] [info] Server transport closed unexpectedly, this is likely due to the process exiting early. If you are developing this MCP server you can add output to stderr (i.e. `console.error('...')` in JavaScript, `print('...', file=sys.stderr)` in python) and it will appear in this log. { metadata: undefined }
+2025-09-08T04:51:02.017Z [aishophub] [error] Server disconnected. For troubleshooting guidance, please visit our [debugging documentation](https://modelcontextprotocol.io/docs/tools/debugging) { metadata: { context: 'connection', stack: undefined } }
+2025-09-08T04:51:02.018Z [aishophub] [info] Client transport closed { metadata: undefined }
+node:internal/modules/cjs/loader:1145
+  const err = new Error(message);
+              ^
+
+Error: Cannot find module './lib/express'
+Require stack:
+- /Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/express/index.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1145:15)
+    at Module._load (node:internal/modules/cjs/loader:986:27)
+    at Module.require (node:internal/modules/cjs/loader:1233:19)
+    at require (node:internal/modules/helpers:179:18)
+    at Object.<anonymous> (/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/express/index.js:11:18)
+    at Module._compile (node:internal/modules/cjs/loader:1358:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1416:10)
+    at Module.load (node:internal/modules/cjs/loader:1208:32)
+    at Module._load (node:internal/modules/cjs/loader:1024:12)
+    at cjsLoader (node:internal/modules/esm/translators:348:17) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/express/index.js'
+  ]
+}
+
+Node.js v20.15.0
+2025-09-08T04:51:03.015Z [aishophub] [info] Server transport closed { metadata: undefined }
+2025-09-08T04:51:03.016Z [aishophub] [info] Client transport closed { metadata: undefined }
+2025-09-08T04:51:03.016Z [aishophub] [info] Server transport closed unexpectedly, this is likely due to the process exiting early. If you are developing this MCP server you can add output to stderr (i.e. `console.error('...')` in JavaScript, `print('...', file=sys.stderr)` in python) and it will appear in this log. { metadata: undefined }
+2025-09-08T04:51:03.016Z [aishophub] [error] Server disconnected. For troubleshooting guidance, please visit our [debugging documentation](https://modelcontextprotocol.io/docs/tools/debugging) { metadata: { context: 'connection', stack: undefined } }
+2025-09-08T04:51:03.016Z [aishophub] [info] Client transport closed { metadata: undefined }
+2025-09-08T04:51:03.156Z [aishophub] [info] Client transport closed { metadata: undefined }
+2025-09-08T04:51:03.156Z [aishophub] [info] Shutting down server... { metadata: undefined }
+2025-09-08T04:51:03.207Z [aishophub] [info] Initializing server... { metadata: undefined }
+2025-09-08T04:51:03.215Z [aishophub] [info] Using MCP server command: /Users/aravindan.tr/.nvm/versions/node/v20.15.0/bin/npx with args and path: {
+  metadata: {
+    args: [
+      '-y',
+      '@cequenceai/mcp-remote',
+      'https://ztaip-66mcc6n9-4xp4r634bq-uc.a.run.app/mcp',
+      '--timeout',
+      '120000',
+      '--retries',
+      '3',
+      [length]: 7
+    ],
+    paths: [
+      '/Users/aravindan.tr/.nvm/versions/node/v20.15.0/bin',
+      '/usr/local/bin',
+      '/opt/homebrew/bin',
+      '/usr/bin',
+      '/usr/bin',
+      '/bin',
+      '/usr/sbin',
+      '/sbin',
+      [length]: 8
+    ]
+  }
+} %o
+2025-09-08T04:51:03.216Z [aishophub] [info] Server started and connected successfully { metadata: undefined }
+2025-09-08T04:51:03.216Z [aishophub] [info] Message from client: {"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"claude-ai","version":"0.1.0"}},"jsonrpc":"2.0","id":0} { metadata: undefined }
+node:internal/modules/cjs/loader:1145
+  const err = new Error(message);
+              ^
+
+Error: Cannot find module './lib/express'
+Require stack:
+- /Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/express/index.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1145:15)
+    at Module._load (node:internal/modules/cjs/loader:986:27)
+    at Module.require (node:internal/modules/cjs/loader:1233:19)
+    at require (node:internal/modules/helpers:179:18)
+    at Object.<anonymous> (/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/express/index.js:11:18)
+    at Module._compile (node:internal/modules/cjs/loader:1358:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1416:10)
+    at Module.load (node:internal/modules/cjs/loader:1208:32)
+    at Module._load (node:internal/modules/cjs/loader:1024:12)
+    at cjsLoader (node:internal/modules/esm/translators:348:17) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/aravindan.tr/.npm/_npx/a8abbbdd68cc5850/node_modules/express/index.js'
+  ]
+}
+
+Node.js v20.15.0
