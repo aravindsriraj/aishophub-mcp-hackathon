@@ -47,16 +47,16 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
   const cartItemCount = cartItems?.reduce((total, item) => total + item.quantity, 0) || 0;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full glass-dark border-b border-border/50 shadow-lg transition-all duration-300">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/shop">
-            <div className="flex items-center space-x-2 cursor-pointer" data-testid="logo-link">
-              <div className="bg-primary text-primary-foreground rounded-lg p-2">
-                <ShoppingBag className="h-5 w-5" />
+            <div className="flex items-center space-x-2 cursor-pointer hover:scale-105 transition-transform duration-300" data-testid="logo-link">
+              <div className="btn-gradient text-white rounded-lg p-2 shadow-lg">
+                <ShoppingBag className="h-5 w-5 animate-pulse" />
               </div>
-              <span className="text-2xl font-bold text-foreground">ShopHub</span>
+              <span className="text-2xl font-bold text-gradient">ShopHub</span>
             </div>
           </Link>
 
@@ -66,14 +66,15 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
               <form onSubmit={handleSearch} className="flex items-center gap-2">
                 <div className="relative flex-1">
                   <Input
+                    id="search-input"
                     type="text"
                     placeholder="Search products with AI..."
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
-                    className="w-full pl-10 pr-4 h-10 bg-background border-input focus:border-purple-500 transition-colors"
+                    className="w-full pl-10 pr-4 h-10 glass border-input focus:border-purple-500 transition-all duration-300 focus:scale-[1.02] focus:shadow-lg"
                     data-testid="input-search-desktop"
                   />
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none animate-pulse" />
                 </div>
                 <Button
                   type="submit"
@@ -95,22 +96,23 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
               variant="ghost"
               size="sm"
               onClick={toggleTheme}
+              className="hover:scale-110 transition-transform duration-300"
               data-testid="button-theme-toggle"
             >
-              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+              {theme === "dark" ? <Sun className="h-4 w-4 animate-spin-slow" /> : <Moon className="h-4 w-4 animate-pulse" />}
             </Button>
 
             {/* Cart */}
             <Button
               variant="ghost"
               size="sm"
-              className="relative"
+              className="relative hover:scale-110 transition-transform duration-300"
               onClick={onCartToggle}
               data-testid="button-cart"
             >
               <ShoppingCart className="h-4 w-4" />
               {cartItemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center" data-testid="cart-count">
+                <span className="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center badge-animate" data-testid="cart-count">
                   {cartItemCount}
                 </span>
               )}
@@ -156,7 +158,7 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button onClick={onAuthToggle} size="sm" data-testid="button-signin">
+              <Button onClick={onAuthToggle} size="sm" className="btn-gradient text-white hover:scale-105 transition-transform duration-300" data-testid="button-signin">
                 Sign In
               </Button>
             )}
