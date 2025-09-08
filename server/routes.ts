@@ -6,27 +6,54 @@ import bcrypt from "bcrypt";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./swagger";
 
-// Middleware to check authentication
+// Middleware to check authentication (supports both session tokens and API tokens)
 async function requireAuth(req: any, res: any, next: any) {
-  const token = req.headers.authorization?.replace('Bearer ', '');
+  const authHeader = req.headers.authorization;
   
-  if (!token) {
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Authentication required' });
   }
   
-  const session = await storage.getSession(token);
-  if (!session) {
-    return res.status(401).json({ error: 'Invalid or expired session' });
+  const token = authHeader.replace('Bearer ', '');
+  
+  if (!token) {
+    return res.status(401).json({ error: 'Invalid token format' });
   }
   
-  const user = await storage.getUser(session.userId);
-  if (!user) {
-    return res.status(401).json({ error: 'User not found' });
+  // Check if it's an API token (starts with 'ak_')
+  if (token.startsWith('ak_')) {
+    const apiToken = await storage.getApiTokenByHash(token);
+    if (!apiToken) {
+      return res.status(401).json({ error: 'Invalid or expired API token' });
+    }
+    
+    const user = await storage.getUser(apiToken.userId);
+    if (!user) {
+      return res.status(401).json({ error: 'User not found' });
+    }
+    
+    // Update last used timestamp
+    await storage.updateApiTokenLastUsed(apiToken.id);
+    
+    req.user = user;
+    req.apiToken = apiToken;
+    next();
+  } else {
+    // Check session token
+    const session = await storage.getSession(token);
+    if (!session) {
+      return res.status(401).json({ error: 'Invalid or expired session' });
+    }
+    
+    const user = await storage.getUser(session.userId);
+    if (!user) {
+      return res.status(401).json({ error: 'User not found' });
+    }
+    
+    req.user = user;
+    req.session = session;
+    next();
   }
-  
-  req.user = user;
-  req.session = session;
-  next();
 }
 
 // Basic Authentication middleware for API endpoints
