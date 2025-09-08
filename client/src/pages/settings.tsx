@@ -37,11 +37,33 @@ export default function Settings() {
   const fetchTokens = async () => {
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        toast({
+          title: "Session Expired",
+          description: "Please log in again to manage API tokens",
+          variant: "destructive"
+        });
+        setLoading(false);
+        return;
+      }
+      
       const response = await fetch('/api/tokens', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
+      
+      if (response.status === 401) {
+        toast({
+          title: "Session Expired",
+          description: "Please log in again to manage API tokens",
+          variant: "destructive"
+        });
+        // Redirect to login
+        window.location.href = '/login';
+        return;
+      }
+      
       if (response.ok) {
         const data = await response.json();
         setTokens(data);
@@ -70,6 +92,17 @@ export default function Settings() {
     setCreating(true);
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        toast({
+          title: "Session Expired",
+          description: "Please log in again to create API tokens",
+          variant: "destructive"
+        });
+        setShowCreateDialog(false);
+        window.location.href = '/login';
+        return;
+      }
+      
       const response = await fetch('/api/tokens', {
         method: 'POST',
         headers: {
@@ -78,6 +111,17 @@ export default function Settings() {
         },
         body: JSON.stringify({ name: newTokenName })
       });
+
+      if (response.status === 401) {
+        toast({
+          title: "Session Expired",
+          description: "Please log in again to create API tokens",
+          variant: "destructive"
+        });
+        setShowCreateDialog(false);
+        window.location.href = '/login';
+        return;
+      }
 
       if (response.ok) {
         const data = await response.json();
