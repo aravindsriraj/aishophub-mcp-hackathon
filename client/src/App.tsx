@@ -77,6 +77,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <TooltipProvider>
+          <a href="#main-content" className="skip-nav" aria-label="Skip to main content">
+            Skip to main content
+          </a>
           <Toaster />
           <Router />
         </TooltipProvider>

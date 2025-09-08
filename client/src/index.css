@@ -355,18 +355,114 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
-/* Button Animations */
+/* Button Animations & Micro-interactions */
 .btn-gradient {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  transform: translateY(0);
 }
 
 .btn-gradient:hover {
   background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(102, 126, 234, 0.5);
+}
+
+.btn-gradient:active {
+  transform: translateY(-1px) scale(0.98);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+/* Micro-interactions for all buttons */
+button, [role="button"], .btn {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+button:hover:not(:disabled), [role="button"]:hover:not(:disabled), .btn:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+button:active:not(:disabled), [role="button"]:active:not(:disabled), .btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* Enhanced Focus States for Accessibility */
+*:focus-visible {
+  outline: 3px solid rgba(102, 126, 234, 0.8);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+button:focus-visible, [role="button"]:focus-visible {
+  outline: 3px solid rgba(102, 126, 234, 0.8);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(102, 126, 234, 0.2);
+}
+
+input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid rgba(102, 126, 234, 0.8);
+  outline-offset: 0;
+  border-color: rgba(102, 126, 234, 0.8);
+}
+
+/* Skip Navigation Link */
+.skip-nav {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  z-index: 9999;
+  transition: all 0.2s ease;
+}
+
+.skip-nav:focus {
+  top: 20px;
+  outline: 3px solid white;
+  outline-offset: 3px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Ripple Effect for Primary Actions */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+}
+
+.ripple:active::before {
+  animation: ripple 0.6s ease-out;
 }
 
 /* Smooth Page Transitions */

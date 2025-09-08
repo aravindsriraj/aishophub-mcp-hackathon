@@ -116,16 +116,17 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
 
   if (viewMode === "list") {
     return (
-      <Card className="group glass-dark card-hover transition-all duration-300 hover:shadow-xl" data-testid={`card-product-${product.id}`}>
-        <Link href={`/product/${product.id}`}>
+      <Card className="group glass-dark card-hover transition-all duration-300 hover:shadow-xl" role="article" aria-label={`Product: ${product.productName}`} data-testid={`card-product-${product.id}`}>
+        <Link href={`/product/${product.id}`} aria-label={`View details for ${product.productName}`}>
           <CardContent className="p-4">
             <div className="flex gap-4">
               <div className="relative w-24 h-24 flex-shrink-0">
                 <img
                   src={getImageSrc()}
-                  alt={product.productName}
+                  alt={`${product.productName} - ${product.category}`}
                   className="w-full h-full object-cover rounded-lg"
                   onError={() => setImageError(true)}
+                  loading="lazy"
                   data-testid={`img-product-${product.id}`}
                 />
                 {product.discountPercentage && (
@@ -154,9 +155,11 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
                     size="sm" 
                     onClick={handleWishlistToggle}
                     disabled={isToggling}
+                    aria-label={isInWishlist(product.id) ? `Remove ${product.productName} from wishlist` : `Add ${product.productName} to wishlist`}
+                    aria-pressed={isInWishlist(product.id)}
                     data-testid={`button-wishlist-${product.id}`}
                   >
-                    <Heart className={`h-4 w-4 ${isInWishlist(product.id) ? 'fill-red-500 text-red-500' : ''}`} />
+                    <Heart className={`h-4 w-4 ${isInWishlist(product.id) ? 'fill-red-500 text-red-500' : ''}`} aria-hidden="true" />
                   </Button>
                 </div>
                 
@@ -181,10 +184,12 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
                     size="sm"
                     onClick={handleAddToCart}
                     disabled={isLoading}
+                    className="ripple"
+                    aria-label={`Add ${product.productName} to cart`}
                     data-testid={`button-add-cart-${product.id}`}
                   >
-                    <ShoppingCart className="h-4 w-4 mr-1" />
-                    Add
+                    <ShoppingCart className="h-4 w-4 mr-1" aria-hidden="true" />
+                    <span>Add</span>
                   </Button>
                 </div>
               </div>
@@ -196,14 +201,15 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
   }
 
   return (
-    <Card className="group glass-dark card-hover transition-all duration-300 overflow-hidden" data-testid={`card-product-${product.id}`}>
-      <Link href={`/product/${product.id}`}>
+    <Card className="group glass-dark card-hover transition-all duration-300 overflow-hidden" role="article" aria-label={`Product: ${product.productName}`} data-testid={`card-product-${product.id}`}>
+      <Link href={`/product/${product.id}`} aria-label={`View details for ${product.productName}`}>
         <div className="relative overflow-hidden">
           <img
             src={getImageSrc()}
-            alt={product.productName}
+            alt={`${product.productName} - ${product.category}`}
             className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
             onError={() => setImageError(true)}
+            loading="lazy"
             data-testid={`img-product-${product.id}`}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -218,9 +224,11 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
             className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-110 glass z-10"
             onClick={handleWishlistToggle}
             disabled={isToggling}
+            aria-label={isInWishlist(product.id) ? `Remove ${product.productName} from wishlist` : `Add ${product.productName} to wishlist`}
+            aria-pressed={isInWishlist(product.id)}
             data-testid={`button-wishlist-${product.id}`}
           >
-            <Heart className={`h-4 w-4 ${isInWishlist(product.id) ? 'fill-red-500 text-red-500 animate-pulse' : ''}`} />
+            <Heart className={`h-4 w-4 ${isInWishlist(product.id) ? 'fill-red-500 text-red-500 animate-pulse' : ''}`} aria-hidden="true" />
           </Button>
         </div>
         
@@ -261,10 +269,11 @@ export function ProductCard({ product, viewMode = "grid" }: ProductCardProps) {
               size="sm"
               onClick={handleAddToCart}
               disabled={isLoading}
-              className="btn-gradient text-white hover:scale-105 transform transition-all duration-300"
+              className="btn-gradient text-white hover:scale-105 transform transition-all duration-300 ripple"
+              aria-label={`Add ${product.productName} to cart`}
               data-testid={`button-add-cart-${product.id}`}
             >
-              <Plus className="h-4 w-4" />
+              <Plus className="h-4 w-4" aria-hidden="true" />
             </Button>
           </div>
         </CardContent>

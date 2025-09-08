@@ -81,10 +81,10 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
   if (!user) {
     return (
       <Sheet open={isOpen} onOpenChange={onClose}>
-        <SheetContent className="w-80 glass-dark">
+        <SheetContent className="w-80 glass-dark" role="dialog" aria-label="Shopping cart">
           <SheetHeader>
             <SheetTitle data-testid="cart-title" className="text-gradient flex items-center gap-2">
-            <ShoppingCart className="h-5 w-5 animate-pulse" />
+            <ShoppingCart className="h-5 w-5 animate-pulse" aria-hidden="true" />
             Shopping Cart
           </SheetTitle>
           </SheetHeader>
@@ -103,10 +103,10 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="w-80 flex flex-col glass-dark">
+      <SheetContent className="w-80 flex flex-col glass-dark" role="dialog" aria-label="Shopping cart">
         <SheetHeader>
           <SheetTitle data-testid="cart-title" className="text-gradient flex items-center gap-2">
-            <ShoppingCart className="h-5 w-5 animate-pulse" />
+            <ShoppingCart className="h-5 w-5 animate-pulse" aria-hidden="true" />
             Shopping Cart
           </SheetTitle>
         </SheetHeader>
@@ -144,8 +144,9 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                 >
                   <img
                     src={item.product.imgLink || "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?ixlib=rb-4.0.3&auto=format&fit=crop&w=60&h=60"}
-                    alt={item.product.productName}
+                    alt={`${item.product.productName} in cart`}
                     className="w-12 h-12 object-cover rounded"
+                    loading="lazy"
                     data-testid={`img-cart-item-${item.productId}`}
                   />
                   <div className="flex-1 min-w-0">
@@ -163,11 +164,12 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                       className="h-6 w-6 p-0 hover:scale-110 transition-transform"
                       onClick={() => handleUpdateQuantity(item.productId, item.quantity - 1)}
                       disabled={item.quantity <= 1}
+                      aria-label={`Decrease quantity of ${item.product.productName}`}
                       data-testid={`button-decrease-${item.productId}`}
                     >
-                      <Minus className="h-3 w-3" />
+                      <Minus className="h-3 w-3" aria-hidden="true" />
                     </Button>
-                    <span className="text-sm w-8 text-center font-bold" data-testid={`text-quantity-${item.productId}`}>
+                    <span className="text-sm w-8 text-center font-bold" aria-label={`Quantity: ${item.quantity}`} role="status" data-testid={`text-quantity-${item.productId}`}>
                       {item.quantity}
                     </span>
                     <Button
