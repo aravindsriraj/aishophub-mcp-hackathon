@@ -81,9 +81,12 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
   if (!user) {
     return (
       <Sheet open={isOpen} onOpenChange={onClose}>
-        <SheetContent className="w-80">
+        <SheetContent className="w-80 glass-dark">
           <SheetHeader>
-            <SheetTitle data-testid="cart-title">Shopping Cart</SheetTitle>
+            <SheetTitle data-testid="cart-title" className="text-gradient flex items-center gap-2">
+            <ShoppingCart className="h-5 w-5 animate-pulse" />
+            Shopping Cart
+          </SheetTitle>
           </SheetHeader>
           <div className="flex-1 flex items-center justify-center py-12">
             <div className="text-center">
@@ -100,9 +103,12 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="w-80 flex flex-col">
+      <SheetContent className="w-80 flex flex-col glass-dark">
         <SheetHeader>
-          <SheetTitle data-testid="cart-title">Shopping Cart</SheetTitle>
+          <SheetTitle data-testid="cart-title" className="text-gradient flex items-center gap-2">
+            <ShoppingCart className="h-5 w-5 animate-pulse" />
+            Shopping Cart
+          </SheetTitle>
         </SheetHeader>
         
         <div className="flex-1 overflow-y-auto py-4">
@@ -129,8 +135,13 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
             </div>
           ) : (
             <div className="space-y-4">
-              {cartItems?.map((item) => (
-                <div key={item.id} className="flex items-center space-x-3 p-3 bg-background rounded-lg" data-testid={`cart-item-${item.productId}`}>
+              {cartItems?.map((item, index) => (
+                <div 
+                  key={item.id} 
+                  className="flex items-center space-x-3 p-3 glass-dark rounded-lg hover:shadow-lg transition-all duration-300" 
+                  data-testid={`cart-item-${item.productId}`}
+                  style={{ animation: `fadeIn 0.3s ease-out ${index * 0.1}s both` }}
+                >
                   <img
                     src={item.product.imgLink || "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?ixlib=rb-4.0.3&auto=format&fit=crop&w=60&h=60"}
                     alt={item.product.productName}
@@ -138,10 +149,10 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                     data-testid={`img-cart-item-${item.productId}`}
                   />
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-sm font-medium line-clamp-2" data-testid={`text-item-name-${item.productId}`}>
+                    <h4 className="text-sm font-medium line-clamp-2 hover:text-primary transition-colors" data-testid={`text-item-name-${item.productId}`}>
                       {item.product.productName}
                     </h4>
-                    <p className="text-xs text-muted-foreground" data-testid={`text-item-price-${item.productId}`}>
+                    <p className="text-xs text-gradient font-bold" data-testid={`text-item-price-${item.productId}`}>
                       {item.product.discountedPrice}
                     </p>
                   </div>
@@ -149,20 +160,20 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-6 w-6 p-0"
+                      className="h-6 w-6 p-0 hover:scale-110 transition-transform"
                       onClick={() => handleUpdateQuantity(item.productId, item.quantity - 1)}
                       disabled={item.quantity <= 1}
                       data-testid={`button-decrease-${item.productId}`}
                     >
                       <Minus className="h-3 w-3" />
                     </Button>
-                    <span className="text-sm w-8 text-center" data-testid={`text-quantity-${item.productId}`}>
+                    <span className="text-sm w-8 text-center font-bold" data-testid={`text-quantity-${item.productId}`}>
                       {item.quantity}
                     </span>
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-6 w-6 p-0"
+                      className="h-6 w-6 p-0 hover:scale-110 transition-transform"
                       onClick={() => handleUpdateQuantity(item.productId, item.quantity + 1)}
                       data-testid={`button-increase-${item.productId}`}
                     >
@@ -172,7 +183,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-destructive hover:text-destructive p-1"
+                    className="text-destructive hover:text-destructive p-1 hover:scale-110 hover:bg-destructive/20 transition-all"
                     onClick={() => handleRemoveItem(item.productId)}
                     data-testid={`button-remove-${item.productId}`}
                   >
@@ -186,12 +197,12 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
         
         {cartItems && cartItems.length > 0 && (
           <div className="border-t border-border pt-4 space-y-4">
-            <div className="flex items-center justify-between text-lg font-semibold">
+            <div className="flex items-center justify-between text-lg font-semibold glass-dark rounded-lg p-3">
               <span>Total:</span>
-              <span data-testid="text-cart-total">{calculateTotal()}</span>
+              <span data-testid="text-cart-total" className="text-gradient text-xl">{calculateTotal()}</span>
             </div>
             <Button 
-              className="w-full" 
+              className="w-full btn-gradient text-white hover:scale-[1.02] transition-transform" 
               size="lg" 
               data-testid="button-checkout"
               onClick={() => {
@@ -212,7 +223,7 @@ export function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
             <Separator />
             <Button 
               variant="destructive" 
-              className="w-full" 
+              className="w-full hover:scale-[1.02] transition-transform" 
               onClick={handleClearCart}
               data-testid="button-clear-cart"
             >
