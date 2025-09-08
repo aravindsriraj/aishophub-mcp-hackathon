@@ -142,9 +142,11 @@ export function Header({ onSearch, onCartToggle, onAuthToggle, searchValue = "" 
                       Orders
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem data-testid="menu-settings">
-                    <Settings className="h-4 w-4 mr-2" />
-                    Settings
+                  <DropdownMenuItem asChild data-testid="menu-settings">
+                    <Link href="/settings">
+                      <Settings className="h-4 w-4 mr-2" />
+                      Settings
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut} data-testid="menu-logout">

@@ -12,6 +12,7 @@ import ProductDetail from "@/pages/product-detail";
 import Wishlist from "@/pages/wishlist";
 import Checkout from "@/pages/checkout";
 import Orders from "@/pages/orders";
+import Settings from "@/pages/settings";
 import { useAuth } from "@/hooks/use-auth";
 
 function Router() {
@@ -59,6 +60,11 @@ function Router() {
       <Route path="/orders">
         <ProtectedRoute>
           <Orders />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/settings">
+        <ProtectedRoute>
+          <Settings />
         </ProtectedRoute>
       </Route>
       <Route component={NotFound} />
