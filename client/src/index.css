@@ -334,6 +334,12 @@
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  z-index: 1;
+}
+
+.btn-gradient > * {
+  position: relative;
+  z-index: 2;
 }
 
 .btn-gradient:hover {
@@ -351,6 +357,7 @@
   background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
   opacity: 0;
   transition: opacity 0.3s ease;
+  z-index: 1;
 }
 
 .btn-gradient:hover::after {
