@@ -3,6 +3,7 @@ import {
   products, 
   cartItems, 
   sessions,
+  apiTokens,
   wishlistItems,
   orders,
   orderItems,
@@ -12,6 +13,8 @@ import {
   type CartItem, 
   type InsertCartItem,
   type Session,
+  type ApiToken,
+  type InsertApiToken,
   type WishlistItem,
   type InsertWishlistItem,
   type Order,
@@ -56,6 +59,13 @@ export interface IStorage {
   createSession(userId: string): Promise<Session>;
   getSession(token: string): Promise<Session | undefined>;
   deleteSession(token: string): Promise<void>;
+  
+  // API Token methods
+  createApiToken(userId: string, name: string): Promise<{ token: string; apiToken: ApiToken }>;
+  getApiTokenByHash(tokenHash: string): Promise<ApiToken | undefined>;
+  getUserApiTokens(userId: string): Promise<ApiToken[]>;
+  deleteApiToken(id: string, userId: string): Promise<void>;
+  updateApiTokenLastUsed(id: string): Promise<void>;
   
   // Wishlist methods
   getWishlistItems(userId: string): Promise<(WishlistItem & { product: Product })[]>;
@@ -415,6 +425,65 @@ export class DatabaseStorage implements IStorage {
       .update(orders)
       .set({ invoiceUrl })
       .where(eq(orders.id, orderId));
+  }
+
+  // API Token methods
+  async createApiToken(userId: string, name: string): Promise<{ token: string; apiToken: ApiToken }> {
+    // Generate a random token
+    const token = `ak_${randomUUID().replace(/-/g, '')}`;
+    
+    // Hash the token for storage
+    const tokenHash = await bcrypt.hash(token, 10);
+    
+    // Set expiration to 1 year from now (optional)
+    const expiresAt = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
+    
+    const [apiToken] = await db
+      .insert(apiTokens)
+      .values({ userId, name, tokenHash, expiresAt })
+      .returning();
+    
+    // Return the plain token (shown only once) and the created record
+    return { token, apiToken };
+  }
+
+  async getApiTokenByHash(token: string): Promise<ApiToken | undefined> {
+    // Get all tokens and check each hash (since we can't query by hash directly)
+    const tokens = await db.select().from(apiTokens);
+    
+    for (const apiToken of tokens) {
+      const isValid = await bcrypt.compare(token, apiToken.tokenHash);
+      if (isValid) {
+        // Check if token is expired
+        if (apiToken.expiresAt && new Date(apiToken.expiresAt) < new Date()) {
+          return undefined;
+        }
+        return apiToken;
+      }
+    }
+    
+    return undefined;
+  }
+
+  async getUserApiTokens(userId: string): Promise<ApiToken[]> {
+    return await db
+      .select()
+      .from(apiTokens)
+      .where(eq(apiTokens.userId, userId))
+      .orderBy(desc(apiTokens.createdAt));
+  }
+
+  async deleteApiToken(id: string, userId: string): Promise<void> {
+    await db
+      .delete(apiTokens)
+      .where(and(eq(apiTokens.id, id), eq(apiTokens.userId, userId)));
+  }
+
+  async updateApiTokenLastUsed(id: string): Promise<void> {
+    await db
+      .update(apiTokens)
+      .set({ lastUsedAt: new Date() })
+      .where(eq(apiTokens.id, id));
   }
 }
 
