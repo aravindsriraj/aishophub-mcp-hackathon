@@ -9,9 +9,8 @@ info:
     - Order processing and management
     - Product catalog with advanced filtering
     
-    The API supports two authentication methods:
-    1. Bearer token authentication for web/mobile clients
-    2. Basic authentication (email:password) for API integrations
+    The API uses Bearer token authentication for all endpoints.
+    Users can generate API tokens from the Settings page and use them to authenticate API requests.
   version: 1.0.0
   contact:
     name: AI ShopHub Support
@@ -29,6 +28,8 @@ servers:
 tags:
   - name: Authentication
     description: User authentication and session management endpoints
+  - name: API Tokens
+    description: API token generation and management for programmatic access
   - name: Products
     description: Product catalog, search, and AI-powered semantic search
   - name: Cart
@@ -185,6 +186,104 @@ paths:
                 properties:
                   user:
                     $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /api/tokens:
+    post:
+      tags:
+        - API Tokens
+      summary: Create API token
+      description: Generate a new API token for programmatic access
+      operationId: createApiToken
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: Name to identify the token
+                  example: "Production API Token"
+      responses:
+        '200':
+          description: Token created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: The API token (shown only once)
+                    example: "ak_1234567890abcdef..."
+                  apiToken:
+                    $ref: '#/components/schemas/ApiToken'
+                  message:
+                    type: string
+                    example: "Save this token securely. You won't be able to see it again!"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    
+    get:
+      tags:
+        - API Tokens
+      summary: List API tokens
+      description: Get all API tokens for the authenticated user
+      operationId: listApiTokens
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of API tokens
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /api/tokens/{tokenId}:
+    delete:
+      tags:
+        - API Tokens
+      summary: Delete API token
+      description: Revoke and delete an API token
+      operationId: deleteApiToken
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: tokenId
+          in: path
+          required: true
+          description: ID of the token to delete
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Token deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
         '401':
           $ref: '#/components/responses/UnauthorizedError'
 
@@ -799,11 +898,11 @@ paths:
     get:
       tags:
         - Filters
-      summary: List categories (Basic Auth)
-      description: Get all available product categories using basic authentication
-      operationId: listCategoriesBasicAuth
+      summary: List categories
+      description: Get all available product categories
+      operationId: listCategories
       security:
-        - basicAuth: []
+        - bearerAuth: []
       responses:
         '200':
           description: Categories list
@@ -826,11 +925,11 @@ paths:
     get:
       tags:
         - Wishlist
-      summary: List wishlist products (Basic Auth)
-      description: Get all products in user's wishlist using basic authentication
-      operationId: listWishlistProductsBasicAuth
+      summary: List wishlist products
+      description: Get all products in user's wishlist
+      operationId: listWishlistProducts
       security:
-        - basicAuth: []
+        - bearerAuth: []
       responses:
         '200':
           description: Wishlist products
@@ -867,11 +966,11 @@ paths:
     post:
       tags:
         - Cart
-      summary: Add to cart (Basic Auth)
-      description: Add product to cart using basic authentication
-      operationId: addToCartBasicAuth
+      summary: Add to cart
+      description: Add product to cart
+      operationId: addToCartApi
       security:
-        - basicAuth: []
+        - bearerAuth: []
       parameters:
         - name: productId
           in: path
@@ -918,11 +1017,11 @@ paths:
     delete:
       tags:
         - Cart
-      summary: Remove from cart (Basic Auth)
-      description: Remove product from cart using basic authentication
-      operationId: removeFromCartBasicAuth
+      summary: Remove from cart
+      description: Remove product from cart
+      operationId: removeFromCartApi
       security:
-        - basicAuth: []
+        - bearerAuth: []
       parameters:
         - name: productId
           in: path
@@ -951,11 +1050,11 @@ paths:
     get:
       tags:
         - Orders
-      summary: Get my orders (Basic Auth)
-      description: Get all orders for authenticated user using basic authentication
-      operationId: getMyOrdersBasicAuth
+      summary: Get my orders
+      description: Get all orders for authenticated user
+      operationId: getMyOrders
       security:
-        - basicAuth: []
+        - bearerAuth: []
       responses:
         '200':
           description: User's orders
@@ -992,11 +1091,11 @@ paths:
     post:
       tags:
         - Orders
-      summary: Complete order (Basic Auth)
-      description: Create order from cart items using basic authentication
-      operationId: completeOrderBasicAuth
+      summary: Complete order
+      description: Create order from cart items
+      operationId: completeOrder
       security:
-        - basicAuth: []
+        - bearerAuth: []
       responses:
         '200':
           description: Order completed
@@ -1027,14 +1126,11 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
-      description: JWT token obtained from /api/auth/signin or /api/auth/signup
-    basicAuth:
-      type: apiKey
-      in: header
-      name: Authorization
       description: |
-        Basic authentication using email:password format.
-        Example: user@example.com:password123
+        Bearer token authentication. Use either:
+        - Session token obtained from /api/auth/signin or /api/auth/signup
+        - API token generated from the Settings page (starts with 'ak_')
+        Example: Authorization: Bearer <token>
 
   schemas:
     User:
@@ -1050,6 +1146,30 @@ components:
         name:
           type: string
           description: User's full name
+
+    ApiToken:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Token ID
+        name:
+          type: string
+          description: Token name/identifier
+        createdAt:
+          type: string
+          format: date-time
+          description: When the token was created
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the token expires (null if no expiry)
+        lastUsedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the token was last used
 
     Product:
       type: object
