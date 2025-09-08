@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Product } from "@shared/schema";
+import { getAuthToken } from "@/lib/auth";
 
 interface ProductsResponse {
   products: Product[];
@@ -33,11 +34,17 @@ export function useProducts(
           console.log('Performing semantic search for:', search);
           
           // First, get product IDs from semantic search via backend proxy
+          const token = getAuthToken();
+          const headers: Record<string, string> = {
+            "Content-Type": "application/json",
+          };
+          if (token) {
+            headers["Authorization"] = `Bearer ${token}`;
+          }
+          
           const semanticResponse = await fetch(SEMANTIC_SEARCH_API, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers,
             body: JSON.stringify({
               query: search,
               n_results: 100, // Get more results to apply filters
@@ -85,7 +92,13 @@ export function useProducts(
           if (rating) params.append('rating', rating);
           
           console.log('Fetching products with params:', params.toString());
-          const productsResponse = await fetch(`/api/products/by-ids?${params}`);
+          const productsHeaders: Record<string, string> = {};
+          if (token) {
+            productsHeaders["Authorization"] = `Bearer ${token}`;
+          }
+          const productsResponse = await fetch(`/api/products/by-ids?${params}`, {
+            headers: productsHeaders
+          });
           
           console.log('Products fetch response status:', productsResponse.status);
           if (!productsResponse.ok) {
@@ -181,7 +194,15 @@ export function useProducts(
       if (priceMax) params.append('priceMax', priceMax);
       if (rating) params.append('rating', rating);
       
-      const response = await fetch(`/api/products?${params}`);
+      const token = getAuthToken();
+      const headers: Record<string, string> = {};
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+      
+      const response = await fetch(`/api/products?${params}`, {
+        headers
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch products');
       }
