@@ -943,6 +943,270 @@ paths:
         '401':
           $ref: '#/components/responses/UnauthorizedError'
 
+  /cart/add/{productId}:
+    post:
+      tags:
+        - Cart
+      summary: Add product to cart (Alternative)
+      description: Alternative endpoint to add a product to cart with path parameter
+      operationId: addToCartAlternative
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: Product ID to add to cart
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+                  minimum: 1
+                  default: 1
+                  description: Quantity to add (default is 1)
+      responses:
+        '200':
+          description: Product added to cart successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Product added to cart"
+                  cartItem:
+                    type: object
+                    properties:
+                      productId:
+                        type: string
+                      quantity:
+                        type: integer
+                      product:
+                        $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /cart/remove/{productId}:
+    delete:
+      tags:
+        - Cart
+      summary: Remove product from cart (Alternative)
+      description: Alternative endpoint to remove a product from cart
+      operationId: removeFromCartAlternative
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: Product ID to remove from cart
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product removed from cart successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Product removed from cart"
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /wishlist/listProducts:
+    get:
+      tags:
+        - Wishlist
+      summary: List wishlist products (Alternative)
+      description: Alternative endpoint to get all products in user's wishlist with formatted response
+      operationId: listWishlistProducts
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Wishlist products retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  products:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Product ID
+                        name:
+                          type: string
+                          description: Product name
+                        price:
+                          type: string
+                          description: Discounted price
+                        originalPrice:
+                          type: string
+                          description: Original price before discount
+                        category:
+                          type: string
+                          description: Product category
+                        addedAt:
+                          type: string
+                          format: date-time
+                          description: When the product was added to wishlist
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /orders/myorders:
+    get:
+      tags:
+        - Orders
+      summary: Get my orders (Alternative)
+      description: Alternative endpoint to get all orders for authenticated user with formatted response
+      operationId: getMyOrders
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User's orders retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  orders:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        orderId:
+                          type: string
+                          description: Order ID
+                        totalAmount:
+                          type: string
+                          description: Total order amount
+                        status:
+                          type: string
+                          description: Order status
+                        createdAt:
+                          type: string
+                          format: date-time
+                          description: Order creation date
+                        items:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/OrderItem'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /filters/listCategories:
+    get:
+      tags:
+        - Products
+      summary: List categories (Alternative)
+      description: Alternative endpoint to get all available product categories with formatted response
+      operationId: listCategories
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Categories retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  categories:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                      - "Electronics"
+                      - "Clothing"
+                      - "Home & Kitchen"
+                      - "Sports & Outdoors"
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /orders/completeOrder:
+    post:
+      tags:
+        - Orders
+      summary: Complete order (Alternative)
+      description: Alternative endpoint to checkout and create order from cart items
+      operationId: completeOrder
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Order completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Order completed successfully"
+                  order:
+                    type: object
+                    properties:
+                      orderId:
+                        type: string
+                      totalAmount:
+                        type: string
+                      status:
+                        type: string
+                      createdAt:
+                        type: string
+                        format: date-time
+                      items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/OrderItem'
+        '400':
+          description: Cart is empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
 components:
   securitySchemes:
     bearerAuth:
