@@ -32,13 +32,7 @@ const options = {
           type: 'http',
           scheme: 'bearer',
           bearerFormat: 'JWT',
-          description: 'Enter the JWT token obtained from signin/signup'
-        },
-        basicAuth: {
-          type: 'apiKey',
-          in: 'header',
-          name: 'Authorization',
-          description: 'Enter credentials in the format: email:password'
+          description: 'Enter the API token generated from Settings page (starts with ak_)'
         }
       },
       schemas: {
