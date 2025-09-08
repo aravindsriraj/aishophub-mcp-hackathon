@@ -4,7 +4,9 @@ import { storage } from "./storage";
 import { signInSchema, signUpSchema, insertCartItemSchema, insertWishlistItemSchema } from "@shared/schema";
 import bcrypt from "bcrypt";
 import swaggerUi from "swagger-ui-express";
-import { swaggerSpec } from "./swagger";
+import * as yaml from "js-yaml";
+import * as fs from "fs";
+import * as path from "path";
 
 // Middleware to check authentication (supports both session tokens and API tokens)
 async function requireAuth(req: any, res: any, next: any) {
@@ -58,10 +60,13 @@ async function requireAuth(req: any, res: any, next: any) {
 
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Swagger API Documentation
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  // Swagger API Documentation - Load from openapi.yaml
+  const openapiPath = path.join(process.cwd(), 'openapi.yaml');
+  const openapiDocument = yaml.load(fs.readFileSync(openapiPath, 'utf8')) as any;
+  
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiDocument, {
     customCss: '.swagger-ui .topbar { display: none }',
-    customSiteTitle: 'E-Commerce API Documentation',
+    customSiteTitle: 'AI ShopHub API Documentation',
     swaggerOptions: {
       persistAuthorization: true,
       displayRequestDuration: true,
