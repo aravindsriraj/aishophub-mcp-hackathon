@@ -294,8 +294,6 @@ paths:
       summary: List products
       description: Retrieve paginated list of products with optional filters and sorting
       operationId: getProducts
-      security:
-        - bearerAuth: []
       parameters:
         - name: page
           in: query
@@ -385,8 +383,6 @@ paths:
         - "gaming laptop under 50000"
         - "gift for 10 year old boy who likes science"
       operationId: semanticSearch
-      security:
-        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -445,8 +441,6 @@ paths:
       summary: Get products by IDs
       description: Retrieve multiple products by their IDs with optional filters and sorting
       operationId: getProductsByIds
-      security:
-        - bearerAuth: []
       parameters:
         - name: ids
           in: query
@@ -510,8 +504,6 @@ paths:
       summary: Get product details
       description: Retrieve detailed information about a specific product
       operationId: getProductById
-      security:
-        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -540,8 +532,6 @@ paths:
       summary: List categories
       description: Retrieve all available product categories
       operationId: getCategories
-      security:
-        - bearerAuth: []
       responses:
         '200':
           description: List of categories

@@ -227,8 +227,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Product routes
-  app.get("/api/products", requireAuth, async (req: any, res) => {
+  // Product routes (public - no auth required for browsing)
+  app.get("/api/products", async (req: any, res) => {
     try {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 20;
@@ -256,8 +256,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Semantic search proxy endpoint
-  app.post("/api/semantic-search", requireAuth, async (req: any, res) => {
+  // Semantic search proxy endpoint (public)
+  app.post("/api/semantic-search", async (req: any, res) => {
     try {
       const { query, n_results = 20 } = req.body;
       
@@ -293,7 +293,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/products/by-ids", requireAuth, async (req: any, res) => {
+  app.get("/api/products/by-ids", async (req: any, res) => {
     try {
       const { ids, category, sortBy, priceMin, priceMax, rating } = req.query;
       
@@ -368,7 +368,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/products/:id", requireAuth, async (req: any, res) => {
+  app.get("/api/products/:id", async (req: any, res) => {
     try {
       const product = await storage.getProduct(req.params.id);
       if (!product) {
@@ -380,7 +380,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/categories", requireAuth, async (req: any, res) => {
+  app.get("/api/categories", async (req: any, res) => {
     try {
       const categories = await storage.getCategories();
       res.json(categories);
