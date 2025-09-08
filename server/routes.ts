@@ -56,46 +56,6 @@ async function requireAuth(req: any, res: any, next: any) {
   }
 }
 
-// Basic Authentication middleware for API endpoints
-async function basicAuth(req: any, res: any, next: any) {
-  const authHeader = req.headers.authorization;
-  
-  if (!authHeader) {
-    return res.status(401).json({ error: 'Authorization header required' });
-  }
-  
-  // Parse email:password from Authorization header
-  const credentials = authHeader.split(' ')[0]; // Get the credentials directly, not after "Basic"
-  
-  if (!credentials || !credentials.includes(':')) {
-    return res.status(401).json({ error: 'Invalid authorization format. Use email:password' });
-  }
-  
-  const [email, password] = credentials.split(':');
-  
-  if (!email || !password) {
-    return res.status(401).json({ error: 'Email and password required' });
-  }
-  
-  try {
-    // Authenticate user
-    const user = await storage.getUserByEmail(email);
-    if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
-    
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
-    
-    req.user = user;
-    next();
-  } catch (error) {
-    console.error('Basic auth error:', error);
-    return res.status(500).json({ error: 'Authentication failed' });
-  }
-}
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Swagger API Documentation
@@ -205,6 +165,61 @@ export async function registerRoutes(app: Express): Promise<Server> {
         name: req.user.name 
       } 
     });
+  });
+
+  // API Token management routes
+  app.post("/api/tokens", requireAuth, async (req: any, res) => {
+    try {
+      const { name } = req.body;
+      
+      if (!name || typeof name !== 'string') {
+        return res.status(400).json({ error: 'Token name is required' });
+      }
+      
+      const result = await storage.createApiToken(req.user.id, name);
+      
+      res.json({
+        token: result.token,
+        apiToken: {
+          id: result.apiToken.id,
+          name: result.apiToken.name,
+          createdAt: result.apiToken.createdAt,
+          expiresAt: result.apiToken.expiresAt,
+          lastUsedAt: result.apiToken.lastUsedAt
+        },
+        message: 'Save this token securely. You won\'t be able to see it again!'
+      });
+    } catch (error: any) {
+      res.status(500).json({ error: 'Failed to create API token' });
+    }
+  });
+
+  app.get("/api/tokens", requireAuth, async (req: any, res) => {
+    try {
+      const tokens = await storage.getUserApiTokens(req.user.id);
+      
+      // Don't send the token hash, only metadata
+      const sanitizedTokens = tokens.map(token => ({
+        id: token.id,
+        name: token.name,
+        createdAt: token.createdAt,
+        expiresAt: token.expiresAt,
+        lastUsedAt: token.lastUsedAt
+      }));
+      
+      res.json(sanitizedTokens);
+    } catch (error: any) {
+      res.status(500).json({ error: 'Failed to fetch API tokens' });
+    }
+  });
+
+  app.delete("/api/tokens/:tokenId", requireAuth, async (req: any, res) => {
+    try {
+      await storage.deleteApiToken(req.params.tokenId, req.user.id);
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: 'Failed to delete API token' });
+    }
   });
 
   // Product routes
@@ -558,7 +573,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // ===== NEW API ENDPOINTS WITH BASIC AUTH =====
   
   // List all available categories
-  app.get("/filters/listCategories", basicAuth, async (req: any, res) => {
+  app.get("/filters/listCategories", requireAuth, async (req: any, res) => {
     try {
       const categories = await storage.getCategories();
       res.json({
@@ -574,7 +589,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // List all products in wishlist
-  app.get("/wishlist/listProducts", basicAuth, async (req: any, res) => {
+  app.get("/wishlist/listProducts", requireAuth, async (req: any, res) => {
     try {
       const wishlistItems = await storage.getWishlistItems(req.user.id);
       res.json({
@@ -597,7 +612,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Add product to cart
-  app.post("/cart/add/:productId", basicAuth, async (req: any, res) => {
+  app.post("/cart/add/:productId", requireAuth, async (req: any, res) => {
     try {
       const productId = req.params.productId;
       const quantity = req.body.quantity || 1;
@@ -635,7 +650,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Remove product from cart
-  app.delete("/cart/remove/:productId", basicAuth, async (req: any, res) => {
+  app.delete("/cart/remove/:productId", requireAuth, async (req: any, res) => {
     try {
       const productId = req.params.productId;
       
@@ -654,7 +669,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // List all orders for the user
-  app.get("/orders/myorders", basicAuth, async (req: any, res) => {
+  app.get("/orders/myorders", requireAuth, async (req: any, res) => {
     try {
       const orders = await storage.getOrders(req.user.id);
       
@@ -683,7 +698,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Complete order (checkout)
-  app.post("/orders/completeOrder", basicAuth, async (req: any, res) => {
+  app.post("/orders/completeOrder", requireAuth, async (req: any, res) => {
     try {
       // Get user's cart items
       const cartItems = await storage.getCartItems(req.user.id);
